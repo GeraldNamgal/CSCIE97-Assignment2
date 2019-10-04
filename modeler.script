@@ -1,0 +1,3 @@
+# Exception: entering input when no modeler exists yet
+create-store 1 "Harvard Square Store" ""
+

@@ -1,0 +1,8 @@
+package com.cscie97.store.model;
+
+public class Modeler
+{
+	/* My Variables */   
+	   
+	
+}
