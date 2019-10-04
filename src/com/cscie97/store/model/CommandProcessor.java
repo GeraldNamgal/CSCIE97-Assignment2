@@ -20,13 +20,21 @@ public class CommandProcessor
 
     public void processCommand(String command)
     {       
-        parseAndProcess(command);
+        // Create Modeler if it doesn't exist
+    	if (modeler == null)
+    		modeler = new Modeler();
+    	
+    	parseAndProcess(command);
     }
     
     // Referenced https://www.journaldev.com/709/java-read-file-line-by-line
     public void processCommandFile(String commandFile)
     {       
-        // Check if the file is empty
+    	// Create Modeler if it doesn't exist
+    	if (modeler == null)
+    		modeler = new Modeler();    	
+    	
+    	// Check if the file is empty
         try
         {
             File newFile = new File(commandFile);
@@ -76,11 +84,7 @@ public class CommandProcessor
      * Modeler-ish API Utility Methods
      */
 
-    public void createModeler()
-    {
-        Modeler modeler = new Modeler();
-        this.modeler = modeler;
-    }
+    // ???
     
     /* *
      * Other Utility Methods
@@ -318,23 +322,155 @@ public class CommandProcessor
         	splitStringQuotesArr.toArray(splitInputArr);        	
         }
         
-        /* If input contained quotes, then validate their correct usage and fix array - code block END */        
+        /* code block END ("If input contained quotes, then validate their correct usage and fix array") */              
         
-        // If input is create-modeler command
-        if ((splitInputArr[0].equalsIgnoreCase("create-modeler")) && (splitInputArr.length == 1))
-        {
-        	// Check if modeler already exists
-            if (this.modeler != null)
-        	{
-            	try
+        // TODO: Continue parsing for valid DSL commands for CLI
+        
+        // If number of command arguments meets minimum required amount
+        if (splitInputArr.length > 1)
+        {        	 
+        	if (splitInputArr[0].equalsIgnoreCase("define") &&  splitInputArr[1].equalsIgnoreCase("store"))
+            {
+        		
+            }
+        	
+        	else if (splitInputArr[0].equalsIgnoreCase("show") &&  splitInputArr[1].equalsIgnoreCase("store"))
+            {
+        		
+            }
+        	
+        	else if (splitInputArr[0].equalsIgnoreCase("define") &&  splitInputArr[1].equalsIgnoreCase("aisle"))
+            {
+        		
+            }
+        	
+        	else if (splitInputArr[0].equalsIgnoreCase("show") &&  splitInputArr[1].equalsIgnoreCase("aisle"))
+            {
+        		
+            }
+        	
+        	else if (splitInputArr[0].equalsIgnoreCase("define") &&  splitInputArr[1].equalsIgnoreCase("shelf"))
+            {
+        		
+            }
+        	
+        	else if (splitInputArr[0].equalsIgnoreCase("show") &&  splitInputArr[1].equalsIgnoreCase("shelf"))
+            {
+        		
+            }
+        	
+        	else if (splitInputArr[0].equalsIgnoreCase("define") &&  splitInputArr[1].equalsIgnoreCase("inventory"))
+            {
+        		
+            }
+        	
+        	else if (splitInputArr[0].equalsIgnoreCase("show") &&  splitInputArr[1].equalsIgnoreCase("inventory"))
+            {
+        		
+            }
+        	
+        	else if (splitInputArr[0].equalsIgnoreCase("update") &&  splitInputArr[1].equalsIgnoreCase("inventory"))
+            {
+        		
+            }
+        	
+        	else if (splitInputArr[0].equalsIgnoreCase("define") &&  splitInputArr[1].equalsIgnoreCase("product"))
+            {
+        		
+            }
+        	
+        	else if (splitInputArr[0].equalsIgnoreCase("show") &&  splitInputArr[1].equalsIgnoreCase("product"))
+            {
+        		
+            }
+        	
+        	else if (splitInputArr[0].equalsIgnoreCase("define") &&  splitInputArr[1].equalsIgnoreCase("customer"))
+            {
+        		
+            }
+        	
+        	else if (splitInputArr[0].equalsIgnoreCase("update") &&  splitInputArr[1].equalsIgnoreCase("customer"))
+            {
+        		
+            }
+        	
+        	else if (splitInputArr[0].equalsIgnoreCase("show") &&  splitInputArr[1].equalsIgnoreCase("customer"))
+            {
+        		
+            }
+        	
+        	else if (splitInputArr[0].equalsIgnoreCase("get_customer_basket"))
+            {
+        		
+            }
+        	
+        	else if (splitInputArr[0].equalsIgnoreCase("add_basket_item"))
+            {
+        		
+            }
+        	
+        	else if (splitInputArr[0].equalsIgnoreCase("remove_basket_item"))
+            {
+        		
+            }
+        	
+        	else if (splitInputArr[0].equalsIgnoreCase("clear_basket"))
+            {
+        		
+            }
+        	
+        	else if (splitInputArr[0].equalsIgnoreCase("show") &&  splitInputArr[1].equalsIgnoreCase("basket_items"))
+            {
+        		
+            }
+        	
+        	else if (splitInputArr[0].equalsIgnoreCase("define") &&  splitInputArr[1].equalsIgnoreCase("device"))
+            {
+        		
+            }
+        	
+        	else if (splitInputArr[0].equalsIgnoreCase("show") &&  splitInputArr[1].equalsIgnoreCase("device"))
+            {
+        		
+            }
+        	
+        	else if (splitInputArr[0].equalsIgnoreCase("create") &&  splitInputArr[1].equalsIgnoreCase("event"))
+            {
+        		
+            }
+        	
+        	else if (splitInputArr[0].equalsIgnoreCase("define") &&  splitInputArr[1].equalsIgnoreCase("device"))
+            {
+        		
+            }
+        	
+        	else if (splitInputArr[0].equalsIgnoreCase("show") &&  splitInputArr[1].equalsIgnoreCase("device"))
+            {
+        		
+            }
+        	
+        	else if (splitInputArr[0].equalsIgnoreCase("create") &&  splitInputArr[1].equalsIgnoreCase("event"))
+            {
+        		
+            }
+        	
+        	else if (splitInputArr[0].equalsIgnoreCase("create") &&  splitInputArr[1].equalsIgnoreCase("command"))
+            {
+        		
+            }
+        	
+        	// Throw CommandProcessorException if input syntax could not be matched to a valid command
+            else
+            {
+                try
                 {
                     if (lineNum == 0)
-                        throw new CommandProcessorException("in processCommand method", "modeler already exists; input rejected");
+                        throw new CommandProcessorException("in processCommand method", "invalid DSL command input");
 
                     else
-                        throw new CommandProcessorException("in processCommandFile method", "modeler already exists; input rejected", lineNum);            
+                        throw new CommandProcessorException("in processCommandFile method", "invalid DSL command input", lineNum);
                 }
-                
+
                 catch (CommandProcessorException exception)
                 {
                     if (lineNum == 0)
@@ -342,39 +478,30 @@ public class CommandProcessor
                         System.out.println("-: " + trimmedInput);
                         System.out.println();
                         System.out.println(exception.getMessage());
-                        
-                        return;
                     }
-        
+
                     else
                     {
                         System.out.println("-: " + trimmedInput);
                         System.out.println();
                         System.out.println(exception.getMessageLine());
-                        
-                        return;
                     }
                 }
-        	}      	
-        	
-        	System.out.println("-: " + trimmedInput);
-            createModeler();
-
-            System.out.println();        	
+            }
         }
         
-        // If modeler does not exist, don't accept commands and return
-        else if (modeler == null)
+        // Throw CommandProcessorException if not enough command arguments given
+        else
         {
             try
             {
                 if (lineNum == 0)
-                    throw new CommandProcessorException("in processCommand method", "no modeler exists; create modeler first (\"create-modeler\")");
+                    throw new CommandProcessorException("in processCommand method", "invalid DSL command input");
 
                 else
-                    throw new CommandProcessorException("in processCommandFile method", "no modeler exists; create modeler first (\"create-modeler\")", lineNum);            
+                    throw new CommandProcessorException("in processCommandFile method", "invalid DSL command input", lineNum);
             }
-            
+
             catch (CommandProcessorException exception)
             {
                 if (lineNum == 0)
@@ -382,32 +509,18 @@ public class CommandProcessor
                     System.out.println("-: " + trimmedInput);
                     System.out.println();
                     System.out.println(exception.getMessage());
-                    
-                    return;
                 }
-    
+
                 else
                 {
                     System.out.println("-: " + trimmedInput);
                     System.out.println();
                     System.out.println(exception.getMessageLine());
-                    
-                    return;
                 }
             }
         }
-        
-        // TODO: If input is other valid command, call corresponding method
-        else if (splitInputArr.length > 0)
-        {
-        	// TODO: Change the '-' commands back to space, e.g., define store, not define-store
-        	if (splitInputArr[0].equalsIgnoreCase("define-store"))
-            {
-        		
-            }
-        	
-        	// TODO: Debugging           
-            System.out.println(Arrays.deepToString(splitInputArr));            
-        }       
+                
+        // TODO: Debugging           
+        System.out.println(Arrays.deepToString(splitInputArr));  
     }
 }
