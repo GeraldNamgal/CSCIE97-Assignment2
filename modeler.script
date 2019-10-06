@@ -1,3 +1,38 @@
-# Exception: entering input when no modeler exists yet
-create-store 1 "Harvard Square Store" ""
+# Define "store_1"
+define store store_1 name "Harvard Square Store" address "1400 Mass Avenue, Cambridge, MA 02138"
 
+# Exception: Try to create another "store_1" (already exists)
+define store store_1 name "Yale Square Store" address "Yale's address"
+
+# Show "store_1"
+show store store_1
+
+# Exception: Try to show a store that doesn't exist
+show store "store_2"
+
+# Define "storage_1" in "store_1"
+define aisle store_1:storage_1 name Dairy description "milk, yogurt, and other dairy products" location storeroom
+
+# Show "store_1"
+show store store_1
+
+# Exception: Try to create another aisle with same number
+define aisle store_1:storage_1 name "Breads" description bakery location floor
+
+# Define "aisle_1"
+define aisle store_1:aisle_1 name "Breads" description bakery location floor
+
+# Show "store_1"
+show store store_1
+
+# Exception: Try to create an aisle for nonexistent store
+define aisle store_2:aisle_2 name Juices description "canned and room temperature" location floor
+
+# Exception: Try to create an aisle for a location that doesn't exist
+define aisle store_1:aisle_2 name Juices description "canned and room temperature" location Floor
+
+# Define "aisle_2"
+define aisle store_1:aisle_2 name Juices description "canned and room temperature" location floor
+
+# Show "store_1"
+show store "store_1"

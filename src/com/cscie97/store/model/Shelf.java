@@ -1,5 +1,6 @@
 package com.cscie97.store.model;
 
-public class Shelf {
+public class Shelf
+{
 
 }

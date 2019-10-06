@@ -21,7 +21,7 @@ public class TestDriver
             
             System.out.print(getMenu());
             
-            while (!(str = input.nextLine()).equals("q"))
+            while (!(str = input.nextLine()).equalsIgnoreCase("q"))
             {   
                 // Check if user inputted anything and call command processor if so
                 if (str.length() > 0)
@@ -51,10 +51,11 @@ public class TestDriver
         String string = "";
         
         // Output list of commands
-        string += "Commands and syntax:\n";
-        string += " 1.) create-modeler\n";      
+        string += "Commands and syntax (use quotes to group words as one entry) --\n";
+        string += " 1.) define store <identifier> name <name> address <address>\n";      
         string += "\n";
-        string += " Example command: create-store... TODO\n\n";                
+        string += " Example command: define store store_1 name \"Harvard Square Store\" address \"1400 Mass Avenue,"
+                + " Cambridge, MA 02138\"\n\n";                
         string += "Please enter a command ('q' to quit): ";      
         
         return string;

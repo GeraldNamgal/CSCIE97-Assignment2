@@ -11,7 +11,7 @@ public class CommandProcessorException extends java.lang.Exception
     
     /* Constructor */
     
-    // Two constructors; for exceptions that output file line numbers and those that don't
+    // Two constructors: for exceptions that output file line numbers and those that don't
     public CommandProcessorException(String action, String reason)
     {
         this.action = action;
