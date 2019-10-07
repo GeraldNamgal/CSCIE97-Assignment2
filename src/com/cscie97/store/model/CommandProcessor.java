@@ -318,190 +318,156 @@ public class CommandProcessor
         
         /* code block END ("If input contained quotes, then validate their correct usage and fix array") */              
         
-        // TODO: Continue parsing for valid DSL commands for CLI
-        
-        // If number of command arguments meets minimum amount
-        if (splitInputArr.length > 1)
-        {        	 
-            if (splitInputArr[0].equalsIgnoreCase("define") &&  splitInputArr[1].equalsIgnoreCase("store")
-                    && (splitInputArr.length == 7) && splitInputArr[3].equalsIgnoreCase("name")
-                    && splitInputArr[5].equalsIgnoreCase("address"))
-            {
-                System.out.println("-: " + trimmedInput);
-                modeler.defineStore(splitInputArr[2], splitInputArr[4], splitInputArr[6]);
-                System.out.println();
-            }
-        	
-            else if (splitInputArr[0].equalsIgnoreCase("show") &&  splitInputArr[1].equalsIgnoreCase("store")
-                    && (splitInputArr.length == 3))
-            {
-                System.out.println("-: " + trimmedInput);
-                modeler.showStore(splitInputArr[2]);
-                System.out.println();
-            }
-        	
-            else if (splitInputArr[0].equalsIgnoreCase("define") &&  splitInputArr[1].equalsIgnoreCase("aisle")
-                    && (splitInputArr.length == 9) && splitInputArr[3].equalsIgnoreCase("name")
-                    && splitInputArr[5].equalsIgnoreCase("description") && splitInputArr[7].equalsIgnoreCase("location")
-                    && (splitInputArr[2].split(":").length == 2))
-            {
-                System.out.println("-: " + trimmedInput);
-                modeler.defineAisle(splitInputArr[2], splitInputArr[4], splitInputArr[6], splitInputArr[8]);
-                System.out.println();
-            }
-        	
-            else if (splitInputArr[0].equalsIgnoreCase("show") &&  splitInputArr[1].equalsIgnoreCase("aisle"))
-            {
-                
-            }
-        	
-            else if (splitInputArr[0].equalsIgnoreCase("define") &&  splitInputArr[1].equalsIgnoreCase("shelf")
-                    && (splitInputArr.length == 11) && splitInputArr[3].equalsIgnoreCase("name")
-                    && splitInputArr[5].equalsIgnoreCase("level") && splitInputArr[7].equalsIgnoreCase("description")
-                    && splitInputArr[9].equalsIgnoreCase("temperature") && (splitInputArr[2].split(":").length == 3))
-            {
-                System.out.println("-: " + trimmedInput);
-                modeler.defineShelf(splitInputArr[2], splitInputArr[4], splitInputArr[6], splitInputArr[8], splitInputArr[10]);
-                System.out.println();
-            }
-        	
-            else if (splitInputArr[0].equalsIgnoreCase("show") &&  splitInputArr[1].equalsIgnoreCase("shelf"))
-            {
-                
-            }
-        	
-            else if (splitInputArr[0].equalsIgnoreCase("define") &&  splitInputArr[1].equalsIgnoreCase("inventory"))
-            {
-                
-            }
-        
-            else if (splitInputArr[0].equalsIgnoreCase("show") &&  splitInputArr[1].equalsIgnoreCase("inventory"))
-            {
-                
-            }
-        	
-            else if (splitInputArr[0].equalsIgnoreCase("update") &&  splitInputArr[1].equalsIgnoreCase("inventory"))
-            {
-                
-            }
-        	
-            else if (splitInputArr[0].equalsIgnoreCase("define") &&  splitInputArr[1].equalsIgnoreCase("product"))
-            {
-                
-            }
-        	
-            else if (splitInputArr[0].equalsIgnoreCase("show") &&  splitInputArr[1].equalsIgnoreCase("product"))
-            {
-                
-            }
-        	
-       	    else if (splitInputArr[0].equalsIgnoreCase("define") &&  splitInputArr[1].equalsIgnoreCase("customer"))
-            {
-       	        
-            }
-        	
-       	    else if (splitInputArr[0].equalsIgnoreCase("update") &&  splitInputArr[1].equalsIgnoreCase("customer"))
-            {
-       	        
-            }
-        	
-            else if (splitInputArr[0].equalsIgnoreCase("show") &&  splitInputArr[1].equalsIgnoreCase("customer"))
-            {
-                
-            }
-        	
-            else if (splitInputArr[0].equalsIgnoreCase("get_customer_basket"))
-            {
-                
-            }
-        	
-            else if (splitInputArr[0].equalsIgnoreCase("add_basket_item"))
-            {
-                
-            }
-        	
-            else if (splitInputArr[0].equalsIgnoreCase("remove_basket_item"))
-            {
-                
-            }
-        	
-            else if (splitInputArr[0].equalsIgnoreCase("clear_basket"))
-            {
-                
-            }
-        	
-       	    else if (splitInputArr[0].equalsIgnoreCase("show") &&  splitInputArr[1].equalsIgnoreCase("basket_items"))
-            {
-       	        
-            }
-        	
-       	    else if (splitInputArr[0].equalsIgnoreCase("define") &&  splitInputArr[1].equalsIgnoreCase("device"))
-            {
-       	        
-            }
-        	
-            else if (splitInputArr[0].equalsIgnoreCase("show") &&  splitInputArr[1].equalsIgnoreCase("device"))
-            {
-                
-            }
-        	
-            else if (splitInputArr[0].equalsIgnoreCase("create") &&  splitInputArr[1].equalsIgnoreCase("event"))
-            {
-                
-            }
-        	
-            else if (splitInputArr[0].equalsIgnoreCase("define") &&  splitInputArr[1].equalsIgnoreCase("device"))
-            {
-                
-            }
-        	
-            else if (splitInputArr[0].equalsIgnoreCase("show") &&  splitInputArr[1].equalsIgnoreCase("device"))
-            {
-                
-            }
-        	
-       	    else if (splitInputArr[0].equalsIgnoreCase("create") &&  splitInputArr[1].equalsIgnoreCase("event"))
-            {
-       	        
-            }
-        	
-       	    else if (splitInputArr[0].equalsIgnoreCase("create") &&  splitInputArr[1].equalsIgnoreCase("command"))
-            {
-       	        
-            }
-        	
-        	// Throw CommandProcessorException if input syntax could not be matched to a valid command
-            else
-            {
-                try
-                {
-                    if (lineNum == 0)
-                        throw new CommandProcessorException("in processCommand method", "invalid DSL command input");
-
-                    else
-                        throw new CommandProcessorException("in processCommandFile method", "invalid DSL command input", lineNum);
-                }
-
-                catch (CommandProcessorException exception)
-                {
-                    if (lineNum == 0)
-                    {
-                        System.out.println("-: " + trimmedInput);
-                        System.out.println();
-                        System.out.println(exception.getMessage());
-                    }
-
-                    else
-                    {
-                        System.out.println("-: " + trimmedInput);
-                        System.out.println();
-                        System.out.println(exception.getMessageLine());
-                    }
-                }
-            }
+        /* TODO: Continue parsing for valid DSL commands for CLI */
+                	 
+        if (splitInputArr[0].equalsIgnoreCase("define") &&  splitInputArr[1].equalsIgnoreCase("store")
+                && (splitInputArr.length == 7) && splitInputArr[3].equalsIgnoreCase("name")
+                && splitInputArr[5].equalsIgnoreCase("address"))
+        {
+            System.out.println("-: " + trimmedInput);
+            modeler.defineStore(splitInputArr[2], splitInputArr[4], splitInputArr[6]);
+            System.out.println();
         }
-        
-        // Throw CommandProcessorException if not enough command arguments given
+    	
+        else if (splitInputArr[0].equalsIgnoreCase("show") &&  splitInputArr[1].equalsIgnoreCase("store")
+                && (splitInputArr.length == 3))
+        {
+            System.out.println("-: " + trimmedInput);
+            modeler.showStore(splitInputArr[2]);
+            System.out.println();
+        }
+    	
+        else if (splitInputArr[0].equalsIgnoreCase("define") &&  splitInputArr[1].equalsIgnoreCase("aisle")
+                && (splitInputArr.length == 9) && splitInputArr[3].equalsIgnoreCase("name")
+                && splitInputArr[5].equalsIgnoreCase("description") && splitInputArr[7].equalsIgnoreCase("location")
+                && (splitInputArr[2].split(":").length == 2))
+        {
+            System.out.println("-: " + trimmedInput);
+            modeler.defineAisle(splitInputArr[2], splitInputArr[4], splitInputArr[6], splitInputArr[8]);
+            System.out.println();
+        }
+    	
+        else if (splitInputArr[0].equalsIgnoreCase("show") &&  splitInputArr[1].equalsIgnoreCase("aisle"))
+        {
+            
+        }
+    	
+        else if (splitInputArr[0].equalsIgnoreCase("define") &&  splitInputArr[1].equalsIgnoreCase("shelf")
+                && (splitInputArr.length == 11) && splitInputArr[3].equalsIgnoreCase("name")
+                && splitInputArr[5].equalsIgnoreCase("level") && splitInputArr[7].equalsIgnoreCase("description")
+                && splitInputArr[9].equalsIgnoreCase("temperature") && (splitInputArr[2].split(":").length == 3))
+        {
+            System.out.println("-: " + trimmedInput);
+            modeler.defineShelf(splitInputArr[2], splitInputArr[4], splitInputArr[6], splitInputArr[8], splitInputArr[10]);
+            System.out.println();
+        }
+    	
+        else if (splitInputArr[0].equalsIgnoreCase("show") &&  splitInputArr[1].equalsIgnoreCase("shelf"))
+        {
+            
+        }
+    	
+        else if (splitInputArr[0].equalsIgnoreCase("define") &&  splitInputArr[1].equalsIgnoreCase("inventory"))
+        {
+            // TODO: Check that integers are integers...
+        }
+    
+        else if (splitInputArr[0].equalsIgnoreCase("show") &&  splitInputArr[1].equalsIgnoreCase("inventory"))
+        {
+            
+        }
+    	
+        else if (splitInputArr[0].equalsIgnoreCase("update") &&  splitInputArr[1].equalsIgnoreCase("inventory"))
+        {
+            // TODO: Check that integer is integer...
+        }
+    	
+        else if (splitInputArr[0].equalsIgnoreCase("define") &&  splitInputArr[1].equalsIgnoreCase("product"))
+        {
+            // TODO: Check that integers are integers...
+        }
+    	
+        else if (splitInputArr[0].equalsIgnoreCase("show") &&  splitInputArr[1].equalsIgnoreCase("product"))
+        {
+            
+        }
+    	
+   	else if (splitInputArr[0].equalsIgnoreCase("define") &&  splitInputArr[1].equalsIgnoreCase("customer"))
+        {
+   	        
+        }
+    	
+   	else if (splitInputArr[0].equalsIgnoreCase("update") &&  splitInputArr[1].equalsIgnoreCase("customer"))
+        {
+   	        
+        }
+    	
+        else if (splitInputArr[0].equalsIgnoreCase("show") &&  splitInputArr[1].equalsIgnoreCase("customer"))
+        {
+            
+        }
+    	
+        else if (splitInputArr[0].equalsIgnoreCase("get_customer_basket"))
+        {
+            
+        }
+    	
+        else if (splitInputArr[0].equalsIgnoreCase("add_basket_item"))
+        {
+            
+        }
+    	
+        else if (splitInputArr[0].equalsIgnoreCase("remove_basket_item"))
+        {
+            
+        }
+    	
+        else if (splitInputArr[0].equalsIgnoreCase("clear_basket"))
+        {
+            
+        }
+    	
+   	else if (splitInputArr[0].equalsIgnoreCase("show") &&  splitInputArr[1].equalsIgnoreCase("basket_items"))
+        {
+   	        
+        }
+    	
+   	else if (splitInputArr[0].equalsIgnoreCase("define") &&  splitInputArr[1].equalsIgnoreCase("device"))
+        {
+   	        
+        }
+    	
+        else if (splitInputArr[0].equalsIgnoreCase("show") &&  splitInputArr[1].equalsIgnoreCase("device"))
+        {
+            
+        }
+    	
+        else if (splitInputArr[0].equalsIgnoreCase("create") &&  splitInputArr[1].equalsIgnoreCase("event"))
+        {
+            
+        }
+    	
+        else if (splitInputArr[0].equalsIgnoreCase("define") &&  splitInputArr[1].equalsIgnoreCase("device"))
+        {
+            
+        }
+    	
+        else if (splitInputArr[0].equalsIgnoreCase("show") &&  splitInputArr[1].equalsIgnoreCase("device"))
+        {
+            
+        }
+    	
+   	else if (splitInputArr[0].equalsIgnoreCase("create") &&  splitInputArr[1].equalsIgnoreCase("event"))
+        {
+   	        
+        }
+    	
+   	else if (splitInputArr[0].equalsIgnoreCase("create") &&  splitInputArr[1].equalsIgnoreCase("command"))
+        {
+   	        
+        }
+    	
+    	// Throw CommandProcessorException if input syntax could not be matched to a valid command
         else
         {
             try
@@ -529,6 +495,6 @@ public class CommandProcessor
                     System.out.println(exception.getMessageLine());
                 }
             }
-        }                 
+        }                     
     }
 }

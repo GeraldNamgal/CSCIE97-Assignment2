@@ -50,9 +50,19 @@ public class TestDriver
         // Initialize menu string
         String string = "";
         
+        // TODO
         // Output list of commands
         string += "Commands and syntax (use quotes to group words as one entry) --\n";
-        string += " 1.) define store <identifier> name <name> address <address>\n";      
+        string += " 1.) define store <identifier> name <name> address <address>\n";
+        string += " 2.) show store \n";
+        string += " 3.) define aisle \n";
+        string += " 4.) show aisle \n";
+        string += " 5.) define shelf (default temperature is ambient)\n";
+        string += " 6.) show shelf \n";
+        string += " 7.) define inventory \n";
+        string += " 8.) \n";
+        string += " 9.) \n";
+        string += " 10.) define product (default temperature is ambient)\n";
         string += "\n";
         string += " Example command: define store store_1 name \"Harvard Square Store\" address \"1400 Mass Avenue,"
                 + " Cambridge, MA 02138\"\n\n";                
