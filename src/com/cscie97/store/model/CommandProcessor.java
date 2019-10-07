@@ -102,8 +102,8 @@ public class CommandProcessor
             return;
         }
 
-        // Delimit input string on whitespace and colons and add each value to array
-        String[] splitInputArr = trimmedInput.split("\\s+|:");
+        // Delimit input string on whitespace and add each value to array
+        String[] splitInputArr = trimmedInput.split("\\s+");
         
         /* If input contained quotes, then validate their correct usage and fix array - code block BEGINNING */
         
@@ -341,11 +341,12 @@ public class CommandProcessor
             }
         	
             else if (splitInputArr[0].equalsIgnoreCase("define") &&  splitInputArr[1].equalsIgnoreCase("aisle")
-                    && (splitInputArr.length == 10) && splitInputArr[4].equalsIgnoreCase("name")
-                    && splitInputArr[6].equalsIgnoreCase("description") && splitInputArr[8].equalsIgnoreCase("location"))
+                    && (splitInputArr.length == 9) && splitInputArr[3].equalsIgnoreCase("name")
+                    && splitInputArr[5].equalsIgnoreCase("description") && splitInputArr[7].equalsIgnoreCase("location")
+                    && (splitInputArr[2].split(":").length == 2))
             {
                 System.out.println("-: " + trimmedInput);
-                modeler.defineAisle(splitInputArr[2], splitInputArr[3], splitInputArr[5], splitInputArr[7], splitInputArr[9]);
+                modeler.defineAisle(splitInputArr[2], splitInputArr[4], splitInputArr[6], splitInputArr[8]);
                 System.out.println();
             }
         	
@@ -354,9 +355,14 @@ public class CommandProcessor
                 
             }
         	
-            else if (splitInputArr[0].equalsIgnoreCase("define") &&  splitInputArr[1].equalsIgnoreCase("shelf"))
+            else if (splitInputArr[0].equalsIgnoreCase("define") &&  splitInputArr[1].equalsIgnoreCase("shelf")
+                    && (splitInputArr.length == 11) && splitInputArr[3].equalsIgnoreCase("name")
+                    && splitInputArr[5].equalsIgnoreCase("level") && splitInputArr[7].equalsIgnoreCase("description")
+                    && splitInputArr[9].equalsIgnoreCase("temperature") && (splitInputArr[2].split(":").length == 3))
             {
-                
+                System.out.println("-: " + trimmedInput);
+                modeler.defineShelf(splitInputArr[2], splitInputArr[4], splitInputArr[6], splitInputArr[8], splitInputArr[10]);
+                System.out.println();
             }
         	
             else if (splitInputArr[0].equalsIgnoreCase("show") &&  splitInputArr[1].equalsIgnoreCase("shelf"))

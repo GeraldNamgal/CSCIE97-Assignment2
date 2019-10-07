@@ -76,10 +76,11 @@ public class Modeler
         
         /* Gather and print store's information */
         
-        // TODO: Get string of customer information for everyone currently in the store
+        // TODO: Initialize string of customer information for everyone currently in the store
         LinkedHashMap<String, Customer> storeCustomers = store.getCustomers();
         String customersString = "";
         int counter = 1;
+        
         // If there are customers
         if (storeCustomers.size() != 0)
         {
@@ -93,14 +94,16 @@ public class Modeler
                 counter++;
             }
         }
+        
         // If there are no customers
         else
             customersString += "\n    None";
         
-        // TODO: Get string of store's aisle information
+        // TODO: Initialize string of store's aisle information
         LinkedHashMap<String, Aisle> aisles = store.getAisles();
         String aislesString = "";
         counter = 1;
+        
         // If there are aisles
         if (aisles.size() != 0)
         {
@@ -115,6 +118,7 @@ public class Modeler
                 counter++;
             }
         }
+        
         // If there are no aisles
         else
             aislesString += "\n    None";
@@ -129,10 +133,15 @@ public class Modeler
         System.out.print(string);                    
     }
     
-    public Aisle defineAisle(String storeId, String aisleNumber, String name, String description, String location)
+    public Aisle defineAisle(String storeAisleLoc, String name, String description, String location)
     {
+        // Split storeAisleLoc on colon
+        String[] splitLoc = storeAisleLoc.split(":");
+        String storeId = splitLoc[0];
+        String aisleNumber = splitLoc[1];
+        
         // Check that store exists
-        if (stores.get(storeId) == null)
+        if (stores.containsKey(storeId) == false)
         {
             try
             {
@@ -189,6 +198,118 @@ public class Modeler
             stores.get(storeId).getAisles().put(aisle.getNumber(), aisle);        
         
         return stores.get(storeId).getAisles().get(aisle.getNumber());
+    }
+    
+    public void showAisle(String storeAisleLoc)
+    {
+        // TODO
+        
+        
+    }
+    
+    public Shelf defineShelf(String storeAisleShelfLoc, String name, String level, String description, String temperature)
+    {       
+        // TODO?
+        
+        // Split storeAisleShelfLoc on colon
+        String[] splitLoc = storeAisleShelfLoc.split(":");
+        String storeId = splitLoc[0];
+        String aisleNumber = splitLoc[1];
+        String shelfId = splitLoc[2];
+        
+        // Check that store exists
+        if (stores.containsKey(storeId) == false)
+        {
+            try
+            {
+                throw new ModelerException("define shelf", "store not found; shelf not created");
+            }
+            
+            catch (ModelerException exception)
+            {
+                System.out.println();
+                System.out.print(exception.getMessage());      
+                return null;
+            }
+        }
+        
+        // Check that aisle exists
+        if (stores.get(storeId).getAisles().containsKey(aisleNumber) == false)
+        {
+            try
+            {
+                throw new ModelerException("define shelf", "aisle not found; shelf not created");
+            }
+            
+            catch (ModelerException exception)
+            {
+                System.out.println();
+                System.out.print(exception.getMessage());      
+                return null;
+            }
+        }
+        
+        // Check that shelf id is unique
+        if (stores.get(storeId).getAisles().get(aisleNumber).getShelves().containsKey(shelfId))
+        {
+            try
+            {
+                throw new ModelerException("define shelf", "shelf id already exists; shelf not created");
+            }
+            
+            catch (ModelerException exception)
+            {
+                System.out.println();
+                System.out.print(exception.getMessage());      
+                return null;
+            }
+        }
+        
+        // Check that level input is a valid enum
+        if (!Shelf.containsLevelEnum(level))
+        {
+            try
+            {
+                throw new ModelerException("define shelf", "level (case-sensitive) not found; shelf not created");
+            }
+            
+            catch (ModelerException exception)
+            {
+                System.out.println();
+                System.out.print(exception.getMessage());      
+                return null;
+            }
+        }
+        
+        // Check that temperature input is a valid enum
+        if (!Shelf.containsTempEnum(temperature))
+        {
+            try
+            {
+                throw new ModelerException("define shelf", "temperature (case-sensitive) not found; shelf not created");
+            }
+            
+            catch (ModelerException exception)
+            {
+                System.out.println();
+                System.out.print(exception.getMessage());      
+                return null;
+            }
+        }
+        
+        // Change level string to an enum
+        Shelf.Level levelEnum = Shelf.Level.valueOf(level);
+        
+        // Change temperature string to an enum
+        Shelf.Temperature temperatureEnum = Shelf.Temperature.valueOf(temperature);
+        
+        Shelf shelf = new Shelf(shelfId, name, levelEnum, description, temperatureEnum);        
+        
+        // Add shelf to aisle's shelf list     
+        if (shelf != null)
+            stores.get(storeId).getAisles().get(aisleNumber).getShelves().put(shelf.getId(), shelf);        
+        
+        return stores.get(storeId).getAisles().get(aisleNumber).getShelves().get(shelf.getId());       
     }
         
     /* *

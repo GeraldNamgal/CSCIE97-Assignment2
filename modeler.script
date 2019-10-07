@@ -36,3 +36,6 @@ define aisle store_1:aisle_2 name Juices description "canned and room temperatur
 
 # Show "store_1"
 show store "store_1"
+
+# Define "shelf_1"
+define shelf store_1:aisle_1:shelf_1 name Dairy level high description "soy and almond milks" temperature refrigerated

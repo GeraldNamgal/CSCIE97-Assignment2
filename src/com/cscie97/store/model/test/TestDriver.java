@@ -6,7 +6,7 @@ import com.cscie97.store.model.*;
 
 public class TestDriver
 {
-	// Method: Without a script file argument "main" will run manual commands (otherwise will run script file)
+    // Method: Without a script file argument "main" will run manual commands (otherwise will run script file)
     public static void main(String[] args)
     {
     	// Create a command processor

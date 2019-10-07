@@ -25,7 +25,9 @@ public class CommandProcessorException extends java.lang.Exception
         this.lineNumber = lineNumber;
     }
     
-    /* Methods */
+    /* *
+     * Methods
+     */
     
     public String getMessage()
     {
