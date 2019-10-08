@@ -10,7 +10,7 @@ public class Modeler
     private LinkedHashMap<String, Store> stores;
     private LinkedHashMap<String, Product> products;	
     private LinkedHashMap<String, Customer> customers;
-    private LinkedHashMap<String, Store> inventories;
+    private LinkedHashMap<String, Inventory> inventories;
 	
     /* Constructor */
 	
@@ -19,7 +19,7 @@ public class Modeler
         stores = new LinkedHashMap<String, Store>();
         products = new LinkedHashMap<String, Product>();
         customers = new LinkedHashMap<String, Customer>();
-        inventories = new LinkedHashMap<String, Store>();
+        inventories = new LinkedHashMap<String, Inventory>();
     }
     
     /* *
@@ -55,8 +55,6 @@ public class Modeler
     
     public void showStore(String storeId)
     {
-        // TODO       
-        
         // Get store
         Store store = stores.get(storeId);
         
@@ -83,8 +81,8 @@ public class Modeler
         String customersString = "";
         int counter = 1;
         
-        // If there are customers
-        if (storeCustomers.size() != 0)
+        // If there are active customers
+        if (storeCustomers.size() > 0)
         {
             Customer customer;             
             for (Entry<String, Customer> customerEntry : storeCustomers.entrySet())
@@ -97,17 +95,17 @@ public class Modeler
             }
         }
         
-        // If there are no customers
+        // If there are no active customers
         else
-            customersString += "\n    None";
+            customersString += " None";
         
-        // TODO: Initialize string of store's aisle information
+        // Initialize string of store's aisle information
         LinkedHashMap<String, Aisle> aisles = store.getAisles();
         String aislesString = "";
         counter = 1;
         
         // If there are aisles
-        if (aisles.size() != 0)
+        if (aisles.size() > 0)
         {
             Aisle aisle;                
             for (Entry<String, Aisle> aisleEntry : aisles.entrySet())
@@ -123,13 +121,42 @@ public class Modeler
         
         // If there are no aisles
         else
-            aislesString += "\n    None";
+            aislesString += " None";
         
-        // Combine strings together with other information included
+        // Initialize string of store's inventory information
+        LinkedHashMap<String, Inventory> inventories = store.getInventories();
+        String inventoriesString = "";
+        counter = 1;
+        
+        // If there are inventories
+        if (inventories.size() > 0)
+        {
+            Inventory inventory;
+            for (Entry<String, Inventory> inventoryEntry : inventories.entrySet())
+            {
+                inventory = inventoryEntry.getValue();
+                
+                inventoriesString += "\n    " + counter + ".)" + " inventoryId = " + inventory.getInventoryId() + "; location = "
+                        + inventory.getLocation() + "; capacity = " + inventory.getCapacity() + "; count = " + inventory.getCount()
+                        + "; productId = " + inventory.getProductId();
+                
+                counter++;
+            }
+        }
+        
+        // If there are no inventories
+        else
+            inventoriesString += " None";
+        
+        // TODO: Get sensor information
+        
+        // TODO: Get appliance information
+        
+        // TODO: Combine strings together with other store information included
         String string;
         string = "\nStore \"" + store.getId() + "\" information --\n" + " - name = "
-                + store.getName() + "\n - address = " + store.getAddress() + "\n - customers ="
-                + customersString + "\n - aisles =" + aislesString + "\n";           
+                + store.getName() + "\n - address = " + store.getAddress() + "\n - active customers ="
+                + customersString + "\n - aisles =" + aislesString + "\n - inventories =" + inventoriesString + "\n";           
 
         // Print string to stdout
         System.out.print(string);                    
@@ -203,16 +230,86 @@ public class Modeler
     }
     
     public void showAisle(String storeAisleLoc)
-    {
-        // TODO
+    {        
+        // Split storeAisleLoc on colon
+        String[] splitLoc = storeAisleLoc.split(":");
+        String storeId = splitLoc[0];
+        String aisleNumber = splitLoc[1];
         
+        // Get store
+        Store store = stores.get(storeId);
         
+        // Check that store exists
+        if (store == null)
+        {
+            try
+            {
+                throw new ModelerException("show aisle", "store not found");
+            }
+            
+            catch (ModelerException exception)
+            {
+                System.out.println();
+                System.out.print(exception.getMessage());      
+                return;
+            }
+        }
+        
+        // Check that aisle exists
+        if (!store.getAisles().containsKey(aisleNumber))
+        {
+            try
+            {
+                throw new ModelerException("show aisle", "aisle not found");
+            }
+            
+            catch (ModelerException exception)
+            {
+                System.out.println();
+                System.out.print(exception.getMessage());      
+                return;
+            }
+        }
+        
+        Aisle aisle = store.getAisles().get(aisleNumber);
+        
+        // Initialize shelves information string
+        LinkedHashMap<String, Shelf> shelves = store.getAisles().get(aisleNumber).getShelves();
+        String shelvesString = "";
+        int counter = 1;
+        
+        // If there are shelves
+        if (shelves.size() > 0)
+        {
+            Shelf shelf;
+            for (Entry<String, Shelf> shelfEntry : shelves.entrySet())
+            {
+                shelf = shelfEntry.getValue();
+                
+                shelvesString += "\n    " + counter + ".)" + " id = " + shelf.getId() + "; name = "
+                        + shelf.getName() + "; level = " + shelf.getLevel() + "; description = " + shelf.getDescription()
+                        + "; temperature = " + shelf.getTemperature();
+                
+                counter++;
+            }
+        }
+        
+        // If there are no shelves
+        else
+            shelvesString += " None";
+        
+        // Combine shelf string with other aisle information
+        String string;
+        string = "\nAisle \"" + storeAisleLoc + "\" information --\n" + " - name = "
+                + aisle.getName() + "\n - description = " + aisle.getDescription() + "\n - location = "
+                + aisle.getLocation() + "\n - shelves =" + shelvesString + "\n";           
+
+        // Print string to stdout
+        System.out.print(string);
     }
     
     public Shelf defineShelf(String storeAisleShelfLoc, String name, String level, String description, String temperature)
-    {       
-        // TODO?
-        
+    { 
         // Split storeAisleShelfLoc on colon
         String[] splitLoc = storeAisleShelfLoc.split(":");
         String storeId = splitLoc[0];
@@ -315,14 +412,114 @@ public class Modeler
     }
     
     public void showShelf(String storeAisleShelfLoc)
-    {
-        // TODO
+    {      
+        // Split storeAisleShelfLoc on colon
+        String[] splitLoc = storeAisleShelfLoc.split(":");
+        String storeId = splitLoc[0];
+        String aisleNumber = splitLoc[1];
+        String shelfId = splitLoc[2];
+        
+        // Check that store exists
+        if (!stores.containsKey(storeId))
+        {
+            try
+            {
+                throw new ModelerException("show shelf", "store not found");
+            }
+            
+            catch (ModelerException exception)
+            {
+                System.out.println();
+                System.out.print(exception.getMessage());      
+                return;
+            }
+        }
+        
+        // Check that aisle exists
+        if (!stores.get(storeId).getAisles().containsKey(aisleNumber))
+        {
+            try
+            {
+                throw new ModelerException("show shelf", "aisle not found");
+            }
+            
+            catch (ModelerException exception)
+            {
+                System.out.println();
+                System.out.print(exception.getMessage());      
+                return;
+            }
+        }
+        
+        // Check that shelf exists
+        if (!stores.get(storeId).getAisles().get(aisleNumber).getShelves().containsKey(shelfId))
+        {
+            try
+            {
+                throw new ModelerException("show shelf", "shelf not found");
+            }
+            
+            catch (ModelerException exception)
+            {
+                System.out.println();
+                System.out.print(exception.getMessage());      
+                return;
+            }
+        }
+        
+        // Initialize string of store's inventory information
+        LinkedHashMap<String, Inventory> inventories = stores.get(storeId).getInventories();
+        String inventoriesString = "";
+        int counter = 1;
+        
+        // If there are inventories
+        if (inventories.size() > 0)
+        {
+            Inventory inventory;
+            
+            // Only get particular shelf's inventory           
+            for (Entry<String, Inventory> inventoryEntry : inventories.entrySet())
+            {
+                inventory = inventoryEntry.getValue();
+                
+                // Split inventory location to get shelf
+                String[] splitInvLoc = inventory.getLocation().split(":");                
+                String invAisleNumber = splitInvLoc[1];
+                String invShelfId = splitInvLoc[2];
+                
+                if(invAisleNumber.equals(aisleNumber) && invShelfId.equals(shelfId))
+                {
+                    inventoriesString += "\n    " + counter + ".)" + " inventoryId = " + inventory.getInventoryId() + "; location = "
+                            + inventory.getLocation() + "; capacity = " + inventory.getCapacity() + "; count = " + inventory.getCount()
+                            + "; productId = " + inventory.getProductId();
+                    
+                    counter++;
+                }
+            }
+            
+            // If no inventory for shelf found
+            if (inventoriesString.equals(""))
+                inventoriesString += " None";
+        }
+        
+        // If there are no inventories
+        else
+            inventoriesString += " None";
+        
+        // Combine inventories string with shelf's other information
+        String string;
+        Shelf shelf = stores.get(storeId).getAisles().get(aisleNumber).getShelves().get(shelfId);
+        string = "\nShelf \"" + storeAisleShelfLoc + "\" information --\n" + " - name = "
+                + shelf.getName() + "\n - level = " + shelf.getLevel() + "\n - description = "
+                + shelf.getDescription() + "\n - temperature = " + shelf.getTemperature()
+                + "\n - inventories =" + inventoriesString + "\n";           
+
+        // Print string to stdout
+        System.out.print(string);
     }
     
     public Inventory defineInventory(String id, String storeAisleShelfLoc, Integer capacity, Integer count, String productId)
-    {
-        // TODO
-        
+    {        
         // Check that count is within valid range
         if ((count < 0) || (count > capacity))
         {
@@ -343,7 +540,7 @@ public class Modeler
         String[] splitLoc = storeAisleShelfLoc.split(":");
         String storeId = splitLoc[0];
         String aisleNumber = splitLoc[1];
-        String shelfId = splitLoc[2];
+        String shelfId = splitLoc[2];        
         
         // Check that id is unique
         if (inventories.containsKey(id))
@@ -407,7 +604,7 @@ public class Modeler
                 System.out.print(exception.getMessage());      
                 return null;
             }
-        }
+        }        
         
         // Check that productId exists
         if (!products.containsKey(productId))
@@ -425,30 +622,106 @@ public class Modeler
             }
         }
         
+        // Make sure shelf temperature can support product's temperature
+        if (stores.get(storeId).getAisles().get(aisleNumber).getShelves().get(shelfId).getTemperature()
+                != products.get(productId).getTemperature())
+        {
+            try
+            {
+                throw new ModelerException("define inventory", "shelf and product temperatures don't match; inventory not created");
+            }
+            
+            catch (ModelerException exception)
+            {
+                System.out.println();
+                System.out.print(exception.getMessage());      
+                return null;
+            }
+        }
+        
         Inventory inventory = new Inventory(id, storeAisleShelfLoc, capacity, count, productId);        
                 
         if (inventory != null)
         {
             // Add inventory id and its associated store to inventories list
-            inventories.put(inventory.getInventoryId(), stores.get(storeId));
+            inventories.put(inventory.getInventoryId(), inventory);
             
             // Add inventory object to its associated store's inventory
-            stores.get(storeId).getInventory().put(inventory.getInventoryId(), inventory);
+            stores.get(storeId).getInventories().put(inventory.getInventoryId(), inventory);
         }  
         
-        return stores.get(storeId).getInventory().get(inventory.getInventoryId());
+        return stores.get(storeId).getInventories().get(inventory.getInventoryId());
     }
     
-    public void showInventory()
-    {
-        // TODO
+    public void showInventory(String id)
+    {        
+        // Initialize string of store's inventory information
+        Inventory inventory = inventories.get(id);
+        String inventoryString = "";       
+        
+        // Check if inventory exists
+        if (inventory == null)
+        {
+            try
+            {                
+                throw new ModelerException("show inventory", "inventory not found");
+            }
+            
+            catch (ModelerException exception)
+            {                
+                System.out.println();
+                System.out.print(exception.getMessage());      
+                return;
+            }
+        }            
+            
+        // Concatenate inventory's information     
+        inventoryString += "\nInventory \"" + id + "\" information --\n" + " - location = " + inventory.getLocation() + "\n - capacity = " 
+                + inventory.getCapacity() + "\n - count = " + inventory.getCount() + "\n - productId = "+ inventory.getProductId() + "\n";
+        
+        // Print string to stdout
+        System.out.print(inventoryString);
     }
     
-    public void updateInventory()
+    public void updateInventory(String id, Integer amount)
     {
         // TODO
         
-        // If updateAmount + count > capacity or less than 0...
+        Inventory inventory = inventories.get(id);
+        
+        // Check if inventory found
+        if (inventory == null)
+        {
+            try
+            {                
+                throw new ModelerException("update inventory", "inventory not found");
+            }
+            
+            catch (ModelerException exception)
+            {                
+                System.out.println();
+                System.out.print(exception.getMessage());      
+                return;
+            }
+        }
+        
+        // Check if update amount plus count is greater than capacity or less than 0       
+        if (((amount + inventory.getCount()) > inventory.getCapacity()) || ((amount + inventory.getCount()) < 0))
+        {
+            try
+            {                
+                throw new ModelerException("update inventory", "update would put count outside of valid range; update rejected");
+            }
+            
+            catch (ModelerException exception)
+            {                
+                System.out.println();
+                System.out.print(exception.getMessage());      
+                return;
+            }
+        }       
+        
+        inventory.updateCount(amount);
     }
     
     public Product defineProduct(String productId, String name, String description, String size, String category, Integer unitPrice, String temperature)
@@ -462,9 +735,7 @@ public class Modeler
             }
             
             catch (ModelerException exception)
-            {
-                // TODO: Use a suggested product id since can't control product id?
-                
+            {                
                 System.out.println();
                 System.out.print(exception.getMessage());      
                 return null;
@@ -498,10 +769,18 @@ public class Modeler
         
         return products.get(product.getProductId());
     }
+    
+    public void showProduct()
+    {
+        // TODO
+    }
         
     /* *
      * Utility Methods
      */      
     
-    // (???) TODO
+    private void customerEnters(Store store, Customer customer)
+    {
+        // TODO
+    }
 }

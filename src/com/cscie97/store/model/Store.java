@@ -11,7 +11,7 @@ public class Store
     private String address;
     private LinkedHashMap<String, Customer> customers;
     private LinkedHashMap<String, Aisle> aisles;    
-    private LinkedHashMap<String, Inventory> inventory;
+    private LinkedHashMap<String, Inventory> inventories;
     private LinkedHashMap<String, Sensor> sensors;
     private LinkedHashMap<String, Appliance> appliances;
     
@@ -24,7 +24,7 @@ public class Store
         this.address = address;
         customers = new LinkedHashMap<String, Customer>();
         aisles = new LinkedHashMap<String, Aisle>();
-        inventory = new LinkedHashMap<String, Inventory>();
+        inventories = new LinkedHashMap<String, Inventory>();
         sensors = new LinkedHashMap<String, Sensor>();
         appliances = new LinkedHashMap<String, Appliance>();        
     }
@@ -58,9 +58,9 @@ public class Store
         return aisles;
     }   
 
-    public LinkedHashMap<String, Inventory> getInventory()
+    public LinkedHashMap<String, Inventory> getInventories()
     {
-        return inventory;
+        return inventories;
     }    
 
     public LinkedHashMap<String, Sensor> getSensors()

@@ -1,28 +1,28 @@
-# Define "store_1"
+# Define store "store_1"
 define store store_1 name "Harvard Square Store" address "1400 Mass Avenue, Cambridge, MA 02138"
 
 # Exception: Try to create another "store_1" (already exists)
 define store store_1 name "Yale Square Store" address "Yale's address"
 
-# Show "store_1"
+# Show store "store_1"
 show store store_1
 
 # Exception: Try to show a store that doesn't exist
 show store "store_2"
 
-# Define "storage_1" in "store_1"
+# Define aisle "storage_1"
 define aisle store_1:storage_1 name Dairy description "milk, yogurt, and other dairy products" location storeroom
 
-# Show "store_1"
+# Show store "store_1"
 show store store_1
 
-# Exception: Try to create another aisle with same number
+# Exception: Try to create another "storage_1" aisle
 define aisle store_1:storage_1 name "Breads" description bakery location floor
 
-# Define "aisle_1"
+# Define aisle "aisle_1"
 define aisle store_1:aisle_1 name "Breads" description bakery location floor
 
-# Show "store_1"
+# Show store "store_1"
 show store store_1
 
 # Exception: Try to create an aisle for nonexistent store
@@ -31,11 +31,47 @@ define aisle store_2:aisle_2 name Juices description "canned and room temperatur
 # Exception: Try to create an aisle for a location that doesn't exist
 define aisle store_1:aisle_2 name Juices description "canned and room temperature" location Floor
 
-# Define "aisle_2"
+# Define aisle "aisle_2"
 define aisle store_1:aisle_2 name Juices description "canned and room temperature" location floor
 
-# Show "store_1"
+# Show store "store_1"
 show store "store_1"
 
-# Define "shelf_1"
+# Define shelf "shelf_1"
 define shelf store_1:aisle_1:shelf_1 name Dairy level high description "soy and almond milks" temperature refrigerated
+
+# Define product "prod_1"
+define product prod_1 name "soya drink" description "soy milk brand" size "2 L" category "milk" unit_price 345 temperature refrigerated
+
+# Define inventory "inv_1"
+define inventory inv_1 location store_1:aisle_1:shelf_1 capacity 30 count 30 product prod_1
+
+# Show store "store_1"
+show store store_1
+
+# Show aisle "aisle_1"
+show aisle store_1:aisle_1
+
+# Define product "prod_2"
+define product prod_2 name "almond drank" description "almond milk brand" size "2 L" category "milk" unit_price 350 temperature refrigerated
+
+# Define inventory "inv_2"
+define inventory inv_2 location store_1:aisle_1:shelf_1 capacity 30 count 30 product prod_2
+
+# Show shelf "shelf_1"
+show shelf store_1:aisle_1:shelf_1
+
+# Define shelf "shelf_2"
+define shelf store_1:aisle_1:shelf_2 name "Hair Products" level high description "shampoo and conditioner" temperature ambient
+
+# Show shelf "shelf_2"
+show shelf store_1:aisle_1:shelf_2
+
+# Show inventory "inv_2"
+show inventory inv_2
+
+# Update inventory "inv_2"
+update inventory inv_2 update_count -5
+
+# Show inventory "inv_2"
+show inventory inv_2
