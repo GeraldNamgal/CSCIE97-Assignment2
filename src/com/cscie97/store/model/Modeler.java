@@ -937,6 +937,8 @@ public class Modeler
     
     public Basket getCustomerBasket(String customerId)
     {
+        // TODO: Make sure to only give registered customers a basket
+        
         Basket basket = activeBaskets.get(customerId);
         
         // If customer basket wasn't found in activeBaskets list
@@ -1059,7 +1061,7 @@ public class Modeler
         }
         
         // Get basket's item list
-        Basket basket = getCustomerBasket(customerId);
+        Basket basket = activeBaskets.get(customerId);
         LinkedHashMap<String, Integer> basketItems = basket.getBasketItems();
         
         // If basket doesn't already contain product
@@ -1072,14 +1074,18 @@ public class Modeler
             Integer currentItemCount = basketItems.get(productId);
             itemCount += currentItemCount;
             basketItems.put(productId, itemCount);
-        } 
+        }
+        
+        // TODO: Decrement inventory?
     }
     
     public void removeBasketItem(String customerId, String productId, Integer itemCount)
     {
         // TODO
         
-        // Check that itemCount is less than 0
+        // Check that itemCount is greater than 0
+        
+        // TODO: Increment inventory?
     }
     
     public void clearBasket(String customerId)
