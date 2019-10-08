@@ -75,3 +75,18 @@ update inventory inv_2 update_count -5
 
 # Show inventory "inv_2"
 show inventory inv_2
+
+# Show product "prod_1"
+show product prod_1
+
+# Define "customer_1"
+define customer customer_1 first_name Gerald last_name Arocena type registered email_address gerald.arocena@gmail.com account gerald
+
+# Show "customer_1"
+show customer customer_1
+
+# Update "customer_1"
+update customer customer_1 location store_1:aisle_2
+
+# Show "customer_1"
+show customer customer_1

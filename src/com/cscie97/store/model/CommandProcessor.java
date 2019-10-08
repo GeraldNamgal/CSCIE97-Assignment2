@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class CommandProcessor
 {
@@ -550,24 +549,39 @@ public class CommandProcessor
             }
         }
     	
-        else if (splitInputArr[0].equalsIgnoreCase("show") &&  splitInputArr[1].equalsIgnoreCase("product"))
+        else if (splitInputArr[0].equalsIgnoreCase("show") && splitInputArr[1].equalsIgnoreCase("product")
+                && (splitInputArr.length == 3))
         {
-            
+            System.out.println("-: " + trimmedInput);
+            modeler.showProduct(splitInputArr[2]);
+            System.out.println();
         }
     	
-   	else if (splitInputArr[0].equalsIgnoreCase("define") &&  splitInputArr[1].equalsIgnoreCase("customer"))
+   	else if (splitInputArr[0].equalsIgnoreCase("define") && splitInputArr[1].equalsIgnoreCase("customer")
+   	        && (splitInputArr.length == 13) && splitInputArr[3].equalsIgnoreCase("first_name")
+   	        && splitInputArr[5].equalsIgnoreCase("last_name") && splitInputArr[7].equalsIgnoreCase("type")
+   	        && splitInputArr[9].equalsIgnoreCase("email_address") && splitInputArr[11].equalsIgnoreCase("account"))
         {
-   	        
+            System.out.println("-: " + trimmedInput);
+            modeler.defineCustomer(splitInputArr[2], splitInputArr[4], splitInputArr[6], splitInputArr[8], splitInputArr[10], splitInputArr[12]);
+            System.out.println();
         }
     	
-   	else if (splitInputArr[0].equalsIgnoreCase("update") &&  splitInputArr[1].equalsIgnoreCase("customer"))
+   	else if (splitInputArr[0].equalsIgnoreCase("update") &&  splitInputArr[1].equalsIgnoreCase("customer")
+   	        && (splitInputArr.length == 5) && splitInputArr[3].equalsIgnoreCase("location")
+   	        && (splitInputArr[4].split(":").length == 2))
         {
-   	        
+   	    System.out.println("-: " + trimmedInput);
+            modeler.updateCustomer(splitInputArr[2], splitInputArr[4]);
+            System.out.println();
         }
     	
-        else if (splitInputArr[0].equalsIgnoreCase("show") &&  splitInputArr[1].equalsIgnoreCase("customer"))
+        else if (splitInputArr[0].equalsIgnoreCase("show") &&  splitInputArr[1].equalsIgnoreCase("customer")
+                && (splitInputArr.length == 3))
         {
-            
+            System.out.println("-: " + trimmedInput);
+            modeler.showCustomer(splitInputArr[2]);
+            System.out.println();
         }
     	
         else if (splitInputArr[0].equalsIgnoreCase("get_customer_basket"))

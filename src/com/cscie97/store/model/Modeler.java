@@ -11,6 +11,7 @@ public class Modeler
     private LinkedHashMap<String, Product> products;	
     private LinkedHashMap<String, Customer> customers;
     private LinkedHashMap<String, Inventory> inventories;
+    private LinkedHashMap<String, Basket> activeBaskets;
 	
     /* Constructor */
 	
@@ -20,6 +21,7 @@ public class Modeler
         products = new LinkedHashMap<String, Product>();
         customers = new LinkedHashMap<String, Customer>();
         inventories = new LinkedHashMap<String, Inventory>();
+        activeBaskets = new LinkedHashMap<String, Basket>();
     }
     
     /* *
@@ -684,9 +686,7 @@ public class Modeler
     }
     
     public void updateInventory(String id, Integer amount)
-    {
-        // TODO
-        
+    {       
         Inventory inventory = inventories.get(id);
         
         // Check if inventory found
@@ -770,16 +770,342 @@ public class Modeler
         return products.get(product.getProductId());
     }
     
-    public void showProduct()
+    public void showProduct(String id)
     {
-        // TODO
+        // Get product
+        Product product = products.get(id);            
+        
+        // Check if product was found
+        if (product == null)
+        {
+            try
+            {                
+                throw new ModelerException("show product", "product not found");
+            }
+            
+            catch (ModelerException exception)
+            {                
+                System.out.println();
+                System.out.print(exception.getMessage());      
+                return;
+            }
+        }            
+            
+        // Concatenate product's information     
+        String productString = "\nProduct \"" + id + "\" information --\n" + " - name = " + product.getName() + "\n - description = " 
+                + product.getDescription() + "\n - size = " + product.getSize() + "\n - category = "+ product.getCategory()
+                + "\n - unit_price = " + product.getUnitPrice() + "\n - temperature = " + product.getTemperature() + "\n";
+        
+        // Print string to stdout
+        System.out.print(productString);       
+    }
+    
+    public Customer defineCustomer(String id, String firstName, String lastName, String type, String emailAddress, String account)
+    {
+        // Check if customer id is unique
+        if (customers.containsKey(id))
+        {
+            try
+            {
+                throw new ModelerException("define customer", "id already exists; customer not created");
+            }
+            
+            catch (ModelerException exception)
+            {
+                System.out.println();
+                System.out.print(exception.getMessage());      
+                return null;
+            }
+        }
+        
+        // Check if type is a valid enum
+        if (!Customer.containsTypeEnum(type))
+        {
+            try
+            {
+                throw new ModelerException("define customer", "type (case-sensitive) not found; customer not created");
+            }
+            
+            catch (ModelerException exception)
+            {
+                System.out.println();
+                System.out.print(exception.getMessage());      
+                return null;
+            }
+        }
+        
+        // Convert type to enum
+        Customer.Type typeEnum = Customer.Type.valueOf(type);
+        
+        Customer customer = new Customer(id, firstName, lastName, typeEnum, emailAddress, account);
+        
+        // Add to list of customers
+        if (customer != null)
+            customers.put(customer.getId(), customer);
+            
+        return customers.get(customer.getId());
     }
         
+    public void showCustomer(String id)
+    {
+        Customer customer = customers.get(id);
+        
+        // Check if customer exists
+        if (customer == null)
+        {
+            try
+            {
+                throw new ModelerException("show customer", "customer not found");
+            }
+            
+            catch (ModelerException exception)
+            {
+                System.out.println();
+                System.out.print(exception.getMessage());      
+                return;
+            }
+        }    
+        
+        // Concatenate customer's information     
+        String customerString = "\nCustomer \"" + customer.getId() + "\" information --\n" + " - first name = " + customer.getFirstName()
+                + "\n - last name = " + customer.getLastName() + "\n - type = " + customer.getType() + "\n - emailAddress = "
+                + customer.getEmailAddress() + "\n - account = " + customer.getAccount() + "\n - location = " + customer.getLocation() + "\n";
+        
+        // Print string to stdout
+        System.out.print(customerString); 
+    }
+    
+    public void updateCustomer(String id, String storeAisleLoc)
+    {
+        // Check that customer exists
+        Customer customer = customers.get(id);
+        
+        if (customer == null)
+        {
+            try
+            {
+                throw new ModelerException("update customer", "customer not found");
+            }
+            
+            catch (ModelerException exception)
+            {
+                System.out.println();
+                System.out.print(exception.getMessage());      
+                return;
+            }
+        }
+        
+        // Split storeAisleLoc on colon
+        String[] splitLoc = storeAisleLoc.split(":");
+        String storeId = splitLoc[0];
+        String aisleNumber = splitLoc[1];
+        
+        // Check that store exists
+        if (!stores.containsKey(storeId))
+        {
+            try
+            {
+                throw new ModelerException("update customer", "store not found");
+            }
+            
+            catch (ModelerException exception)
+            {
+                System.out.println();
+                System.out.print(exception.getMessage());      
+                return;
+            }
+        }
+        
+        // Check that aisle exists
+        if (!stores.get(storeId).getAisles().containsKey(aisleNumber))
+        {
+            try
+            {
+                throw new ModelerException("update customer", "aisle not found");
+            }
+            
+            catch (ModelerException exception)
+            {
+                System.out.println();
+                System.out.print(exception.getMessage());      
+                return;
+            }
+        }
+        
+        customer.setLocation(storeAisleLoc);
+    }
+    
+    public Basket getCustomerBasket(String customerId)
+    {
+        Basket basket = activeBaskets.get(customerId);
+        
+        // If customer basket wasn't found in activeBaskets list
+        if (basket == null)
+        {
+            // Create a new basket
+            basket = new Basket(customerId);
+            
+            // Add basket to list of active baskets
+            if (basket != null)
+                activeBaskets.put(basket.getId(), basket);
+        }
+        
+        return basket;
+    }
+    
+    public void addBasketItem(String customerId, String productId, Integer itemCount)
+    {
+        // TODO
+        
+        // Check that itemCount is greater than 0
+        if (itemCount < 1)
+        {
+            try
+            {
+                throw new ModelerException("add basket item", "item_count is less than 1; item not added");
+            }
+            
+            catch (ModelerException exception)
+            {
+                System.out.println();
+                System.out.print(exception.getMessage());      
+                return;
+            }
+        }
+        
+        // Check that basket exists
+        if (!activeBaskets.containsKey(customerId))
+        {
+            try
+            {
+                throw new ModelerException("add basket item", "basket not found; item not added");
+            }
+            
+            catch (ModelerException exception)
+            {
+                System.out.println();
+                System.out.print(exception.getMessage());      
+                return;
+            }
+        }
+        
+        // Check that customer is in a store
+        if (customers.get(customerId).getLocation() == null)
+        {
+            try
+            {
+                throw new ModelerException("add basket item", "customer is not in a store; item not added");
+            }
+            
+            catch (ModelerException exception)
+            {
+                System.out.println();
+                System.out.print(exception.getMessage());      
+                return;
+            }
+        }
+        
+        // Check that product is sold at the particular store and its count is >= to itemCount
+        Store store = stores.get(customers.get(customerId).getLocation().split(":")[0]);
+        boolean hasProduct = false;
+        boolean hasEnoughProduct = false;
+        LinkedHashMap<String, Inventory> storeInventories = store.getInventories();
+        
+        Inventory inventory;              
+        for (Entry<String, Inventory> inventoryEntry : storeInventories.entrySet())
+        {
+            inventory = inventoryEntry.getValue();
+
+            if (inventory.getProductId().equals(productId))
+            {
+                hasProduct = true;
+                
+                if (inventory.getCount() >= itemCount)
+                {
+                    hasEnoughProduct = true;
+                    break;
+                }
+            }
+        }
+        
+        if (!hasProduct)
+        {
+            try
+            {
+                throw new ModelerException("add basket item", "item not found; item not added");
+            }
+            
+            catch (ModelerException exception)
+            {
+                System.out.println();
+                System.out.print(exception.getMessage());      
+                return;
+            }
+        }
+        
+        if (!hasEnoughProduct)
+        {
+            try
+            {
+                throw new ModelerException("add basket item", "item unavailable; item not added");
+            }
+            
+            catch (ModelerException exception)
+            {
+                System.out.println();
+                System.out.print(exception.getMessage());      
+                return;
+            }
+        }
+        
+        // Get basket's item list
+        Basket basket = getCustomerBasket(customerId);
+        LinkedHashMap<String, Integer> basketItems = basket.getBasketItems();
+        
+        // If basket doesn't already contain product
+        if (!basketItems.containsKey(productId))
+            basketItems.put(productId, itemCount);
+        
+        // Else add itemCount to the current count of the product
+        else
+        {            
+            Integer currentItemCount = basketItems.get(productId);
+            itemCount += currentItemCount;
+            basketItems.put(productId, itemCount);
+        } 
+    }
+    
+    public void removeBasketItem(String customerId, String productId, Integer itemCount)
+    {
+        // TODO
+        
+        // Check that itemCount is less than 0
+    }
+    
+    public void clearBasket(String customerId)
+    {
+        // TODO
+        
+        // Check if basket has items
+    }
+    
+    public void showBasketItems(String customerId)
+    {
+        // TODO
+        
+        // Check if basket has items
+    }
+    
     /* *
      * Utility Methods
      */      
     
     private void customerEnters(Store store, Customer customer)
+    {
+        // TODO
+    }
+    
+    private void customerExits(Store store, Customer customer)
     {
         // TODO
     }
