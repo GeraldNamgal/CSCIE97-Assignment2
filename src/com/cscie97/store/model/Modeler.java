@@ -161,6 +161,7 @@ public class Modeler
                 + customersString + "\n - aisles =" + aislesString + "\n - inventories =" + inventoriesString + "\n";           
 
         // Print string to stdout
+        System.out.println("\nOUTPUT:>");
         System.out.print(string);                    
     }
     
@@ -307,6 +308,7 @@ public class Modeler
                 + aisle.getLocation() + "\n - shelves =" + shelvesString + "\n";           
 
         // Print string to stdout
+        System.out.println("\nOUTPUT:>");
         System.out.print(string);
     }
     
@@ -517,6 +519,7 @@ public class Modeler
                 + "\n - inventories =" + inventoriesString + "\n";           
 
         // Print string to stdout
+        System.out.println("\nOUTPUT:>");
         System.out.print(string);
     }
     
@@ -682,6 +685,7 @@ public class Modeler
                 + inventory.getCapacity() + "\n - count = " + inventory.getCount() + "\n - productId = "+ inventory.getProductId() + "\n";
         
         // Print string to stdout
+        System.out.println("\nOUTPUT:>");
         System.out.print(inventoryString);
     }
     
@@ -797,6 +801,7 @@ public class Modeler
                 + "\n - unit_price = " + product.getUnitPrice() + "\n - temperature = " + product.getTemperature() + "\n";
         
         // Print string to stdout
+        System.out.println("\nOUTPUT:>");
         System.out.print(productString);       
     }
     
@@ -872,6 +877,7 @@ public class Modeler
                 + customer.getEmailAddress() + "\n - account = " + customer.getAccount() + "\n - location = " + customer.getLocation() + "\n";
         
         // Print string to stdout
+        System.out.println("\nOUTPUT:>");
         System.out.print(customerString); 
     }
     
@@ -1112,14 +1118,105 @@ public class Modeler
         // TODO
         
         // Check that itemCount is greater than 0
+        if (itemCount < 1)
+        {
+            try
+            {
+                throw new ModelerException("remove basket item", "item_count must be 1 or greater; item not removed");
+            }
+            
+            catch (ModelerException exception)
+            {
+                System.out.println();
+                System.out.print(exception.getMessage());      
+                return;
+            }
+        }
         
+        // Check that basket exists
+        if (!activeBaskets.containsKey(customerId))
+        {
+            try
+            {
+                throw new ModelerException("remove basket item", "basket not found; item not removed");
+            }
+            
+            catch (ModelerException exception)
+            {
+                System.out.println();
+                System.out.print(exception.getMessage());      
+                return;
+            }
+        }
+        
+        // Check that customer is in a store
+        if (customers.get(customerId).getLocation() == null)
+        {
+            try
+            {
+                throw new ModelerException("remove basket item", "customer is not in a store; item not removed");
+            }
+            
+            catch (ModelerException exception)
+            {
+                System.out.println();
+                System.out.print(exception.getMessage());      
+                return;
+            }
+        }
+        
+        // Get customer's basket to remove item
+        Basket basket = activeBaskets.get(customerId);
+        LinkedHashMap<String, Integer> basketItems = basket.getBasketItems();
+        
+        // If basket doesn't contain product
+        if (!basketItems.containsKey(productId))
+        {
+            try
+            {
+                throw new ModelerException("remove basket item", "item not found in basket");
+            }
+            
+            catch (ModelerException exception)
+            {
+                System.out.println();
+                System.out.print(exception.getMessage());      
+                return;
+            }
+        }        
+        
+        // Else remove itemCount to the current count of the product
+        else
+        {            
+            Integer currentItemCount = basketItems.get(productId);
+            // TODO: Check if difference is negative
+            itemCount = currentItemCount - itemCount;
+            basketItems.put(productId, itemCount);
+        }          
     }
     
     public void clearBasket(String customerId)
     {
         // TODO
         
-        // Check if basket has items
+        // Check if basket exists
+        if (!activeBaskets.containsKey(customerId))
+        {
+            try
+            {
+                throw new ModelerException("clear basket", "basket not found");
+            }
+            
+            catch (ModelerException exception)
+            {
+                System.out.println();
+                System.out.print(exception.getMessage());      
+                return;
+            }
+        }
+        
+        else
+            activeBaskets.remove(customerId);
     }
     
     public void showBasketItems(String customerId)
@@ -1172,6 +1269,7 @@ public class Modeler
         string = "\nBasket \"" + basket.getId() + "\" items --" + itemsString + "\n";           
 
         // Print string to stdout
+        System.out.println("\nOUTPUT:>");
         System.out.print(string); 
     }
     

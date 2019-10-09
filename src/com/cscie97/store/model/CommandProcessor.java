@@ -97,7 +97,22 @@ public class CommandProcessor
         // Check if input is a comment
         if (trimmedInput.charAt(0) == '#')
         {
-            System.out.println(trimmedInput);
+            if (trimmedInput.length() % 2 == 0)
+            {
+                for (int i = 0; i < (trimmedInput.length() / 2) + 2; i++)
+                    System.out.print("# ");
+                System.out.println();
+                System.out.println(trimmedInput + "  #");
+            }
+            
+            else
+            {
+                for (int i = 0; i < (trimmedInput.length() / 2) + 2; i++)
+                    System.out.print("# ");
+                System.out.println();
+                System.out.println(trimmedInput + " #");
+            }
+            
             return;
         }
 
@@ -642,14 +657,62 @@ public class CommandProcessor
             System.out.println();
         }
     	
-        else if (splitInputArr[0].equalsIgnoreCase("remove_basket_item"))
+        else if (splitInputArr[0].equalsIgnoreCase("remove_basket_item") && (splitInputArr.length == 6)
+                && splitInputArr[2].equalsIgnoreCase("product") && splitInputArr[4].equalsIgnoreCase("item_count"))
         {
+            // Check if integer input is valid
+            Boolean validInts = true;
+            try
+            {
+                Integer.parseInt(splitInputArr[5]);                
+            }
+
+            catch (NumberFormatException exception)
+            {
+                validInts = false;
+            }
             
+            if (validInts == false)
+            {
+                try
+                {
+                    if (lineNum == 0)
+                        throw new CommandProcessorException("in processCommand method", "invalid integer input; item not removed");
+
+                    else
+                        throw new CommandProcessorException("in processCommandFile method", "invalid integer input; item not removed", lineNum);            
+                }
+                
+                catch (CommandProcessorException exception)
+                {
+                    if (lineNum == 0)
+                    {
+                        System.out.println("-: " + trimmedInput);
+                        System.out.println();
+                        System.out.println(exception.getMessage());                    
+                        return;
+                    }
+        
+                    else
+                    {
+                        System.out.println("-: " + trimmedInput);
+                        System.out.println();
+                        System.out.println(exception.getMessageLine());                    
+                        return;
+                    }
+                }
+            }
+            
+            System.out.println("-: " + trimmedInput);
+            modeler.removeBasketItem(splitInputArr[1], splitInputArr[3], Integer.parseInt(splitInputArr[5]));
+            System.out.println();            
         }
     	
-        else if (splitInputArr[0].equalsIgnoreCase("clear_basket"))
+        else if (splitInputArr[0].equalsIgnoreCase("clear_basket") && (splitInputArr.length == 2))
         {
-            
+            System.out.println("-: " + trimmedInput);
+            modeler.clearBasket(splitInputArr[1]);
+            System.out.println();
         }
     	
    	else if (splitInputArr[0].equalsIgnoreCase("show") &&  splitInputArr[1].equalsIgnoreCase("basket_items")
