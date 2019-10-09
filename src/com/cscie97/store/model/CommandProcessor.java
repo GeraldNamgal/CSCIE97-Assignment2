@@ -734,16 +734,20 @@ public class CommandProcessor
             System.out.println();
         }
     	
-        else if (splitInputArr[0].equalsIgnoreCase("create") &&  splitInputArr[1].equalsIgnoreCase("event"))
+        else if (splitInputArr[0].equalsIgnoreCase("create") &&  splitInputArr[1].equalsIgnoreCase("event")
+                && (splitInputArr.length == 5) && splitInputArr[3].equalsIgnoreCase("event"))
         {
             System.out.println("-: " + trimmedInput);
-            modeler.createEvent(splitInputArr[1], splitInputArr[3]);
+            modeler.createEvent(splitInputArr[2], splitInputArr[4]);
             System.out.println();
         }
     	
-   	else if (splitInputArr[0].equalsIgnoreCase("create") &&  splitInputArr[1].equalsIgnoreCase("command"))
+   	else if (splitInputArr[0].equalsIgnoreCase("create") &&  splitInputArr[1].equalsIgnoreCase("command")
+   	        && (splitInputArr.length == 5) && splitInputArr[3].equalsIgnoreCase("message"))
         {
-   	        
+       	    System.out.println("-: " + trimmedInput);
+            modeler.createCommand(splitInputArr[2], splitInputArr[4]);
+            System.out.println();
         }
     	
     	// Throw CommandProcessorException if input syntax could not be matched to a valid command

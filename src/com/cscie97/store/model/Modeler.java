@@ -1429,6 +1429,58 @@ public class Modeler
             }
         }
         
+        // Add event to device's list of events
+        device.getEvents().add(event);
+        
+        // Send event to device's method
         device.event(event);
+    }
+    
+    public void createCommand(String id, String command)
+    {
+        // TODO
+        
+        Sensor device = devices.get(id);
+        
+        // If device wasn't found
+        if (device == null)
+        {
+            try
+            {
+                throw new ModelerException("create command", "device not found");
+            }
+            
+            catch (ModelerException exception)
+            {
+                System.out.println();
+                System.out.print(exception.getMessage());      
+                return;
+            }
+        }
+        
+        // Check that device is an appliance
+        if (!Appliance.containsTypeEnum(device.getType()))
+        {
+            try
+            {
+                throw new ModelerException("create command", "device is not an appliance; command not sent");
+            }
+            
+            catch (ModelerException exception)
+            {
+                System.out.println();
+                System.out.print(exception.getMessage());      
+                return;
+            }
+        }
+        
+        // Cast device to an Appliance
+        Appliance appliance = (Appliance) device;
+        
+        // Add command to appliance's list of commands
+        appliance.getCommands().add(command);
+        
+        // Send command to appliance's method
+        appliance.command(command);        
     }
 }

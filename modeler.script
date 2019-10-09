@@ -134,7 +134,13 @@ show device sensor1_id
 show device appliance1_id
 
 # Create event event1_id
-create event sensor1_id event1_id
+create event sensor1_id event event1_id
 
-# Create event event_2
-create event appliance1_id event2_id
+# Create event event1_id
+create event appliance1_id event event1_id
+
+# Exception: Create command command1_id for a sensor (only appliances accept commands)
+create command sensor1_id message command1_id
+
+# Create command command1_id for an appliance
+create command appliance1_id message command1_id
