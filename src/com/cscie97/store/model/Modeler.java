@@ -866,7 +866,7 @@ public class Modeler
             }
         }    
         
-        // Concatenate customer's information     
+        // Create customer's information string    
         String customerString = "\nCustomer \"" + customer.getId() + "\" information --\n" + " - first name = " + customer.getFirstName()
                 + "\n - last name = " + customer.getLastName() + "\n - type = " + customer.getType() + "\n - emailAddress = "
                 + customer.getEmailAddress() + "\n - account = " + customer.getAccount() + "\n - location = " + customer.getLocation() + "\n";
@@ -937,7 +937,41 @@ public class Modeler
     
     public Basket getCustomerBasket(String customerId)
     {
-        // TODO: Make sure to only give registered customers a basket
+        // TODO
+        
+        Customer customer = customers.get(customerId);
+        
+        // Check that customer exists
+        if (customer == null)
+        {
+            try
+            {
+                throw new ModelerException("get customer basket", "customer not found");
+            }
+            
+            catch (ModelerException exception)
+            {
+                System.out.println();
+                System.out.print(exception.getMessage());      
+                return null;
+            }
+        }
+        
+        // Check that customer is registered (not a guest)
+        if (!customer.getType().equals(Customer.Type.registered))
+        {
+            try
+            {
+                throw new ModelerException("get customer basket", "unregistered customer; request denied");
+            }
+            
+            catch (ModelerException exception)
+            {
+                System.out.println();
+                System.out.print(exception.getMessage());      
+                return null;
+            }
+        }
         
         Basket basket = activeBaskets.get(customerId);
         
@@ -964,7 +998,7 @@ public class Modeler
         {
             try
             {
-                throw new ModelerException("add basket item", "item_count is less than 1; item not added");
+                throw new ModelerException("add basket item", "item_count must be 1 or greater; item not added");
             }
             
             catch (ModelerException exception)
@@ -1007,12 +1041,12 @@ public class Modeler
             }
         }
         
-        // Check that product is sold at the particular store and its count is >= to itemCount
-        Store store = stores.get(customers.get(customerId).getLocation().split(":")[0]);
+        // Check that product is sold at the particular store and its capacity is >= to itemCount        
         boolean hasProduct = false;
-        boolean hasEnoughProduct = false;
+        int capacity = 0;
+        Store store = stores.get(customers.get(customerId).getLocation().split(":")[0]);
         LinkedHashMap<String, Inventory> storeInventories = store.getInventories();
-        
+                
         Inventory inventory;              
         for (Entry<String, Inventory> inventoryEntry : storeInventories.entrySet())
         {
@@ -1020,13 +1054,8 @@ public class Modeler
 
             if (inventory.getProductId().equals(productId))
             {
-                hasProduct = true;
-                
-                if (inventory.getCount() >= itemCount)
-                {
-                    hasEnoughProduct = true;
-                    break;
-                }
+                hasProduct = true;                
+                capacity += inventory.getCapacity();      
             }
         }
         
@@ -1045,11 +1074,12 @@ public class Modeler
             }
         }
         
-        if (!hasEnoughProduct)
+        // If max number of the item store sells is less than what customer wants to put in basket
+        if (capacity < itemCount)
         {
             try
             {
-                throw new ModelerException("add basket item", "item unavailable; item not added");
+                throw new ModelerException("add basket item", "not enough items available; item not added");
             }
             
             catch (ModelerException exception)
@@ -1060,7 +1090,7 @@ public class Modeler
             }
         }
         
-        // Get basket's item list
+        // Get customer's basket to add item
         Basket basket = activeBaskets.get(customerId);
         LinkedHashMap<String, Integer> basketItems = basket.getBasketItems();
         
@@ -1074,9 +1104,7 @@ public class Modeler
             Integer currentItemCount = basketItems.get(productId);
             itemCount += currentItemCount;
             basketItems.put(productId, itemCount);
-        }
-        
-        // TODO: Decrement inventory?
+        }     
     }
     
     public void removeBasketItem(String customerId, String productId, Integer itemCount)
@@ -1085,7 +1113,6 @@ public class Modeler
         
         // Check that itemCount is greater than 0
         
-        // TODO: Increment inventory?
     }
     
     public void clearBasket(String customerId)
@@ -1098,8 +1125,54 @@ public class Modeler
     public void showBasketItems(String customerId)
     {
         // TODO
+      
+        Basket basket = activeBaskets.get(customerId);
         
-        // Check if basket has items
+        // Check if basket exists
+        if (basket == null)
+        {
+            try
+            {
+                throw new ModelerException("show basket items", "basket not found");
+            }
+            
+            catch (ModelerException exception)
+            {
+                System.out.println();
+                System.out.print(exception.getMessage());      
+                return;
+            }
+        }
+        
+        // Initialize string for basket items info
+        String itemsString = "";        
+        
+        if (basket.getBasketItems().size() > 0)
+        {
+            String productId;
+            Integer count;
+            int counter = 1;
+            for (Entry<String, Integer> integerEntry : basket.getBasketItems().entrySet())
+            {
+                productId = integerEntry.getKey();
+                count = integerEntry.getValue();
+                
+                itemsString += "\n " + counter + ".)" + " productId = " + productId + " : count = " + count;
+                
+                counter++;            
+            }
+        }
+        
+        // If basket has no items
+        else
+            itemsString += " Basket empty";
+        
+        // TODO: Combine itemsString with header text
+        String string;
+        string = "\nBasket \"" + basket.getId() + "\" items --" + itemsString + "\n";           
+
+        // Print string to stdout
+        System.out.print(string); 
     }
     
     /* *

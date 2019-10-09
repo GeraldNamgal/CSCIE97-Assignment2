@@ -584,14 +584,62 @@ public class CommandProcessor
             System.out.println();
         }
     	
-        else if (splitInputArr[0].equalsIgnoreCase("get_customer_basket"))
+        else if (splitInputArr[0].equalsIgnoreCase("get_customer_basket") && (splitInputArr.length == 2))
         {
-            
+            System.out.println("-: " + trimmedInput);
+            modeler.getCustomerBasket(splitInputArr[1]);
+            System.out.println();
         }
     	
-        else if (splitInputArr[0].equalsIgnoreCase("add_basket_item"))
+        else if (splitInputArr[0].equalsIgnoreCase("add_basket_item") && (splitInputArr.length == 6)
+                && splitInputArr[2].equalsIgnoreCase("product") && splitInputArr[4].equalsIgnoreCase("item_count"))
         {
+            // Check if integer input is valid
+            Boolean validInts = true;
+            try
+            {
+                Integer.parseInt(splitInputArr[5]);                
+            }
+
+            catch (NumberFormatException exception)
+            {
+                validInts = false;
+            }
             
+            if (validInts == false)
+            {
+                try
+                {
+                    if (lineNum == 0)
+                        throw new CommandProcessorException("in processCommand method", "invalid integer input; item not added");
+
+                    else
+                        throw new CommandProcessorException("in processCommandFile method", "invalid integer input; item not added", lineNum);            
+                }
+                
+                catch (CommandProcessorException exception)
+                {
+                    if (lineNum == 0)
+                    {
+                        System.out.println("-: " + trimmedInput);
+                        System.out.println();
+                        System.out.println(exception.getMessage());                    
+                        return;
+                    }
+        
+                    else
+                    {
+                        System.out.println("-: " + trimmedInput);
+                        System.out.println();
+                        System.out.println(exception.getMessageLine());                    
+                        return;
+                    }
+                }
+            }
+            
+            System.out.println("-: " + trimmedInput);
+            modeler.addBasketItem(splitInputArr[1], splitInputArr[3], Integer.parseInt(splitInputArr[5]));
+            System.out.println();
         }
     	
         else if (splitInputArr[0].equalsIgnoreCase("remove_basket_item"))
@@ -604,9 +652,12 @@ public class CommandProcessor
             
         }
     	
-   	else if (splitInputArr[0].equalsIgnoreCase("show") &&  splitInputArr[1].equalsIgnoreCase("basket_items"))
+   	else if (splitInputArr[0].equalsIgnoreCase("show") &&  splitInputArr[1].equalsIgnoreCase("basket_items")
+   	        && (splitInputArr.length == 3))
         {
-   	        
+   	    System.out.println("-: " + trimmedInput);
+            modeler.showBasketItems(splitInputArr[2]);
+            System.out.println();
         }
     	
    	else if (splitInputArr[0].equalsIgnoreCase("define") &&  splitInputArr[1].equalsIgnoreCase("device"))
