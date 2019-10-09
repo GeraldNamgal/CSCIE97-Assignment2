@@ -12,8 +12,7 @@ public class Store
     private LinkedHashMap<String, Customer> customers;
     private LinkedHashMap<String, Aisle> aisles;    
     private LinkedHashMap<String, Inventory> inventories;
-    private LinkedHashMap<String, Sensor> sensors;
-    private LinkedHashMap<String, Appliance> appliances;
+    private LinkedHashMap<String, Sensor> devices;   
     
     /* Constructor */
     
@@ -25,8 +24,7 @@ public class Store
         customers = new LinkedHashMap<String, Customer>();
         aisles = new LinkedHashMap<String, Aisle>();
         inventories = new LinkedHashMap<String, Inventory>();
-        sensors = new LinkedHashMap<String, Sensor>();
-        appliances = new LinkedHashMap<String, Appliance>();        
+        devices = new LinkedHashMap<String, Sensor>();                
     }
 
     /* *
@@ -63,13 +61,8 @@ public class Store
         return inventories;
     }    
 
-    public LinkedHashMap<String, Sensor> getSensors()
+    public LinkedHashMap<String, Sensor> getDevices()
     {
-        return sensors;
-    }    
-
-    public LinkedHashMap<String, Appliance> getAppliances()
-    {
-        return appliances;
-    }    
+        return devices;
+    }  
 }

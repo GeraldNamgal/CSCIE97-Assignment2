@@ -1,122 +1,140 @@
-# Define store store_1_id
-define store store_1_id name "Harvard Square Store" address "1400 Mass Avenue, Cambridge, MA 02138"
+# Define store store1_id
+define store store1_id name "Harvard Square Store" address "1400 Mass Avenue, Cambridge, MA 02138"
 
-# Exception: Try to create another store_1_id (already exists)
-define store store_1_id name "Yale Square Store" address "Yale's address"
+# Exception: Try to create another store store1_id (already exists)
+define store store1_id name "Yale Square Store" address "Yale's address"
 
-# Show store store_1_id
-show store store_1_id
+# Show store store1_id
+show store store1_id
 
 # Exception: Try to show a store that doesn't exist
-show store "store_2_id"
+show store "store2_id"
 
-# Define aisle aisle_1_id
-define aisle store_1_id:aisle_1_id name Dairy description "milk, yogurt, and other dairy products" location storeroom
+# Define aisle aisle1_id
+define aisle store1_id:aisle1_id name Dairy description "milk, yogurt, and other dairy products" location storeroom
 
-# Show store store_1_id
-show store store_1_id
+# Show store store1_id
+show store store1_id
 
-# Exception: Try to create another aisle_1_id
-define aisle store_1_id:aisle_1_id name "Breads" description bakery location floor
+# Exception: Try to create another aisle aisle1_id
+define aisle store1_id:aisle1_id name "Breads" description bakery location floor
 
-# Define aisle aisle_2_id
-define aisle store_1_id:aisle_2_id name "Breads" description bakery location floor
+# Define aisle aisle2_id
+define aisle store1_id:aisle2_id name "Breads" description bakery location floor
 
-# Show store store_1_id
-show store store_1_id
+# Show store store1_id
+show store store1_id
 
 # Exception: Try to create an aisle for nonexistent store
-define aisle store_2_id:aisle_3_id name Juices description "canned and room temperature" location floor
+define aisle store2_id:aisle3_id name Juices description "canned and room temperature" location floor
 
 # Exception: Try to create an aisle for a location that doesn't exist
-define aisle store_1_id:aisle_3_id name Juices description "canned and room temperature" location Floor
+define aisle store1_id:aisle3_id name Juices description "canned and room temperature" location Floor
 
-# Define aisle aisle_3_id
-define aisle store_1_id:aisle_3_id name Juices description "canned and room temperature" location floor
+# Define aisle aisle3_id
+define aisle store1_id:aisle3_id name Juices description "canned and room temperature" location floor
 
-# Show store store_1_id
-show store "store_1_id"
+# Show store store1_id
+show store "store1_id"
 
-# Define shelf shelf_1_id
-define shelf store_1_id:aisle_2_id:shelf_1_id name Dairy level high description "soy and almond milks" temperature refrigerated
+# Define shelf shelf1_id
+define shelf store1_id:aisle2_id:shelf1_id name Dairy level high description "soy and almond milks" temperature refrigerated
 
-# Define product prod_1_id
-define product prod_1_id name "soya drink" description "soy milk brand" size "2 L" category "milk" unit_price 345 temperature refrigerated
+# Define product prod1_id
+define product prod1_id name "soya drink" description "soy milk brand" size "2 L" category "milk" unit_price 345 temperature refrigerated
 
-# Define inventory inv_1_id
-define inventory inv_1_id location store_1_id:aisle_2_id:shelf_1_id capacity 30 count 30 product prod_1_id
+# Define inventory inv1_id
+define inventory inv1_id location store1_id:aisle2_id:shelf1_id capacity 30 count 30 product prod1_id
 
-# Show store store_1_id
-show store store_1_id
+# Show store store1_id
+show store store1_id
 
-# Show aisle aisle_2_id
-show aisle store_1_id:aisle_2_id
+# Show aisle aisle2_id
+show aisle store1_id:aisle2_id
 
-# Define product prod_2_id
-define product prod_2_id name "almond drank" description "almond milk brand" size "2 L" category "milk" unit_price 350 temperature refrigerated
+# Define product prod2_id
+define product prod2_id name "almond drank" description "almond milk brand" size "2 L" category "milk" unit_price 350 temperature refrigerated
 
-# Define inventory inv_2_id
-define inventory inv_2_id location store_1_id:aisle_2_id:shelf_1_id capacity 30 count 30 product prod_2_id
+# Define inventory inv2_id
+define inventory inv2_id location store1_id:aisle2_id:shelf1_id capacity 30 count 30 product prod2_id
 
-# Show shelf shelf_1_id
-show shelf store_1_id:aisle_2_id:shelf_1_id
+# Show shelf shelf1_id
+show shelf store1_id:aisle2_id:shelf1_id
 
-# Define shelf shelf_2_id
-define shelf store_1_id:aisle_2_id:shelf_2_id name "Hair Products" level high description "shampoo and conditioner" temperature ambient
+# Define shelf shelf2_id
+define shelf store1_id:aisle2_id:shelf2_id name "Hair Products" level high description "shampoo and conditioner" temperature ambient
 
-# Show shelf shelf_2_id
-show shelf store_1_id:aisle_2_id:shelf_2_id
+# Show shelf shelf2_id
+show shelf store1_id:aisle2_id:shelf2_id
 
-# Show inventory inv_2_id
-show inventory inv_2_id
+# Show inventory inv2_id
+show inventory inv2_id
 
-# Update inventory inv_2_id
-update inventory inv_2_id update_count -5
+# Update inventory inv2_id
+update inventory inv2_id update_count -5
 
-# Show inventory inv_2_id
-show inventory inv_2_id
+# Show inventory inv2_id
+show inventory inv2_id
 
-# Show product prod_1_id
-show product prod_1_id
+# Show product prod1_id
+show product prod1_id
 
-# Define customer_1_id
-define customer customer_1_id first_name Gerald last_name Arocena type registered email_address gerald.arocena@gmail.com account gerald
+# Define customer1_id
+define customer customer1_id first_name Gerald last_name Arocena type registered email_address gerald.arocena@gmail.com account gerald
 
-# Show customer_1_id
-show customer customer_1_id
+# Show customer1_id
+show customer customer1_id
 
-# Update customer_1_id
-update customer customer_1_id location store_1_id:aisle_3_id
+# Update customer1_id
+update customer customer1_id location store1_id:aisle3_id
 
-# Show customer_1_id
-show customer customer_1_id
+# Show customer1_id
+show customer customer1_id
 
-# Exception: Show basket_items customer_1_id (basket doesn't exist yet)
-show basket_items customer_1_id
+# Exception: Show basket items for customer1_id (basket doesn't exist yet)
+show basket_items customer1_id
 
-# Get customer basket customer_1_id
-get_customer_basket customer_1_id
+# Get customer basket customer1_id
+get_customer_basket customer1_id
 
-# Show basket_items customer_1_id
-show basket_items customer_1_id
+# Show basket items for customer1_id
+show basket_items customer1_id
 
-# Add basket item prod_1_id
-add_basket_item customer_1_id product prod_1_id item_count 5
+# Add basket item prod1_id
+add_basket_item customer1_id product prod1_id item_count 5
 
-# Show basket_items customer_1_id
-show basket_items customer_1_id
+# Show basket items for customer1_id
+show basket_items customer1_id
 
-# Add basket item prod_2_id
-add_basket_item customer_1_id product prod_2_id item_count 6
+# Add basket item prod2_id
+add_basket_item customer1_id product prod2_id item_count 6
 
-# Remove basket item prod_2_id
-remove_basket_item customer_1_id product prod_2_id item_count 3
+# Remove basket item prod2_id
+remove_basket_item customer1_id product prod2_id item_count 3
 
-# Show basket_items customer_1_id
-show basket_items customer_1_id
+# Show basket items for customer1_id
+show basket_items customer1_id
 
-# Clear basket customer_1_id
-clear_basket customer_1_id
+# Clear basket customer1_id
+clear_basket customer1_id
 
-# Show basket_items customer_1_id
-show basket_items customer_1_id
+# Show basket items for customer1_id
+show basket_items customer1_id
+
+# Define device sensor1_id
+define device sensor1_id name "ceiling cam" type camera location store1_id:aisle1_id
+
+# Define device appliance1_id
+define device appliance1_id name "human robo" type robot location store1_id:aisle1_id
+
+# Show device sensor1_id
+show device sensor1_id
+
+# Show device appliance1_id
+show device appliance1_id
+
+# Create event event1_id
+create event sensor1_id event1_id
+
+# Create event event_2
+create event appliance1_id event2_id

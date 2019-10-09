@@ -12,6 +12,7 @@ public class Modeler
     private LinkedHashMap<String, Customer> customers;
     private LinkedHashMap<String, Inventory> inventories;
     private LinkedHashMap<String, Basket> activeBaskets;
+    private LinkedHashMap<String, Sensor> devices;
 	
     /* Constructor */
 	
@@ -22,6 +23,7 @@ public class Modeler
         customers = new LinkedHashMap<String, Customer>();
         inventories = new LinkedHashMap<String, Inventory>();
         activeBaskets = new LinkedHashMap<String, Basket>();
+        devices = new LinkedHashMap<String, Sensor>();
     }
     
     /* *
@@ -52,7 +54,7 @@ public class Modeler
         if (store != null)
             stores.put(store.getId(), store);           
         
-        return stores.get(store.getId());
+        return store;
     } 
     
     public void showStore(String storeId)
@@ -161,7 +163,7 @@ public class Modeler
                 + customersString + "\n - aisles =" + aislesString + "\n - inventories =" + inventoriesString + "\n";           
 
         // Print string to stdout
-        System.out.println("\nOUTPUT:>");
+        System.out.println("\nOutput:>>");
         System.out.print(string);                    
     }
     
@@ -229,7 +231,7 @@ public class Modeler
         if (aisle != null)
             stores.get(storeId).getAisles().put(aisle.getNumber(), aisle);        
         
-        return stores.get(storeId).getAisles().get(aisle.getNumber());
+        return aisle;
     }
     
     public void showAisle(String storeAisleLoc)
@@ -308,7 +310,7 @@ public class Modeler
                 + aisle.getLocation() + "\n - shelves =" + shelvesString + "\n";           
 
         // Print string to stdout
-        System.out.println("\nOUTPUT:>");
+        System.out.println("\nOutput:>>");
         System.out.print(string);
     }
     
@@ -412,7 +414,7 @@ public class Modeler
         if (shelf != null)
             stores.get(storeId).getAisles().get(aisleNumber).getShelves().put(shelf.getId(), shelf);        
         
-        return stores.get(storeId).getAisles().get(aisleNumber).getShelves().get(shelf.getId());       
+        return shelf;       
     }
     
     public void showShelf(String storeAisleShelfLoc)
@@ -519,7 +521,7 @@ public class Modeler
                 + "\n - inventories =" + inventoriesString + "\n";           
 
         // Print string to stdout
-        System.out.println("\nOUTPUT:>");
+        System.out.println("\nOutput:>>");
         System.out.print(string);
     }
     
@@ -655,16 +657,15 @@ public class Modeler
             stores.get(storeId).getInventories().put(inventory.getInventoryId(), inventory);
         }  
         
-        return stores.get(storeId).getInventories().get(inventory.getInventoryId());
+        return inventory;
     }
     
     public void showInventory(String id)
-    {        
-        // Initialize string of store's inventory information
-        Inventory inventory = inventories.get(id);
-        String inventoryString = "";       
+    {         
+        // Retrieve inventory
+        Inventory inventory = inventories.get(id);              
         
-        // Check if inventory exists
+        // Check if inventory was found
         if (inventory == null)
         {
             try
@@ -681,11 +682,11 @@ public class Modeler
         }            
             
         // Concatenate inventory's information     
-        inventoryString += "\nInventory \"" + id + "\" information --\n" + " - location = " + inventory.getLocation() + "\n - capacity = " 
+        String inventoryString = "\nInventory \"" + id + "\" information --\n" + " - location = " + inventory.getLocation() + "\n - capacity = " 
                 + inventory.getCapacity() + "\n - count = " + inventory.getCount() + "\n - productId = "+ inventory.getProductId() + "\n";
         
         // Print string to stdout
-        System.out.println("\nOUTPUT:>");
+        System.out.println("\nOutput:>>");
         System.out.print(inventoryString);
     }
     
@@ -771,7 +772,7 @@ public class Modeler
         if (product != null)
             products.put(product.getProductId(), product);
         
-        return products.get(product.getProductId());
+        return product;
     }
     
     public void showProduct(String id)
@@ -801,7 +802,7 @@ public class Modeler
                 + "\n - unit_price = " + product.getUnitPrice() + "\n - temperature = " + product.getTemperature() + "\n";
         
         // Print string to stdout
-        System.out.println("\nOUTPUT:>");
+        System.out.println("\nOutput:>>");
         System.out.print(productString);       
     }
     
@@ -848,7 +849,7 @@ public class Modeler
         if (customer != null)
             customers.put(customer.getId(), customer);
             
-        return customers.get(customer.getId());
+        return customer;
     }
         
     public void showCustomer(String id)
@@ -877,7 +878,7 @@ public class Modeler
                 + customer.getEmailAddress() + "\n - account = " + customer.getAccount() + "\n - location = " + customer.getLocation() + "\n";
         
         // Print string to stdout
-        System.out.println("\nOUTPUT:>");
+        System.out.println("\nOutput:>>");
         System.out.print(customerString); 
     }
     
@@ -1269,21 +1270,165 @@ public class Modeler
         string = "\nBasket \"" + basket.getId() + "\" items --" + itemsString + "\n";           
 
         // Print string to stdout
-        System.out.println("\nOUTPUT:>");
+        System.out.println("\nOutput:>>");
         System.out.print(string); 
     }
     
-    /* *
-     * Utility Methods
-     */      
-    
-    private void customerEnters(Store store, Customer customer)
+    public Sensor defineDevice(String id, String name, String type, String storeAisleLoc)
     {
         // TODO
+        
+        // Check that id is unique
+        if (devices.containsKey(id))
+        {
+            try
+            {
+                throw new ModelerException("define device", "device id already exists; device not created");
+            }
+            
+            catch (ModelerException exception)
+            {
+                System.out.println();
+                System.out.print(exception.getMessage());      
+                return null;
+            }
+        }
+        
+        // Check that location is valid
+        String storeId = storeAisleLoc.split(":")[0];
+        String aisleNumber = storeAisleLoc.split(":")[1];
+        
+        if (!stores.containsKey(storeId))
+        {
+            try
+            {
+                throw new ModelerException("define device", "store not found; device not created");
+            }
+            
+            catch (ModelerException exception)
+            {
+                System.out.println();
+                System.out.print(exception.getMessage());      
+                return null;
+            }
+        }
+            
+        if (!stores.get(storeId).getAisles().containsKey(aisleNumber))
+        {
+            try
+            {
+                throw new ModelerException("define device", "aisle not found; device not created");
+            }
+            
+            catch (ModelerException exception)
+            {
+                System.out.println();
+                System.out.print(exception.getMessage());      
+                return null;
+            }
+        }
+        
+        // If type is sensor enum
+        if (Sensor.containsTypeEnum(type))
+        {                     
+            Sensor sensor = new Sensor(id, name, type, storeAisleLoc);
+            
+            if (sensor != null)
+            {
+                // Add sensor to device list
+                devices.put(sensor.getId(), sensor);
+                
+                // Add sensor to store's device list
+                stores.get(storeId).getDevices().put(sensor.getId(), sensor);
+            }
+            
+            return sensor;
+        }        
+        
+        // If type is appliance enum
+        else if (Appliance.containsTypeEnum(type))
+        {           
+            Appliance appliance = new Appliance(id, name, type, storeAisleLoc);
+            
+            if (appliance != null)
+            {
+                // Add appliance to device list
+                devices.put(appliance.getId(), appliance);
+                
+                // Add appliance to store's device list
+                stores.get(storeId).getDevices().put(appliance.getId(), appliance);
+            }
+            
+            return appliance;
+        }
+        
+        else
+        {
+            try
+            {
+                throw new ModelerException("define device", "type unknown; device not created");
+            }
+            
+            catch (ModelerException exception)
+            {
+                System.out.println();
+                System.out.print(exception.getMessage());      
+                return null;
+            }            
+        }
     }
     
-    private void customerExits(Store store, Customer customer)
+    public void showDevice(String id)
     {
-        // TODO
+        Sensor device = devices.get(id);
+        
+        // If device wasn't found
+        if (device == null)
+        {
+            try
+            {
+                throw new ModelerException("show device", "device not found");
+            }
+            
+            catch (ModelerException exception)
+            {
+                System.out.println();
+                System.out.print(exception.getMessage());      
+                return;
+            }
+        }
+        
+        // Concatenate device's information     
+        String deviceString = "\nDevice \"" + id + "\" information --\n" + " - name = " + device.getName() + "\n - type = " 
+                + device.getType() + "\n - location = " + device.getLocation() + "\n";
+        
+        // Print string to stdout
+        System.out.println("\nOutput:>>");
+        System.out.print(deviceString);
+    }
+    
+    public void createEvent(String id, String event)
+    {
+        // TODO        
+        
+        Sensor device = devices.get(id);
+        
+        // If device wasn't found
+        if (device == null)
+        {
+            try
+            {
+                throw new ModelerException("create event", "device not found");
+            }
+            
+            catch (ModelerException exception)
+            {
+                System.out.println();
+                System.out.print(exception.getMessage());      
+                return;
+            }
+        }
+        
+        device.event(event);
     }
 }

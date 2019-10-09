@@ -98,19 +98,13 @@ public class CommandProcessor
         if (trimmedInput.charAt(0) == '#')
         {
             if (trimmedInput.length() % 2 == 0)
-            {
-                for (int i = 0; i < (trimmedInput.length() / 2) + 2; i++)
-                    System.out.print("# ");
-                System.out.println();
-                System.out.println(trimmedInput + "  #");
+            {                
+                System.out.println(trimmedInput); 
             }
             
             else
-            {
-                for (int i = 0; i < (trimmedInput.length() / 2) + 2; i++)
-                    System.out.print("# ");
-                System.out.println();
-                System.out.println(trimmedInput + " #");
+            {               
+                System.out.println(trimmedInput); 
             }
             
             return;
@@ -723,34 +717,28 @@ public class CommandProcessor
             System.out.println();
         }
     	
-   	else if (splitInputArr[0].equalsIgnoreCase("define") &&  splitInputArr[1].equalsIgnoreCase("device"))
+   	else if (splitInputArr[0].equalsIgnoreCase("define") &&  splitInputArr[1].equalsIgnoreCase("device")
+   	        && (splitInputArr.length == 9) && splitInputArr[3].equalsIgnoreCase("name") && splitInputArr[5].equalsIgnoreCase("type")
+   	        && splitInputArr[7].equalsIgnoreCase("location") && (splitInputArr[8].split(":").length == 2))
         {
-   	        
+   	    System.out.println("-: " + trimmedInput);
+   	    modeler.defineDevice(splitInputArr[2], splitInputArr[4], splitInputArr[6], splitInputArr[8]);
+   	    System.out.println();
         }
     	
-        else if (splitInputArr[0].equalsIgnoreCase("show") &&  splitInputArr[1].equalsIgnoreCase("device"))
+        else if (splitInputArr[0].equalsIgnoreCase("show") &&  splitInputArr[1].equalsIgnoreCase("device")
+                && (splitInputArr.length == 3))
         {
-            
+            System.out.println("-: " + trimmedInput);
+            modeler.showDevice(splitInputArr[2]);
+            System.out.println();
         }
     	
         else if (splitInputArr[0].equalsIgnoreCase("create") &&  splitInputArr[1].equalsIgnoreCase("event"))
         {
-            
-        }
-    	
-        else if (splitInputArr[0].equalsIgnoreCase("define") &&  splitInputArr[1].equalsIgnoreCase("device"))
-        {
-            
-        }
-    	
-        else if (splitInputArr[0].equalsIgnoreCase("show") &&  splitInputArr[1].equalsIgnoreCase("device"))
-        {
-            
-        }
-    	
-   	else if (splitInputArr[0].equalsIgnoreCase("create") &&  splitInputArr[1].equalsIgnoreCase("event"))
-        {
-   	        
+            System.out.println("-: " + trimmedInput);
+            modeler.createEvent(splitInputArr[1], splitInputArr[3]);
+            System.out.println();
         }
     	
    	else if (splitInputArr[0].equalsIgnoreCase("create") &&  splitInputArr[1].equalsIgnoreCase("command"))
