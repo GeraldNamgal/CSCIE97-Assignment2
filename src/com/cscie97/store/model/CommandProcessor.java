@@ -500,10 +500,10 @@ public class CommandProcessor
         }
     	
         else if (splitInputArr[0].equalsIgnoreCase("define") &&  splitInputArr[1].equalsIgnoreCase("product")
-                && (splitInputArr.length == 15) && splitInputArr[3].equalsIgnoreCase("name")
-                && splitInputArr[5].equalsIgnoreCase("description") && splitInputArr[7].equalsIgnoreCase("size")
-                && splitInputArr[9].equalsIgnoreCase("category") && splitInputArr[11].equalsIgnoreCase("unit_price")
-                && splitInputArr[13].equalsIgnoreCase("temperature"))
+                && (((splitInputArr.length == 15)  && (splitInputArr[13].equalsIgnoreCase("temperature"))) || (splitInputArr.length == 13))
+                && splitInputArr[3].equalsIgnoreCase("name") && splitInputArr[5].equalsIgnoreCase("description")
+                && splitInputArr[7].equalsIgnoreCase("size") && splitInputArr[9].equalsIgnoreCase("category")
+                && splitInputArr[11].equalsIgnoreCase("unit_price"))
         {
             // Check if integer inputs are valid
             Boolean validInts = true;
@@ -548,13 +548,19 @@ public class CommandProcessor
                 }
             }
             
-            // Call defineProduct(...)
-            else
-            {
+            // If array has 15 arguments
+            if ()
+            {                
                 System.out.println("-: " + trimmedInput);
                 modeler.defineProduct(splitInputArr[2], splitInputArr[4], splitInputArr[6], splitInputArr[8], splitInputArr[10],
                         Integer.parseInt(splitInputArr[12]), splitInputArr[14]);
                 System.out.println();
+            }
+            
+            // If array has 13 arguments
+            else ()
+            {
+                
             }
         }
     	
