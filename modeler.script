@@ -118,7 +118,7 @@ show basket_items customer1_id
 # Clear basket customer1_id
 clear_basket customer1_id
 
-# Show basket items for customer1_id
+# Exception: Show basket items for customer1_id (cleared basket already)
 show basket_items customer1_id
 
 # Define device sensor1_id
@@ -145,4 +145,16 @@ create command sensor1_id message command1_id
 # Create command command1_id for an appliance
 create command appliance1_id message command1_id
 
-define
+# Define product prod3_id without a temperature input (default temp is "ambient")
+define product prod3_id name "Cheesy-O's" description "cheese" size "1 oz" category "dairy" unit_price 275
+
+# Show product prod3_id
+show product prod3_id
+
+# Define shelf shelf3_id without a temperature input (defaut temp is "ambient")
+define shelf store1_id:aisle2_id:shelf3_id name "Cereals" level high description "cereal and oatmeal"
+
+# Show shelf shelf3_id
+show shelf store1_id:aisle2_id:shelf3_id
+
+# Show store

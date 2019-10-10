@@ -326,480 +326,482 @@ public class CommandProcessor
         
         /* code block END ("If input contained quotes, then validate their correct usage and fix array") */              
         
-        /* TODO: Continue parsing for valid DSL commands for CLI */
-        if (splitInputArr.length == 7)
+        /* TODO: Continue parsing for valid DSL commands for CLI */       
+        
+        if ((splitInputArr.length == 7) && splitInputArr[0].equalsIgnoreCase("define") && splitInputArr[1].equalsIgnoreCase("store")
+                && splitInputArr[3].equalsIgnoreCase("name") && splitInputArr[5].equalsIgnoreCase("address"))
         {
-            if (splitInputArr[0].equalsIgnoreCase("define") && splitInputArr[1].equalsIgnoreCase("store")
-                    && splitInputArr[3].equalsIgnoreCase("name") && splitInputArr[5].equalsIgnoreCase("address"))
-            {
-                System.out.println("-: " + trimmedInput);
-                modeler.defineStore(splitInputArr[2], splitInputArr[4], splitInputArr[6]);
-                System.out.println();
-            }
+            System.out.println("-: " + trimmedInput);
+            modeler.defineStore(splitInputArr[2], splitInputArr[4], splitInputArr[6]);
+            System.out.println();
+        }   	
+        
+        else if ((splitInputArr.length == 3) && splitInputArr[0].equalsIgnoreCase("show") && splitInputArr[1].equalsIgnoreCase("store"))
+        {
+            System.out.println("-: " + trimmedInput);
+            modeler.showStore(splitInputArr[2]);
+            System.out.println();
         }
-    	
-        else if (splitInputArr.length == 3)
+   
+        else if ((splitInputArr.length == 9) && splitInputArr[0].equalsIgnoreCase("define") && splitInputArr[1].equalsIgnoreCase("aisle")
+                && splitInputArr[3].equalsIgnoreCase("name") && splitInputArr[5].equalsIgnoreCase("description")
+                && splitInputArr[7].equalsIgnoreCase("location") && (splitInputArr[2].split(":").length == 2))
         {
-            if (splitInputArr[0].equalsIgnoreCase("show") && splitInputArr[1].equalsIgnoreCase("store"))
-            {
-                System.out.println("-: " + trimmedInput);
-                modeler.showStore(splitInputArr[2]);
-                System.out.println();
-            }
-    	
-       
-            else if (splitInputArr[0].equalsIgnoreCase("show") && splitInputArr[1].equalsIgnoreCase("aisle")
-                    && (splitInputArr[2].split(":").length == 2))
-            {
-                System.out.println("-: " + trimmedInput);
-                modeler.showAisle(splitInputArr[2]);
-                System.out.println();
-            }
-        
-        
-            else if (splitInputArr[0].equalsIgnoreCase("show") && splitInputArr[1].equalsIgnoreCase("shelf")
-                    && (splitInputArr[2].split(":").length == 3))
-            {
-                System.out.println("-: " + trimmedInput);
-                modeler.showShelf(splitInputArr[2]);
-                System.out.println();
-            }
-        
-        
-            else if (splitInputArr[0].equalsIgnoreCase("show") && splitInputArr[1].equalsIgnoreCase("inventory"))
-            {
-                System.out.println("-: " + trimmedInput);
-                modeler.showInventory(splitInputArr[2]);
-                System.out.println();
-            }
-        
-        
-            else if (splitInputArr[0].equalsIgnoreCase("show") && splitInputArr[1].equalsIgnoreCase("product"))
-            {
-                System.out.println("-: " + trimmedInput);
-                modeler.showProduct(splitInputArr[2]);
-                System.out.println();
-            }
-        
-        
-            else if (splitInputArr[0].equalsIgnoreCase("show") && splitInputArr[1].equalsIgnoreCase("customer"))
-            {
-                System.out.println("-: " + trimmedInput);
-                modeler.showCustomer(splitInputArr[2]);
-                System.out.println();
-            }
-        
-        
-            else if (splitInputArr[0].equalsIgnoreCase("show") &&  splitInputArr[1].equalsIgnoreCase("basket_items"))
-            {
-                System.out.println("-: " + trimmedInput);
-                modeler.showBasketItems(splitInputArr[2]);
-                System.out.println();
-            }  
-        
-        
-            else if (splitInputArr[0].equalsIgnoreCase("show") && splitInputArr[1].equalsIgnoreCase("device"))
-            {
-                System.out.println("-: " + trimmedInput);
-                modeler.showDevice(splitInputArr[2]);
-                System.out.println();
-            }
+            System.out.println("-: " + trimmedInput);
+            modeler.defineAisle(splitInputArr[2], splitInputArr[4], splitInputArr[6], splitInputArr[8]);
+            System.out.println();
         }
         
-        
-        else if (splitInputArr.length == 9)
+        else if ((splitInputArr.length == 3) && splitInputArr[0].equalsIgnoreCase("show") && splitInputArr[1].equalsIgnoreCase("aisle")
+                && (splitInputArr[2].split(":").length == 2))
         {
-            if (splitInputArr[0].equalsIgnoreCase("define") && splitInputArr[1].equalsIgnoreCase("aisle")
-                    && splitInputArr[3].equalsIgnoreCase("name") && splitInputArr[5].equalsIgnoreCase("description")
-                    && splitInputArr[7].equalsIgnoreCase("location") && (splitInputArr[2].split(":").length == 2))
-            {
-                System.out.println("-: " + trimmedInput);
-                modeler.defineAisle(splitInputArr[2], splitInputArr[4], splitInputArr[6], splitInputArr[8]);
-                System.out.println();
-            }
-    	
-        
-            else if (splitInputArr[0].equalsIgnoreCase("define") && splitInputArr[1].equalsIgnoreCase("device")
-                    && splitInputArr[3].equalsIgnoreCase("name") && splitInputArr[5].equalsIgnoreCase("type")
-                    && splitInputArr[7].equalsIgnoreCase("location") && (splitInputArr[8].split(":").length == 2))
-            {
-                System.out.println("-: " + trimmedInput);
-                modeler.defineDevice(splitInputArr[2], splitInputArr[4], splitInputArr[6], splitInputArr[8]);
-                System.out.println();
-            }
-    	
-            // TODO: Shelf for when temperature is default ambient        
-            else if (splitInputArr[0].equalsIgnoreCase("define") && splitInputArr[1].equalsIgnoreCase("shelf")
-                    && splitInputArr[3].equalsIgnoreCase("name") && splitInputArr[5].equalsIgnoreCase("level")
-                    && splitInputArr[7].equalsIgnoreCase("description") && (splitInputArr[2].split(":").length == 3))
-            {
-                System.out.println("-: " + trimmedInput);
-                modeler.defineShelf(splitInputArr[2], splitInputArr[4], splitInputArr[6], splitInputArr[8], splitInputArr[10]);
-                System.out.println();
-            }
+            System.out.println("-: " + trimmedInput);
+            modeler.showAisle(splitInputArr[2]);
+            System.out.println();
         }
         
-        // TODO: Shelf for when temperature is given as input
-        else if (splitInputArr.length == 11)
+        // Shelf for when temperature is not given (default is ambient)        
+        else if ((splitInputArr.length == 9) && splitInputArr[0].equalsIgnoreCase("define") && splitInputArr[1].equalsIgnoreCase("shelf")
+                && splitInputArr[3].equalsIgnoreCase("name") && splitInputArr[5].equalsIgnoreCase("level")
+                && splitInputArr[7].equalsIgnoreCase("description") && (splitInputArr[2].split(":").length == 3))
         {
-            if (splitInputArr[0].equalsIgnoreCase("define") && splitInputArr[1].equalsIgnoreCase("shelf")
-                    && splitInputArr[3].equalsIgnoreCase("name") && splitInputArr[5].equalsIgnoreCase("level")
-                    && splitInputArr[7].equalsIgnoreCase("description") && splitInputArr[9].equalsIgnoreCase("temperature")
-                    && (splitInputArr[2].split(":").length == 3))
+            System.out.println("-: " + trimmedInput);
+            modeler.defineShelf(splitInputArr[2], splitInputArr[4], splitInputArr[6], splitInputArr[8]);
+            System.out.println();
+        }    
+    
+        // Shelf for when temperature is given as input   
+        else if ((splitInputArr.length == 11) && splitInputArr[0].equalsIgnoreCase("define") && splitInputArr[1].equalsIgnoreCase("shelf")
+                && splitInputArr[3].equalsIgnoreCase("name") && splitInputArr[5].equalsIgnoreCase("level")
+                && splitInputArr[7].equalsIgnoreCase("description") && splitInputArr[9].equalsIgnoreCase("temperature")
+                && (splitInputArr[2].split(":").length == 3))
+        {
+            System.out.println("-: " + trimmedInput);
+            modeler.defineShelf(splitInputArr[2], splitInputArr[4], splitInputArr[6], splitInputArr[8], splitInputArr[10]);
+            System.out.println();
+        }
+    
+        else if ((splitInputArr.length == 3) && splitInputArr[0].equalsIgnoreCase("show") && splitInputArr[1].equalsIgnoreCase("shelf")
+                && (splitInputArr[2].split(":").length == 3))
+        {
+            System.out.println("-: " + trimmedInput);
+            modeler.showShelf(splitInputArr[2]);
+            System.out.println();
+        }    
+    
+        else if ((splitInputArr.length == 11) && splitInputArr[0].equalsIgnoreCase("define") && splitInputArr[1].equalsIgnoreCase("inventory")
+                && splitInputArr[3].equalsIgnoreCase("location") && splitInputArr[5].equalsIgnoreCase("capacity")
+                && splitInputArr[7].equalsIgnoreCase("count") && splitInputArr[9].equalsIgnoreCase("product")
+                && (splitInputArr[4].split(":").length == 3))
+        {
+            // Check if integer inputs are valid
+            Boolean validInts = true;
+            try
             {
-                System.out.println("-: " + trimmedInput);
-                modeler.defineShelf(splitInputArr[2], splitInputArr[4], splitInputArr[6], splitInputArr[8], splitInputArr[10]);
-                System.out.println();
-            }       
-    	
-        
-            else if (splitInputArr[0].equalsIgnoreCase("define") && splitInputArr[1].equalsIgnoreCase("inventory")
-                    && splitInputArr[3].equalsIgnoreCase("location") && splitInputArr[5].equalsIgnoreCase("capacity")
-                    && splitInputArr[7].equalsIgnoreCase("count") && splitInputArr[9].equalsIgnoreCase("product")
-                    && (splitInputArr[4].split(":").length == 3))
+                Integer.parseInt(splitInputArr[6]);
+                Integer.parseInt(splitInputArr[8]);
+            }
+
+            catch (NumberFormatException exception)
             {
-                // Check if integer inputs are valid
-                Boolean validInts = true;
+                validInts = false;
+            }
+            
+            if (validInts == false)
+            {
                 try
                 {
-                    Integer.parseInt(splitInputArr[6]);
-                    Integer.parseInt(splitInputArr[8]);
-                }
-    
-                catch (NumberFormatException exception)
-                {
-                    validInts = false;
+                    if (lineNum == 0)
+                        throw new CommandProcessorException("in processCommand method", "invalid integer input");
+
+                    else
+                        throw new CommandProcessorException("in processCommandFile method", "invalid integer input", lineNum);            
                 }
                 
-                if (validInts == false)
+                catch (CommandProcessorException exception)
                 {
-                    try
+                    if (lineNum == 0)
                     {
-                        if (lineNum == 0)
-                            throw new CommandProcessorException("in processCommand method", "invalid integer input");
-    
-                        else
-                            throw new CommandProcessorException("in processCommandFile method", "invalid integer input", lineNum);            
+                        System.out.println("-: " + trimmedInput);
+                        System.out.println();
+                        System.out.println(exception.getMessage());                    
+                        return;
                     }
-                    
-                    catch (CommandProcessorException exception)
+        
+                    else
                     {
-                        if (lineNum == 0)
-                        {
-                            System.out.println("-: " + trimmedInput);
-                            System.out.println();
-                            System.out.println(exception.getMessage());                    
-                            return;
-                        }
-            
-                        else
-                        {
-                            System.out.println("-: " + trimmedInput);
-                            System.out.println();
-                            System.out.println(exception.getMessageLine());                    
-                            return;
-                        }
+                        System.out.println("-: " + trimmedInput);
+                        System.out.println();
+                        System.out.println(exception.getMessageLine());                    
+                        return;
                     }
-                }
-                
-                // Call defineInventory(...)
-                else
-                {
-                    System.out.println("-: " + trimmedInput);
-                    modeler.defineInventory(splitInputArr[2], splitInputArr[4], Integer.parseInt(splitInputArr[6]),
-                            Integer.parseInt(splitInputArr[8]), splitInputArr[10]);
-                    System.out.println();
                 }
             }
+            
+            // Call defineInventory(...)
+            else
+            {
+                System.out.println("-: " + trimmedInput);
+                modeler.defineInventory(splitInputArr[2], splitInputArr[4], Integer.parseInt(splitInputArr[6]),
+                        Integer.parseInt(splitInputArr[8]), splitInputArr[10]);
+                System.out.println();
+            }
         }
-    	
-        else if (splitInputArr.length == 5)
+   
+        else if ((splitInputArr.length == 3) && splitInputArr[0].equalsIgnoreCase("show") && splitInputArr[1].equalsIgnoreCase("inventory"))
         {
-            if (splitInputArr[0].equalsIgnoreCase("update") && splitInputArr[1].equalsIgnoreCase("inventory")
-                    && splitInputArr[3].equalsIgnoreCase("update_count"))
-            {           
-                // Check if integer input is valid
-                Boolean validInts = true;
+            System.out.println("-: " + trimmedInput);
+            modeler.showInventory(splitInputArr[2]);
+            System.out.println();
+        }
+        
+        else if ((splitInputArr.length == 5) && splitInputArr[0].equalsIgnoreCase("update") && splitInputArr[1].equalsIgnoreCase("inventory")
+                && splitInputArr[3].equalsIgnoreCase("update_count"))
+        {           
+            // Check if integer input is valid
+            Boolean validInts = true;
+            try
+            {
+                Integer.parseInt(splitInputArr[4]);                
+            }
+
+            catch (NumberFormatException exception)
+            {
+                validInts = false;
+            }
+            
+            if (validInts == false)
+            {
                 try
                 {
-                    Integer.parseInt(splitInputArr[4]);                
-                }
-    
-                catch (NumberFormatException exception)
-                {
-                    validInts = false;
+                    if (lineNum == 0)
+                        throw new CommandProcessorException("in processCommand method", "invalid integer input; inventory not updated");
+
+                    else
+                        throw new CommandProcessorException("in processCommandFile method", "invalid integer input; inventory not updated", lineNum);            
                 }
                 
-                if (validInts == false)
+                catch (CommandProcessorException exception)
                 {
-                    try
+                    if (lineNum == 0)
                     {
-                        if (lineNum == 0)
-                            throw new CommandProcessorException("in processCommand method", "invalid integer input; inventory not updated");
-    
-                        else
-                            throw new CommandProcessorException("in processCommandFile method", "invalid integer input; inventory not updated", lineNum);            
+                        System.out.println("-: " + trimmedInput);
+                        System.out.println();
+                        System.out.println(exception.getMessage());                    
+                        return;
                     }
-                    
-                    catch (CommandProcessorException exception)
+        
+                    else
                     {
-                        if (lineNum == 0)
-                        {
-                            System.out.println("-: " + trimmedInput);
-                            System.out.println();
-                            System.out.println(exception.getMessage());                    
-                            return;
-                        }
+                        System.out.println("-: " + trimmedInput);
+                        System.out.println();
+                        System.out.println(exception.getMessageLine());                    
+                        return;
+                    }
+                }
+            }
             
-                        else
-                        {
-                            System.out.println("-: " + trimmedInput);
-                            System.out.println();
-                            System.out.println(exception.getMessageLine());                    
-                            return;
-                        }
-                    }
-                }
-                
-                System.out.println("-: " + trimmedInput);
-                modeler.updateInventory(splitInputArr[2], Integer.parseInt(splitInputArr[4]));
-                System.out.println();            
-            }
+            System.out.println("-: " + trimmedInput);
+            modeler.updateInventory(splitInputArr[2], Integer.parseInt(splitInputArr[4]));
+            System.out.println();            
+        }       
         
-        
-            else if (splitInputArr[0].equalsIgnoreCase("update") && splitInputArr[1].equalsIgnoreCase("customer")
-                    && splitInputArr[3].equalsIgnoreCase("location") && (splitInputArr[4].split(":").length == 2))
-            {
-                System.out.println("-: " + trimmedInput);
-                modeler.updateCustomer(splitInputArr[2], splitInputArr[4]);
-                System.out.println();
-            }
-        
-        
-            else if (splitInputArr[0].equalsIgnoreCase("create") && splitInputArr[1].equalsIgnoreCase("event")
-                    && splitInputArr[3].equalsIgnoreCase("event"))
-            {
-                System.out.println("-: " + trimmedInput);
-                modeler.createEvent(splitInputArr[2], splitInputArr[4]);
-                System.out.println();
-            }
-        
-        
-            else if (splitInputArr[0].equalsIgnoreCase("create") && splitInputArr[1].equalsIgnoreCase("command")
-                    && splitInputArr[3].equalsIgnoreCase("message"))
-            {
-                System.out.println("-: " + trimmedInput);
-                modeler.createCommand(splitInputArr[2], splitInputArr[4]);
-                System.out.println();
-            }
-        }
-    	
-        else if (splitInputArr.length == 15)
+        // defineProduct for when temperature input is given
+        else if ((splitInputArr.length == 15) && splitInputArr[0].equalsIgnoreCase("define") && splitInputArr[1].equalsIgnoreCase("product")                
+                && splitInputArr[3].equalsIgnoreCase("name") && splitInputArr[5].equalsIgnoreCase("description")
+                && splitInputArr[7].equalsIgnoreCase("size") && splitInputArr[9].equalsIgnoreCase("category")
+                && splitInputArr[11].equalsIgnoreCase("unit_price") && splitInputArr[13].equalsIgnoreCase("temperature"))
         {
-            if (splitInputArr[0].equalsIgnoreCase("define") && splitInputArr[1].equalsIgnoreCase("product")                
-                    && splitInputArr[3].equalsIgnoreCase("name") && splitInputArr[5].equalsIgnoreCase("description")
-                    && splitInputArr[7].equalsIgnoreCase("size") && splitInputArr[9].equalsIgnoreCase("category")
-                    && splitInputArr[11].equalsIgnoreCase("unit_price") && splitInputArr[13].equalsIgnoreCase("temperature"))
+            // Check if integer inputs are valid
+            Boolean validInts = true;
+            try
             {
-                // Check if integer inputs are valid
-                Boolean validInts = true;
+                Integer.parseInt(splitInputArr[12]);                
+            }
+
+            catch (NumberFormatException exception)
+            {
+                validInts = false;
+            }
+            
+            if (validInts == false)
+            {
                 try
                 {
-                    Integer.parseInt(splitInputArr[12]);                
-                }
-    
-                catch (NumberFormatException exception)
-                {
-                    validInts = false;
+                    if (lineNum == 0)
+                        throw new CommandProcessorException("in processCommand method", "invalid integer input; product not created");
+
+                    else
+                        throw new CommandProcessorException("in processCommandFile method", "invalid integer input; product not created", lineNum);            
                 }
                 
-                if (validInts == false)
+                catch (CommandProcessorException exception)
                 {
-                    try
+                    if (lineNum == 0)
                     {
-                        if (lineNum == 0)
-                            throw new CommandProcessorException("in processCommand method", "invalid integer input; product not created");
-    
-                        else
-                            throw new CommandProcessorException("in processCommandFile method", "invalid integer input; product not created", lineNum);            
+                        System.out.println("-: " + trimmedInput);
+                        System.out.println();
+                        System.out.println(exception.getMessage());                    
+                        return;
                     }
-                    
-                    catch (CommandProcessorException exception)
+        
+                    else
                     {
-                        if (lineNum == 0)
-                        {
-                            System.out.println("-: " + trimmedInput);
-                            System.out.println();
-                            System.out.println(exception.getMessage());                    
-                            return;
-                        }
+                        System.out.println("-: " + trimmedInput);
+                        System.out.println();
+                        System.out.println(exception.getMessageLine());                    
+                        return;
+                    }
+                }
+            }           
+                          
+            System.out.println("-: " + trimmedInput);
+            modeler.defineProduct(splitInputArr[2], splitInputArr[4], splitInputArr[6], splitInputArr[8], splitInputArr[10],
+                    Integer.parseInt(splitInputArr[12]), splitInputArr[14]);
+            System.out.println();            
+        }
+    
+        // defineProduct for when temperature is not given (ambient is default)
+        else if ((splitInputArr.length == 13) && splitInputArr[0].equalsIgnoreCase("define") && splitInputArr[1].equalsIgnoreCase("product")                
+                && splitInputArr[3].equalsIgnoreCase("name") && splitInputArr[5].equalsIgnoreCase("description")
+                && splitInputArr[7].equalsIgnoreCase("size") && splitInputArr[9].equalsIgnoreCase("category")
+                && splitInputArr[11].equalsIgnoreCase("unit_price"))
+        {
+            // Check if integer inputs are valid
+            Boolean validInts = true;
+            try
+            {
+                Integer.parseInt(splitInputArr[12]);                
+            }
+
+            catch (NumberFormatException exception)
+            {
+                validInts = false;
+            }
             
-                        else
-                        {
-                            System.out.println("-: " + trimmedInput);
-                            System.out.println();
-                            System.out.println(exception.getMessageLine());                    
-                            return;
-                        }
-                    }
-                }
-                
-                              
-                System.out.println("-: " + trimmedInput);
-                modeler.defineProduct(splitInputArr[2], splitInputArr[4], splitInputArr[6], splitInputArr[8], splitInputArr[10],
-                        Integer.parseInt(splitInputArr[12]), splitInputArr[14]);
-                System.out.println();            
-            }
-        }
-    	
-        else if (splitInputArr.length == 13)
-        {
-            if (splitInputArr[0].equalsIgnoreCase("define") && splitInputArr[1].equalsIgnoreCase("product")                
-                    && splitInputArr[3].equalsIgnoreCase("name") && splitInputArr[5].equalsIgnoreCase("description")
-                    && splitInputArr[7].equalsIgnoreCase("size") && splitInputArr[9].equalsIgnoreCase("category")
-                    && splitInputArr[11].equalsIgnoreCase("unit_price"))
+            if (validInts == false)
             {
-                System.out.println("-: " + trimmedInput);
-                modeler.defineProduct(splitInputArr[2], splitInputArr[4], splitInputArr[6], splitInputArr[8], splitInputArr[10],
-                        Integer.parseInt(splitInputArr[12]));
-                System.out.println();
-            }
-    	
-        
-       	    else if (splitInputArr[0].equalsIgnoreCase("define") && splitInputArr[1].equalsIgnoreCase("customer")
-       	            && splitInputArr[3].equalsIgnoreCase("first_name") && splitInputArr[5].equalsIgnoreCase("last_name")
-       	            && splitInputArr[7].equalsIgnoreCase("type") && splitInputArr[9].equalsIgnoreCase("email_address")
-       	            && splitInputArr[11].equalsIgnoreCase("account"))
-            {
-                System.out.println("-: " + trimmedInput);
-                modeler.defineCustomer(splitInputArr[2], splitInputArr[4], splitInputArr[6], splitInputArr[8], splitInputArr[10], splitInputArr[12]);
-                System.out.println();
-            }
-        }
-    	
-        else if (splitInputArr.length == 2)
-        {
-            if (splitInputArr[0].equalsIgnoreCase("get_customer_basket"))
-            {
-                System.out.println("-: " + trimmedInput);
-                modeler.getCustomerBasket(splitInputArr[1]);
-                System.out.println();
-            }
-        
-        
-            else if (splitInputArr[0].equalsIgnoreCase("clear_basket"))
-            {
-                System.out.println("-: " + trimmedInput);
-                modeler.clearBasket(splitInputArr[1]);
-                System.out.println();
-            }
-        }
-    	
-        else if (splitInputArr.length == 6)
-        {
-            if (splitInputArr[0].equalsIgnoreCase("add_basket_item") && splitInputArr[2].equalsIgnoreCase("product")
-                    && splitInputArr[4].equalsIgnoreCase("item_count"))
-            {
-                // Check if integer input is valid
-                Boolean validInts = true;
                 try
                 {
-                    Integer.parseInt(splitInputArr[5]);                
-                }
-    
-                catch (NumberFormatException exception)
-                {
-                    validInts = false;
-                }
-                
-                if (validInts == false)
-                {
-                    try
-                    {
-                        if (lineNum == 0)
-                            throw new CommandProcessorException("in processCommand method", "invalid integer input; item not added");
-    
-                        else
-                            throw new CommandProcessorException("in processCommandFile method", "invalid integer input; item not added", lineNum);            
-                    }
-                    
-                    catch (CommandProcessorException exception)
-                    {
-                        if (lineNum == 0)
-                        {
-                            System.out.println("-: " + trimmedInput);
-                            System.out.println();
-                            System.out.println(exception.getMessage());                    
-                            return;
-                        }
-            
-                        else
-                        {
-                            System.out.println("-: " + trimmedInput);
-                            System.out.println();
-                            System.out.println(exception.getMessageLine());                    
-                            return;
-                        }
-                    }
+                    if (lineNum == 0)
+                        throw new CommandProcessorException("in processCommand method", "invalid integer input; product not created");
+
+                    else
+                        throw new CommandProcessorException("in processCommandFile method", "invalid integer input; product not created", lineNum);            
                 }
                 
-                System.out.println("-: " + trimmedInput);
-                modeler.addBasketItem(splitInputArr[1], splitInputArr[3], Integer.parseInt(splitInputArr[5]));
-                System.out.println();
-            }
-    	
+                catch (CommandProcessorException exception)
+                {
+                    if (lineNum == 0)
+                    {
+                        System.out.println("-: " + trimmedInput);
+                        System.out.println();
+                        System.out.println(exception.getMessage());                    
+                        return;
+                    }
         
-            else if (splitInputArr[0].equalsIgnoreCase("remove_basket_item") && splitInputArr[2].equalsIgnoreCase("product")
-                    && splitInputArr[4].equalsIgnoreCase("item_count"))
+                    else
+                    {
+                        System.out.println("-: " + trimmedInput);
+                        System.out.println();
+                        System.out.println(exception.getMessageLine());                    
+                        return;
+                    }
+                }
+            }
+            
+            System.out.println("-: " + trimmedInput);
+            modeler.defineProduct(splitInputArr[2], splitInputArr[4], splitInputArr[6], splitInputArr[8], splitInputArr[10],
+                    Integer.parseInt(splitInputArr[12]));
+            System.out.println();
+        }
+    
+        else if ((splitInputArr.length == 3) && splitInputArr[0].equalsIgnoreCase("show") && splitInputArr[1].equalsIgnoreCase("product"))
+        {
+            System.out.println("-: " + trimmedInput);
+            modeler.showProduct(splitInputArr[2]);
+            System.out.println();
+        }    
+    
+        else if ((splitInputArr.length == 13) && splitInputArr[0].equalsIgnoreCase("define") && splitInputArr[1].equalsIgnoreCase("customer")
+                && splitInputArr[3].equalsIgnoreCase("first_name") && splitInputArr[5].equalsIgnoreCase("last_name")
+                && splitInputArr[7].equalsIgnoreCase("type") && splitInputArr[9].equalsIgnoreCase("email_address")
+                && splitInputArr[11].equalsIgnoreCase("account"))
+        {
+            System.out.println("-: " + trimmedInput);
+            modeler.defineCustomer(splitInputArr[2], splitInputArr[4], splitInputArr[6], splitInputArr[8], splitInputArr[10], splitInputArr[12]);
+            System.out.println();
+        }
+        
+        else if ((splitInputArr.length == 5) && splitInputArr[0].equalsIgnoreCase("update") && splitInputArr[1].equalsIgnoreCase("customer")
+                && splitInputArr[3].equalsIgnoreCase("location") && (splitInputArr[4].split(":").length == 2))
+        {
+            System.out.println("-: " + trimmedInput);
+            modeler.updateCustomer(splitInputArr[2], splitInputArr[4]);
+            System.out.println();
+        }   
+        
+        else if ((splitInputArr.length == 3) && splitInputArr[0].equalsIgnoreCase("show") && splitInputArr[1].equalsIgnoreCase("customer"))
+        {
+            System.out.println("-: " + trimmedInput);
+            modeler.showCustomer(splitInputArr[2]);
+            System.out.println();
+        }    
+    
+        else if ((splitInputArr.length == 2) && splitInputArr[0].equalsIgnoreCase("get_customer_basket"))
+        {
+            System.out.println("-: " + trimmedInput);
+            modeler.getCustomerBasket(splitInputArr[1]);
+            System.out.println();
+        }          
+    
+        else if ((splitInputArr.length == 6) && splitInputArr[0].equalsIgnoreCase("add_basket_item") && splitInputArr[2].equalsIgnoreCase("product")
+                && splitInputArr[4].equalsIgnoreCase("item_count"))
+        {
+            // Check if integer input is valid
+            Boolean validInts = true;
+            try
             {
-                // Check if integer input is valid
-                Boolean validInts = true;
+                Integer.parseInt(splitInputArr[5]);                
+            }
+
+            catch (NumberFormatException exception)
+            {
+                validInts = false;
+            }
+            
+            if (validInts == false)
+            {
                 try
                 {
-                    Integer.parseInt(splitInputArr[5]);                
-                }
-    
-                catch (NumberFormatException exception)
-                {
-                    validInts = false;
-                }
-                
-                if (validInts == false)
-                {
-                    try
-                    {
-                        if (lineNum == 0)
-                            throw new CommandProcessorException("in processCommand method", "invalid integer input; item not removed");
-    
-                        else
-                            throw new CommandProcessorException("in processCommandFile method", "invalid integer input; item not removed", lineNum);            
-                    }
-                    
-                    catch (CommandProcessorException exception)
-                    {
-                        if (lineNum == 0)
-                        {
-                            System.out.println("-: " + trimmedInput);
-                            System.out.println();
-                            System.out.println(exception.getMessage());                    
-                            return;
-                        }
-            
-                        else
-                        {
-                            System.out.println("-: " + trimmedInput);
-                            System.out.println();
-                            System.out.println(exception.getMessageLine());                    
-                            return;
-                        }
-                    }
+                    if (lineNum == 0)
+                        throw new CommandProcessorException("in processCommand method", "invalid integer input; item not added");
+
+                    else
+                        throw new CommandProcessorException("in processCommandFile method", "invalid integer input; item not added", lineNum);            
                 }
                 
-                System.out.println("-: " + trimmedInput);
-                modeler.removeBasketItem(splitInputArr[1], splitInputArr[3], Integer.parseInt(splitInputArr[5]));
-                System.out.println();            
+                catch (CommandProcessorException exception)
+                {
+                    if (lineNum == 0)
+                    {
+                        System.out.println("-: " + trimmedInput);
+                        System.out.println();
+                        System.out.println(exception.getMessage());                    
+                        return;
+                    }
+        
+                    else
+                    {
+                        System.out.println("-: " + trimmedInput);
+                        System.out.println();
+                        System.out.println(exception.getMessageLine());                    
+                        return;
+                    }
+                }
             }
+            
+            System.out.println("-: " + trimmedInput);
+            modeler.addBasketItem(splitInputArr[1], splitInputArr[3], Integer.parseInt(splitInputArr[5]));
+            System.out.println();
         }
+        
+        else if ((splitInputArr.length == 6) && splitInputArr[0].equalsIgnoreCase("remove_basket_item") && splitInputArr[2].equalsIgnoreCase("product")
+                && splitInputArr[4].equalsIgnoreCase("item_count"))
+        {
+            // Check if integer input is valid
+            Boolean validInts = true;
+            try
+            {
+                Integer.parseInt(splitInputArr[5]);                
+            }
+
+            catch (NumberFormatException exception)
+            {
+                validInts = false;
+            }
+            
+            if (validInts == false)
+            {
+                try
+                {
+                    if (lineNum == 0)
+                        throw new CommandProcessorException("in processCommand method", "invalid integer input; item not removed");
+
+                    else
+                        throw new CommandProcessorException("in processCommandFile method", "invalid integer input; item not removed", lineNum);            
+                }
+                
+                catch (CommandProcessorException exception)
+                {
+                    if (lineNum == 0)
+                    {
+                        System.out.println("-: " + trimmedInput);
+                        System.out.println();
+                        System.out.println(exception.getMessage());                    
+                        return;
+                    }
+        
+                    else
+                    {
+                        System.out.println("-: " + trimmedInput);
+                        System.out.println();
+                        System.out.println(exception.getMessageLine());                    
+                        return;
+                    }
+                }
+            }
+            
+            System.out.println("-: " + trimmedInput);
+            modeler.removeBasketItem(splitInputArr[1], splitInputArr[3], Integer.parseInt(splitInputArr[5]));
+            System.out.println();            
+        }
+        
+        else if ((splitInputArr.length == 2) && splitInputArr[0].equalsIgnoreCase("clear_basket"))
+        {
+            System.out.println("-: " + trimmedInput);
+            modeler.clearBasket(splitInputArr[1]);
+            System.out.println();
+        }   
+        
+        else if ((splitInputArr.length == 3) && splitInputArr[0].equalsIgnoreCase("show") &&  splitInputArr[1].equalsIgnoreCase("basket_items"))
+        {
+            System.out.println("-: " + trimmedInput);
+            modeler.showBasketItems(splitInputArr[2]);
+            System.out.println();
+        }      
+    
+        else if ((splitInputArr.length == 9) && splitInputArr[0].equalsIgnoreCase("define") && splitInputArr[1].equalsIgnoreCase("device")
+                && splitInputArr[3].equalsIgnoreCase("name") && splitInputArr[5].equalsIgnoreCase("type")
+                && splitInputArr[7].equalsIgnoreCase("location") && (splitInputArr[8].split(":").length == 2))
+        {
+            System.out.println("-: " + trimmedInput);
+            modeler.defineDevice(splitInputArr[2], splitInputArr[4], splitInputArr[6], splitInputArr[8]);
+            System.out.println();
+        }
+        
+        else if ((splitInputArr.length == 3) && splitInputArr[0].equalsIgnoreCase("show") && splitInputArr[1].equalsIgnoreCase("device"))
+        {
+            System.out.println("-: " + trimmedInput);
+            modeler.showDevice(splitInputArr[2]);
+            System.out.println();
+        }    
+    
+        else if ((splitInputArr.length == 5) && splitInputArr[0].equalsIgnoreCase("create") && splitInputArr[1].equalsIgnoreCase("event")
+                && splitInputArr[3].equalsIgnoreCase("event"))
+        {
+            System.out.println("-: " + trimmedInput);
+            modeler.createEvent(splitInputArr[2], splitInputArr[4]);
+            System.out.println();
+        }    
+    
+        else if ((splitInputArr.length == 5) && splitInputArr[0].equalsIgnoreCase("create") && splitInputArr[1].equalsIgnoreCase("command")
+                && splitInputArr[3].equalsIgnoreCase("message"))
+        {
+            System.out.println("-: " + trimmedInput);
+            modeler.createCommand(splitInputArr[2], splitInputArr[4]);
+            System.out.println();
+        }        
     	
     	// Throw CommandProcessorException if input syntax could not be matched to a valid command
         else

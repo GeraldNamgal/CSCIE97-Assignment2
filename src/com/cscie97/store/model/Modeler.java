@@ -417,6 +417,94 @@ public class Modeler
         return shelf;       
     }
     
+    // Define shelf with default temp
+    public Shelf defineShelf(String storeAisleShelfLoc, String name, String level, String description)
+    {
+        // Split storeAisleShelfLoc on colon
+        String[] splitLoc = storeAisleShelfLoc.split(":");
+        String storeId = splitLoc[0];
+        String aisleNumber = splitLoc[1];
+        String shelfId = splitLoc[2];
+        
+        // Check that store exists
+        if (stores.containsKey(storeId) == false)
+        {
+            try
+            {
+                throw new ModelerException("define shelf", "store not found; shelf not created");
+            }
+            
+            catch (ModelerException exception)
+            {
+                System.out.println();
+                System.out.print(exception.getMessage());      
+                return null;
+            }
+        }
+        
+        // Check that aisle exists
+        if (stores.get(storeId).getAisles().containsKey(aisleNumber) == false)
+        {
+            try
+            {
+                throw new ModelerException("define shelf", "aisle not found; shelf not created");
+            }
+            
+            catch (ModelerException exception)
+            {
+                System.out.println();
+                System.out.print(exception.getMessage());      
+                return null;
+            }
+        }
+        
+        // Check that shelf id is unique
+        if (stores.get(storeId).getAisles().get(aisleNumber).getShelves().containsKey(shelfId))
+        {
+            try
+            {
+                throw new ModelerException("define shelf", "shelf id already exists; shelf not created");
+            }
+            
+            catch (ModelerException exception)
+            {
+                System.out.println();
+                System.out.print(exception.getMessage());      
+                return null;
+            }
+        }
+        
+        // Check that level input is a valid enum
+        if (!Shelf.containsLevelEnum(level))
+        {
+            try
+            {
+                throw new ModelerException("define shelf", "level (case-sensitive) not found; shelf not created");
+            }
+            
+            catch (ModelerException exception)
+            {
+                System.out.println();
+                System.out.print(exception.getMessage());      
+                return null;
+            }
+        }       
+        
+        // Change level string to an enum
+        Shelf.Level levelEnum = Shelf.Level.valueOf(level);
+        
+        // Get temperature enum for default temp
+        Shelf.Temperature temperatureEnum = Shelf.Temperature.valueOf("ambient");
+        
+        Shelf shelf = new Shelf(shelfId, name, levelEnum, description, temperatureEnum);        
+        
+        // Add shelf to aisle's shelf list     
+        if (shelf != null)
+            stores.get(storeId).getAisles().get(aisleNumber).getShelves().put(shelf.getId(), shelf);        
+        
+        return shelf;
+    }
+    
     public void showShelf(String storeAisleShelfLoc)
     {      
         // Split storeAisleShelfLoc on colon
@@ -773,8 +861,8 @@ public class Modeler
             products.put(product.getProductId(), product);
         
         return product;
-    }
-    
+    }    
+   
     public Product defineProduct(String productId, String name, String description, String size, String category, Integer unitPrice)
     {
         // Check that productId is unique
@@ -974,8 +1062,6 @@ public class Modeler
     
     public Basket getCustomerBasket(String customerId)
     {
-        // TODO
-        
         Customer customer = customers.get(customerId);
         
         // Check that customer exists
@@ -1028,8 +1114,6 @@ public class Modeler
     
     public void addBasketItem(String customerId, String productId, Integer itemCount)
     {
-        // TODO
-        
         // Check that itemCount is greater than 0
         if (itemCount < 1)
         {
@@ -1146,8 +1230,6 @@ public class Modeler
     
     public void removeBasketItem(String customerId, String productId, Integer itemCount)
     {
-        // TODO
-        
         // Check that itemCount is greater than 0
         if (itemCount < 1)
         {
@@ -1228,8 +1310,6 @@ public class Modeler
     
     public void clearBasket(String customerId)
     {
-        // TODO
-        
         // Check if basket exists
         if (!activeBaskets.containsKey(customerId))
         {
@@ -1252,8 +1332,6 @@ public class Modeler
     
     public void showBasketItems(String customerId)
     {
-        // TODO
-      
         Basket basket = activeBaskets.get(customerId);
         
         // Check if basket exists
@@ -1295,7 +1373,7 @@ public class Modeler
         else
             itemsString += " Basket empty";
         
-        // TODO: Combine itemsString with header text
+        // Combine itemsString with header text
         String string;
         string = "\nBasket \"" + basket.getId() + "\" items --" + itemsString + "\n";           
 
@@ -1306,8 +1384,6 @@ public class Modeler
     
     public Sensor defineDevice(String id, String name, String type, String storeAisleLoc)
     {
-        // TODO
-        
         // Check that id is unique
         if (devices.containsKey(id))
         {
@@ -1439,8 +1515,6 @@ public class Modeler
     
     public void createEvent(String id, String event)
     {
-        // TODO        
-        
         Sensor device = devices.get(id);
         
         // If device wasn't found
@@ -1468,8 +1542,6 @@ public class Modeler
     
     public void createCommand(String id, String command)
     {
-        // TODO
-        
         Sensor device = devices.get(id);
         
         // If device wasn't found
