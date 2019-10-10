@@ -775,6 +775,36 @@ public class Modeler
         return product;
     }
     
+    public Product defineProduct(String productId, String name, String description, String size, String category, Integer unitPrice)
+    {
+        // Check that productId is unique
+        if (products.containsKey(productId))
+        {
+            try
+            {                
+                throw new ModelerException("define product", "productId already exists; product not created");
+            }
+            
+            catch (ModelerException exception)
+            {                
+                System.out.println();
+                System.out.print(exception.getMessage());      
+                return null;
+            }
+        }        
+        
+        // Get default temperature enum ambient
+        Shelf.Temperature temperatureEnum = Shelf.Temperature.valueOf("ambient");
+        
+        Product product = new Product(productId, name, description, size, category, unitPrice, temperatureEnum);
+        
+        // Add to list of products
+        if (product != null)
+            products.put(product.getProductId(), product);
+        
+        return product;
+    }
+    
     public void showProduct(String id)
     {
         // Get product

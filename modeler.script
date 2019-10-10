@@ -144,3 +144,5 @@ create command sensor1_id message command1_id
 
 # Create command command1_id for an appliance
 create command appliance1_id message command1_id
+
+define
