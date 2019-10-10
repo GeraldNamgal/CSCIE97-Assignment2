@@ -77,13 +77,7 @@ public class CommandProcessor
         {
             exception.printStackTrace();
         }
-    }
-    
-    /* *
-     * Modeler-ish API Utility Methods
-     */
-
-    // (???) TODO
+    }   
     
     /* *
      * Other Utility Methods
@@ -326,8 +320,7 @@ public class CommandProcessor
         
         /* code block END ("If input contained quotes, then validate their correct usage and fix array") */              
         
-        /* TODO: Continue parsing for valid DSL commands for CLI */       
-        
+        // Continue parsing for valid DSL commands for CLI        
         if ((splitInputArr.length == 7) && splitInputArr[0].equalsIgnoreCase("define") && splitInputArr[1].equalsIgnoreCase("store")
                 && splitInputArr[3].equalsIgnoreCase("name") && splitInputArr[5].equalsIgnoreCase("address"))
         {
@@ -803,7 +796,7 @@ public class CommandProcessor
             System.out.println();
         }        
     	
-    	// Throw CommandProcessorException if input syntax could not be matched to a valid command
+    	// Else throw CommandProcessorException if input syntax could not be matched to a valid command
         else
         {
             try

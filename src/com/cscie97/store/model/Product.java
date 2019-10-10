@@ -10,7 +10,7 @@ public class Product
     String size;
     String category;
     Integer unitPrice;
-    Shelf.Temperature temperature; // TODO: Set default value to ambient?
+    Shelf.Temperature temperature;
     
     /* Constructor */
     

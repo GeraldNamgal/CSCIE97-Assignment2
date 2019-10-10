@@ -158,3 +158,4 @@ define shelf store1_id:aisle2_id:shelf3_id name "Cereals" level high description
 show shelf store1_id:aisle2_id:shelf3_id
 
 # Show store
+show store store1_id

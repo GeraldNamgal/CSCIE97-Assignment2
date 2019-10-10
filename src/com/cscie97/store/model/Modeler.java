@@ -91,10 +91,10 @@ public class Modeler
             Customer customer;             
             for (Entry<String, Customer> customerEntry : storeCustomers.entrySet())
             {
-                customer = customerEntry.getValue();
-    
-                customersString += "\n    " + counter + ".)";
-    
+                customer = customerEntry.getValue();    
+                customersString += "\n    " + counter + ".)" + " id = " + customer.getId() + "; first name = " + customer.getFirstName()
+                        + "; last name = " + customer.getLastName() + "; type = " + customer.getType() + "; emailAddress = "
+                        + customer.getEmailAddress() + "; account = " + customer.getAccount() + "; location = " + customer.getLocation();    
                 counter++;
             }
         }
@@ -114,11 +114,9 @@ public class Modeler
             Aisle aisle;                
             for (Entry<String, Aisle> aisleEntry : aisles.entrySet())
             {
-                aisle = aisleEntry.getValue();
-    
+                aisle = aisleEntry.getValue();    
                 aislesString += "\n    " + counter + ".)" + " number = " + aisle.getNumber() + "; name = " + aisle.getName()
-                        + "; description = " + aisle.getDescription() + "; location = " + aisle.getLocation();
-    
+                        + "; description = " + aisle.getDescription() + "; location = " + aisle.getLocation();    
                 counter++;
             }
         }
@@ -138,12 +136,10 @@ public class Modeler
             Inventory inventory;
             for (Entry<String, Inventory> inventoryEntry : inventories.entrySet())
             {
-                inventory = inventoryEntry.getValue();
-                
+                inventory = inventoryEntry.getValue();                
                 inventoriesString += "\n    " + counter + ".)" + " inventoryId = " + inventory.getInventoryId() + "; location = "
                         + inventory.getLocation() + "; capacity = " + inventory.getCapacity() + "; count = " + inventory.getCount()
-                        + "; productId = " + inventory.getProductId();
-                
+                        + "; productId = " + inventory.getProductId();                
                 counter++;
             }
         }
@@ -153,14 +149,62 @@ public class Modeler
             inventoriesString += " None";
         
         // TODO: Get sensor information
+        LinkedHashMap<String, Sensor> storeDevices = store.getDevices();
+        String sensorsString = "";
+        counter = 1;
         
-        // TODO: Get appliance information
+        // If there are store devices
+        if (storeDevices.size() > 0)
+        {
+            Sensor sensor;             
+            for (Entry<String, Sensor> sensorEntry : storeDevices.entrySet())
+            {
+                sensor = sensorEntry.getValue();
+                
+                if (Sensor.containsTypeEnum(sensor.getType()))
+                {
+                    sensorsString += "\n    " + counter + ".)" + " id = " + sensor.getId() + "; name = " + sensor.getName() 
+                            + "; type = " + sensor.getType() + "; location = " + sensor.getLocation();    
+                    counter++;
+                }
+            }
+        }
+        
+        // If there are no sensors
+        else
+            sensorsString += " None";
+        
+        // TODO: Get appliance information        
+        String appliancesString = "";
+        counter = 1;
+        
+        // If there are store devices
+        if (storeDevices.size() > 0)
+        {
+            Sensor appliance;             
+            for (Entry<String, Sensor> sensorEntry : storeDevices.entrySet())
+            {
+                appliance = sensorEntry.getValue();
+                
+                if (Appliance.containsTypeEnum(appliance.getType()))
+                {
+                    appliancesString += "\n    " + counter + ".)" + " id = " + appliance.getId() + "; name = " + appliance.getName() 
+                            + "; type = " + appliance.getType() + "; location = " + appliance.getLocation();    
+                    counter++;
+                }
+            }
+        }
+        
+        // If there are no appliances
+        else
+            appliancesString += " None";
         
         // TODO: Combine strings together with other store information included
         String string;
         string = "\nStore \"" + store.getId() + "\" information --\n" + " - name = "
                 + store.getName() + "\n - address = " + store.getAddress() + "\n - active customers ="
-                + customersString + "\n - aisles =" + aislesString + "\n - inventories =" + inventoriesString + "\n";           
+                + customersString + "\n - aisles =" + aislesString + "\n - inventories =" + inventoriesString
+                + "\n - sensors=" + sensorsString + "\n - appliances=" + appliancesString + "\n";           
 
         // Print string to stdout
         System.out.println("\nOutput:>>");
@@ -289,12 +333,10 @@ public class Modeler
             Shelf shelf;
             for (Entry<String, Shelf> shelfEntry : shelves.entrySet())
             {
-                shelf = shelfEntry.getValue();
-                
+                shelf = shelfEntry.getValue();                
                 shelvesString += "\n    " + counter + ".)" + " id = " + shelf.getId() + "; name = "
                         + shelf.getName() + "; level = " + shelf.getLevel() + "; description = " + shelf.getDescription()
-                        + "; temperature = " + shelf.getTemperature();
-                
+                        + "; temperature = " + shelf.getTemperature();                
                 counter++;
             }
         }
@@ -585,8 +627,7 @@ public class Modeler
                 {
                     inventoriesString += "\n    " + counter + ".)" + " inventoryId = " + inventory.getInventoryId() + "; location = "
                             + inventory.getLocation() + "; capacity = " + inventory.getCapacity() + "; count = " + inventory.getCount()
-                            + "; productId = " + inventory.getProductId();
-                    
+                            + "; productId = " + inventory.getProductId();                    
                     counter++;
                 }
             }
@@ -1057,7 +1098,10 @@ public class Modeler
             }
         }
         
+        // Change customer's location
         customer.setLocation(storeAisleLoc);
+        
+        // Add customer to store's list of customers
     }
     
     public Basket getCustomerBasket(String customerId)
@@ -1302,9 +1346,28 @@ public class Modeler
         else
         {            
             Integer currentItemCount = basketItems.get(productId);
-            // TODO: Check if difference is negative
-            itemCount = currentItemCount - itemCount;
-            basketItems.put(productId, itemCount);
+            
+            // Check if difference is negative
+            if ((currentItemCount - itemCount) < 0)
+            {
+                try
+                {
+                    throw new ModelerException("remove basket item", "attempting to remove more than is in basket; item(s) not removed");
+                }
+                
+                catch (ModelerException exception)
+                {
+                    System.out.println();
+                    System.out.print(exception.getMessage());      
+                    return;
+                }
+            }
+            
+            else
+            {
+                currentItemCount = currentItemCount - itemCount;
+                basketItems.put(productId, currentItemCount);
+            }
         }          
     }
     
@@ -1361,10 +1424,8 @@ public class Modeler
             for (Entry<String, Integer> integerEntry : basket.getBasketItems().entrySet())
             {
                 productId = integerEntry.getKey();
-                count = integerEntry.getValue();
-                
-                itemsString += "\n " + counter + ".)" + " productId = " + productId + " : count = " + count;
-                
+                count = integerEntry.getValue();                
+                itemsString += "\n " + counter + ".)" + " productId = " + productId + " : count = " + count;                
                 counter++;            
             }
         }

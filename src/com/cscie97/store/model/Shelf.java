@@ -18,7 +18,7 @@ public class Shelf
     private String name;
     private Level level;
     private String description;
-    private Temperature temperature; // TODO: Set default value to ambient?
+    private Temperature temperature;
     
     /* Constructor */
     
