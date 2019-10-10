@@ -1,3 +1,10 @@
+/* *
+ * Gerald Arocena
+ * CSCI E-97
+ * Professor: Eric Gieseke
+ * Assignment 2
+ */
+
 package com.cscie97.store.model;
 
 import java.util.LinkedHashMap;
@@ -17,9 +24,7 @@ public class Basket
         basketItems = new LinkedHashMap<String, Integer>();
     }  
     
-    /* *
-     * Getters and Setters
-     */   
+    /* Getters and Setters */   
     
     public String getId() 
     {

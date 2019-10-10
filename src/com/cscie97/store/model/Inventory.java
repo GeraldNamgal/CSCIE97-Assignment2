@@ -1,3 +1,10 @@
+/* *
+ * Gerald Arocena
+ * CSCI E-97
+ * Professor: Eric Gieseke
+ * Assignment 2 
+ */
+
 package com.cscie97.store.model;
 
 public class Inventory
@@ -21,18 +28,14 @@ public class Inventory
         this.productId = productId;
     }
     
-    /* *
-     * API Methods
-     */
+    /* API Methods */
     
     public void updateCount(Integer updateAmount)
     {
         count += updateAmount;
     }
 
-    /* *
-     * Getters and Setters
-     */
+    /* Getters and Setters */
     
     public String getInventoryId()
     {

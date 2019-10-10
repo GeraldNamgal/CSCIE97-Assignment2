@@ -1,8 +1,18 @@
+/* *
+ * Gerald Arocena
+ * CSCI E-97
+ * Professor: Eric Gieseke
+ * Assignment 2 
+ */
+
 package com.cscie97.store.model;
 
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 
+/* *
+ * Contains methods and attributes for creating, maintaining, and updating stores and their assets
+ */
 public class Modeler
 {
     /* API Variables */
@@ -26,10 +36,15 @@ public class Modeler
         devices = new LinkedHashMap<String, Sensor>();
     }
     
-    /* *
-     * API Methods
-     */ 
+    /* API Methods */ 
     
+    /* *
+     * Creates a new Store
+     * @param id A globally unique store id
+     * @param name The name of the store
+     * @param address The postal address of the store
+     * @return A Store object
+     */
     public Store defineStore(String id, String name, String address)
     {
         // Check that store id is unique
@@ -80,10 +95,10 @@ public class Modeler
         
         /* Gather and print store's information */
         
-        // TODO: Initialize string of customer information for everyone currently in the store
-        LinkedHashMap<String, Customer> storeCustomers = store.getCustomers();
+        // Initialize string of customer information for everyone currently in the store        
         String customersString = "";
-        int counter = 1;
+        LinkedHashMap<String, Customer> storeCustomers = store.getCustomers();
+        int counter = 1;        
         
         // If there are active customers
         if (storeCustomers.size() > 0)
@@ -104,8 +119,8 @@ public class Modeler
             customersString += " None";
         
         // Initialize string of store's aisle information
-        LinkedHashMap<String, Aisle> aisles = store.getAisles();
         String aislesString = "";
+        LinkedHashMap<String, Aisle> aisles = store.getAisles();        
         counter = 1;
         
         // If there are aisles
@@ -126,8 +141,8 @@ public class Modeler
             aislesString += " None";
         
         // Initialize string of store's inventory information
-        LinkedHashMap<String, Inventory> inventories = store.getInventories();
         String inventoriesString = "";
+        LinkedHashMap<String, Inventory> inventories = store.getInventories();        
         counter = 1;
         
         // If there are inventories
@@ -148,9 +163,9 @@ public class Modeler
         else
             inventoriesString += " None";
         
-        // TODO: Get sensor information
-        LinkedHashMap<String, Sensor> storeDevices = store.getDevices();
+        // Get sensor information
         String sensorsString = "";
+        LinkedHashMap<String, Sensor> storeDevices = store.getDevices();        
         counter = 1;
         
         // If there are store devices
@@ -174,7 +189,7 @@ public class Modeler
         else
             sensorsString += " None";
         
-        // TODO: Get appliance information        
+        // Get appliance information        
         String appliancesString = "";
         counter = 1;
         
@@ -199,7 +214,7 @@ public class Modeler
         else
             appliancesString += " None";
         
-        // TODO: Combine strings together with other store information included
+        // Combine strings together with other store information included
         String string;
         string = "\nStore \"" + store.getId() + "\" information --\n" + " - name = "
                 + store.getName() + "\n - address = " + store.getAddress() + "\n - active customers ="
@@ -323,8 +338,8 @@ public class Modeler
         Aisle aisle = store.getAisles().get(aisleNumber);
         
         // Initialize shelves information string
-        LinkedHashMap<String, Shelf> shelves = store.getAisles().get(aisleNumber).getShelves();
         String shelvesString = "";
+        LinkedHashMap<String, Shelf> shelves = store.getAisles().get(aisleNumber).getShelves();        
         int counter = 1;
         
         // If there are shelves
@@ -604,8 +619,8 @@ public class Modeler
         }
         
         // Initialize string of store's inventory information
-        LinkedHashMap<String, Inventory> inventories = stores.get(storeId).getInventories();
         String inventoriesString = "";
+        LinkedHashMap<String, Inventory> inventories = stores.get(storeId).getInventories();        
         int counter = 1;
         
         // If there are inventories
@@ -1102,6 +1117,7 @@ public class Modeler
         customer.setLocation(storeAisleLoc);
         
         // Add customer to store's list of customers
+        stores.get(storeId).getCustomers().put(customer.getId(), customer);
     }
     
     public Basket getCustomerBasket(String customerId)

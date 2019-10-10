@@ -1,3 +1,10 @@
+/* *
+ * Gerald Arocena
+ * CSCI E-97
+ * Professor: Eric Gieseke
+ * Assignment 2
+ */
+
 package com.cscie97.store.model;
 
 import java.io.BufferedReader;
@@ -6,6 +13,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/* *
+ * Exercises the Modeler
+ */
 public class CommandProcessor
 {
     /* Variables */
@@ -13,9 +23,7 @@ public class CommandProcessor
     private Modeler modeler;
     private int lineNum = 0;
     
-    /* *
-     * API Methods
-     */
+    /* API Methods */
 
     public void processCommand(String command)
     {       
@@ -77,11 +85,9 @@ public class CommandProcessor
         {
             exception.printStackTrace();
         }
-    }   
+    }       
     
-    /* *
-     * Other Utility Methods
-     */
+    /* Utility Methods */
 
     public void parseAndProcess(String input)
     {

@@ -1,3 +1,10 @@
+/* *
+ * Gerald Arocena
+ * CSCI E-97
+ * Professor: Eric Gieseke
+ * Assignment 2
+ */
+
 package com.cscie97.store.model;
 
 import java.util.LinkedHashMap;
@@ -27,9 +34,7 @@ public class Store
         devices = new LinkedHashMap<String, Sensor>();                
     }
 
-    /* *
-     * Getters and Setters
-     */
+    /* Getters and Setters */
     
     public String getId()
     {

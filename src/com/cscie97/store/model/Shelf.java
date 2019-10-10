@@ -1,3 +1,10 @@
+/* *
+ * Gerald Arocena
+ * CSCI E-97
+ * Professor: Eric Gieseke
+ * Assignment 2
+ */
+
 package com.cscie97.store.model;
 
 public class Shelf
@@ -31,9 +38,7 @@ public class Shelf
         this.temperature = temperature;
     }
     
-    /* *
-     * Utility Methods
-     */
+    /* Utility Methods */
     
     // Checks a string if it's a Level enum
     public static boolean containsLevelEnum(String testString)
@@ -63,9 +68,7 @@ public class Shelf
         return false;
     }
     
-    /* *
-     * Getters and Setters
-     */
+    /* Getters and Setters */
     
     public String getId()
     {

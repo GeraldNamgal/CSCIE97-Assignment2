@@ -1,3 +1,10 @@
+/* *
+ * Gerald Arocena
+ * CSCI E-97
+ * Professor: Eric Gieseke
+ * Assignment 2
+ */
+
 package com.cscie97.store.model;
 
 public class Product
@@ -25,9 +32,7 @@ public class Product
         this.temperature = temperature;
     }
 
-    /* *
-     * Getters and Setters
-     */
+    /* Getters and Setters */
     
     public String getProductId() 
     {

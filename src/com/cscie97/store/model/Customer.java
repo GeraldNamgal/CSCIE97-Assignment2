@@ -1,3 +1,10 @@
+/* *
+ * Gerald Arocena
+ * CSCI E-97
+ * Professor: Eric Gieseke
+ * Assignment 2
+ */
+
 package com.cscie97.store.model;
 
 public class Customer
@@ -29,9 +36,7 @@ public class Customer
         this.account = account;
     } 
     
-    /* *
-     * Utility Methods
-     */
+    /* Utility Methods */
     
     // Checks a string if it's a Type enum
     public static boolean containsTypeEnum(String testString)
@@ -47,9 +52,7 @@ public class Customer
         return false;
     }
 
-    /* *
-     * Getters and Setters
-     */
+    /* Getters and Setters */
     
     public String getId() 
     {

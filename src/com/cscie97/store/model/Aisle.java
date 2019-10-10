@@ -1,3 +1,10 @@
+/* *
+ * Gerald Arocena
+ * CSCI E-97
+ * Professor: Eric Gieseke
+ * Assignment 2
+ */
+
 package com.cscie97.store.model;
 
 import java.util.LinkedHashMap;
@@ -28,9 +35,7 @@ public class Aisle
         shelves = new LinkedHashMap<String, Shelf>();
     }
     
-    /* *
-     * Utility Methods
-     */
+    /* Utility Methods */
  
     // Checks a string if it's a Location enum
     public static boolean containsLocEnum(String testString)
@@ -46,9 +51,7 @@ public class Aisle
         return false;
     }
 
-    /* *
-     * Getters and Setters
-     */
+    /* Getters and Setters */
     
     public String getNumber()
     {

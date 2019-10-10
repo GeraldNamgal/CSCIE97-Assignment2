@@ -1,3 +1,10 @@
+/* *
+ * Gerald Arocena
+ * CSCI E-97
+ * Professor: Eric Gieseke
+ * Assignment 2
+ */
+
 package com.cscie97.store.model;
 
 @SuppressWarnings("serial")
@@ -25,9 +32,7 @@ public class CommandProcessorException extends java.lang.Exception
         this.lineNumber = lineNumber;
     }
     
-    /* *
-     * Methods
-     */
+    /* Method */
     
     public String getMessage()
     {
