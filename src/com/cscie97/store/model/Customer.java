@@ -14,6 +14,11 @@ public class Customer
 {
     /* API Variables */
     
+    enum AgeGroup
+    {
+        adult, child;
+    }
+    
     enum Type 
     { 
         registered, guest; 
@@ -22,6 +27,7 @@ public class Customer
     private String id;
     private String firstName;
     private String lastName;
+    private AgeGroup ageGroup;
     private Type type;
     private String emailAddress;
     private String account;
@@ -34,11 +40,12 @@ public class Customer
      * @param type The type of customer (registered | guest)
      * @param account The blockchain address of the customer for billing
      */
-    public Customer(String id, String firstName, String lastName, Type type, String emailAddress, String account)
+    public Customer(String id, String firstName, String lastName, AgeGroup ageGroup, Type type, String emailAddress, String account)
     {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.ageGroup = ageGroup;
         this.type = type;
         this.emailAddress = emailAddress;
         this.account = account;
@@ -54,6 +61,22 @@ public class Customer
         for (Type type : Type.values())
         {
             if (type.name().equals(testString))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    
+    /* *
+     *  Checks a string if it's an AgeGroup enum
+     */
+    public static boolean containsAgeGroupEnum(String testString)
+    {
+        for (AgeGroup ageGroup : AgeGroup.values())
+        {
+            if (ageGroup.name().equals(testString))
             {
                 return true;
             }
@@ -102,5 +125,10 @@ public class Customer
     public void setLocation(String location)
     {
         this.location = location;
-    }       
+    }
+
+    public AgeGroup getAgeGroup()
+    {
+        return ageGroup;
+    }   
 }

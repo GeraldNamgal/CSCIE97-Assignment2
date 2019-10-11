@@ -41,7 +41,7 @@ public class CommandProcessor
     
     /* *
      * Parses a file of strings for valid CLI/DSL command syntax and calls corresponding Modeler methods
-     *  for each string found    
+     * for each string found    
      * @param commandFile the name of the file to be pased
      * Referenced https://www.journaldev.com/709/java-read-file-line-by-line
      */
@@ -101,7 +101,7 @@ public class CommandProcessor
 
     /* *
      * Utility method that parses a string for valid DSL/CLI command syntax and calls Modeler methods
-     *  based on parsing result
+     * based on parsing result
      * @param input The line of string to be parsed
      */
     public void parseAndProcess(String input)
@@ -333,19 +333,21 @@ public class CommandProcessor
         
         /* code block END ("If input contained quotes, then validate their correct usage and fix array") */              
         
-        // Continue parsing for valid DSL commands for CLI        
+        // Continue parsing for valid DSL commands for CLI
+        String auth_token = null;
+        
         if ((splitInputArr.length == 7) && splitInputArr[0].equalsIgnoreCase("define") && splitInputArr[1].equalsIgnoreCase("store")
                 && splitInputArr[3].equalsIgnoreCase("name") && splitInputArr[5].equalsIgnoreCase("address"))
         {
             System.out.println("-: " + trimmedInput);
-            modeler.defineStore(splitInputArr[2], splitInputArr[4], splitInputArr[6]);
+            modeler.defineStore(splitInputArr[2], splitInputArr[4], splitInputArr[6], auth_token);
             System.out.println();
         }   	
         
         else if ((splitInputArr.length == 3) && splitInputArr[0].equalsIgnoreCase("show") && splitInputArr[1].equalsIgnoreCase("store"))
         {
             System.out.println("-: " + trimmedInput);
-            modeler.showStore(splitInputArr[2]);
+            modeler.showStore(splitInputArr[2], auth_token);
             System.out.println();
         }
    
@@ -354,7 +356,7 @@ public class CommandProcessor
                 && splitInputArr[7].equalsIgnoreCase("location") && (splitInputArr[2].split(":").length == 2))
         {
             System.out.println("-: " + trimmedInput);
-            modeler.defineAisle(splitInputArr[2], splitInputArr[4], splitInputArr[6], splitInputArr[8]);
+            modeler.defineAisle(splitInputArr[2], splitInputArr[4], splitInputArr[6], splitInputArr[8], auth_token);
             System.out.println();
         }
         
@@ -362,7 +364,7 @@ public class CommandProcessor
                 && (splitInputArr[2].split(":").length == 2))
         {
             System.out.println("-: " + trimmedInput);
-            modeler.showAisle(splitInputArr[2]);
+            modeler.showAisle(splitInputArr[2], auth_token);
             System.out.println();
         }
         
@@ -372,7 +374,7 @@ public class CommandProcessor
                 && splitInputArr[7].equalsIgnoreCase("description") && (splitInputArr[2].split(":").length == 3))
         {
             System.out.println("-: " + trimmedInput);
-            modeler.defineShelf(splitInputArr[2], splitInputArr[4], splitInputArr[6], splitInputArr[8]);
+            modeler.defineShelf(splitInputArr[2], splitInputArr[4], splitInputArr[6], splitInputArr[8], auth_token);
             System.out.println();
         }    
     
@@ -383,7 +385,7 @@ public class CommandProcessor
                 && (splitInputArr[2].split(":").length == 3))
         {
             System.out.println("-: " + trimmedInput);
-            modeler.defineShelf(splitInputArr[2], splitInputArr[4], splitInputArr[6], splitInputArr[8], splitInputArr[10]);
+            modeler.defineShelf(splitInputArr[2], splitInputArr[4], splitInputArr[6], splitInputArr[8], splitInputArr[10], auth_token);
             System.out.println();
         }
     
@@ -391,7 +393,7 @@ public class CommandProcessor
                 && (splitInputArr[2].split(":").length == 3))
         {
             System.out.println("-: " + trimmedInput);
-            modeler.showShelf(splitInputArr[2]);
+            modeler.showShelf(splitInputArr[2], auth_token);
             System.out.println();
         }    
     
@@ -449,7 +451,7 @@ public class CommandProcessor
             {
                 System.out.println("-: " + trimmedInput);
                 modeler.defineInventory(splitInputArr[2], splitInputArr[4], Integer.parseInt(splitInputArr[6]),
-                        Integer.parseInt(splitInputArr[8]), splitInputArr[10]);
+                        Integer.parseInt(splitInputArr[8]), splitInputArr[10], auth_token);
                 System.out.println();
             }
         }
@@ -457,7 +459,7 @@ public class CommandProcessor
         else if ((splitInputArr.length == 3) && splitInputArr[0].equalsIgnoreCase("show") && splitInputArr[1].equalsIgnoreCase("inventory"))
         {
             System.out.println("-: " + trimmedInput);
-            modeler.showInventory(splitInputArr[2]);
+            modeler.showInventory(splitInputArr[2], auth_token);
             System.out.println();
         }
         
@@ -508,7 +510,7 @@ public class CommandProcessor
             }
             
             System.out.println("-: " + trimmedInput);
-            modeler.updateInventory(splitInputArr[2], Integer.parseInt(splitInputArr[4]));
+            modeler.updateInventory(splitInputArr[2], Integer.parseInt(splitInputArr[4]), auth_token);
             System.out.println();            
         }       
         
@@ -563,7 +565,7 @@ public class CommandProcessor
                           
             System.out.println("-: " + trimmedInput);
             modeler.defineProduct(splitInputArr[2], splitInputArr[4], splitInputArr[6], splitInputArr[8], splitInputArr[10],
-                    Integer.parseInt(splitInputArr[12]), splitInputArr[14]);
+                    Integer.parseInt(splitInputArr[12]), splitInputArr[14], auth_token);
             System.out.println();            
         }
     
@@ -618,24 +620,25 @@ public class CommandProcessor
             
             System.out.println("-: " + trimmedInput);
             modeler.defineProduct(splitInputArr[2], splitInputArr[4], splitInputArr[6], splitInputArr[8], splitInputArr[10],
-                    Integer.parseInt(splitInputArr[12]));
+                    Integer.parseInt(splitInputArr[12]), auth_token);
             System.out.println();
         }
     
         else if ((splitInputArr.length == 3) && splitInputArr[0].equalsIgnoreCase("show") && splitInputArr[1].equalsIgnoreCase("product"))
         {
             System.out.println("-: " + trimmedInput);
-            modeler.showProduct(splitInputArr[2]);
+            modeler.showProduct(splitInputArr[2], auth_token);
             System.out.println();
         }    
     
-        else if ((splitInputArr.length == 13) && splitInputArr[0].equalsIgnoreCase("define") && splitInputArr[1].equalsIgnoreCase("customer")
+        else if ((splitInputArr.length == 15) && splitInputArr[0].equalsIgnoreCase("define") && splitInputArr[1].equalsIgnoreCase("customer")
                 && splitInputArr[3].equalsIgnoreCase("first_name") && splitInputArr[5].equalsIgnoreCase("last_name")
-                && splitInputArr[7].equalsIgnoreCase("type") && splitInputArr[9].equalsIgnoreCase("email_address")
-                && splitInputArr[11].equalsIgnoreCase("account"))
+                && splitInputArr[7].equalsIgnoreCase("age_group") && splitInputArr[9].equalsIgnoreCase("type") && splitInputArr[11].equalsIgnoreCase("email_address")
+                && splitInputArr[13].equalsIgnoreCase("account"))
         {
             System.out.println("-: " + trimmedInput);
-            modeler.defineCustomer(splitInputArr[2], splitInputArr[4], splitInputArr[6], splitInputArr[8], splitInputArr[10], splitInputArr[12]);
+            modeler.defineCustomer(splitInputArr[2], splitInputArr[4], splitInputArr[6], splitInputArr[8], splitInputArr[10], splitInputArr[12]
+                    , splitInputArr[14], auth_token);
             System.out.println();
         }
         
@@ -643,21 +646,21 @@ public class CommandProcessor
                 && splitInputArr[3].equalsIgnoreCase("location") && (splitInputArr[4].split(":").length == 2))
         {
             System.out.println("-: " + trimmedInput);
-            modeler.updateCustomer(splitInputArr[2], splitInputArr[4]);
+            modeler.updateCustomer(splitInputArr[2], splitInputArr[4], auth_token);
             System.out.println();
         }   
         
         else if ((splitInputArr.length == 3) && splitInputArr[0].equalsIgnoreCase("show") && splitInputArr[1].equalsIgnoreCase("customer"))
         {
             System.out.println("-: " + trimmedInput);
-            modeler.showCustomer(splitInputArr[2]);
+            modeler.showCustomer(splitInputArr[2], auth_token);
             System.out.println();
         }    
     
         else if ((splitInputArr.length == 2) && splitInputArr[0].equalsIgnoreCase("get_customer_basket"))
         {
             System.out.println("-: " + trimmedInput);
-            modeler.getCustomerBasket(splitInputArr[1]);
+            modeler.getCustomerBasket(splitInputArr[1], auth_token);
             System.out.println();
         }          
     
@@ -708,7 +711,7 @@ public class CommandProcessor
             }
             
             System.out.println("-: " + trimmedInput);
-            modeler.addBasketItem(splitInputArr[1], splitInputArr[3], Integer.parseInt(splitInputArr[5]));
+            modeler.addBasketItem(splitInputArr[1], splitInputArr[3], Integer.parseInt(splitInputArr[5]), auth_token);
             System.out.println();
         }
         
@@ -759,21 +762,21 @@ public class CommandProcessor
             }
             
             System.out.println("-: " + trimmedInput);
-            modeler.removeBasketItem(splitInputArr[1], splitInputArr[3], Integer.parseInt(splitInputArr[5]));
+            modeler.removeBasketItem(splitInputArr[1], splitInputArr[3], Integer.parseInt(splitInputArr[5]), auth_token);
             System.out.println();            
         }
         
         else if ((splitInputArr.length == 2) && splitInputArr[0].equalsIgnoreCase("clear_basket"))
         {
             System.out.println("-: " + trimmedInput);
-            modeler.clearBasket(splitInputArr[1]);
+            modeler.clearBasket(splitInputArr[1], auth_token);
             System.out.println();
         }   
         
         else if ((splitInputArr.length == 3) && splitInputArr[0].equalsIgnoreCase("show") &&  splitInputArr[1].equalsIgnoreCase("basket_items"))
         {
             System.out.println("-: " + trimmedInput);
-            modeler.showBasketItems(splitInputArr[2]);
+            modeler.showBasketItems(splitInputArr[2], auth_token);
             System.out.println();
         }      
     
@@ -782,14 +785,14 @@ public class CommandProcessor
                 && splitInputArr[7].equalsIgnoreCase("location") && (splitInputArr[8].split(":").length == 2))
         {
             System.out.println("-: " + trimmedInput);
-            modeler.defineDevice(splitInputArr[2], splitInputArr[4], splitInputArr[6], splitInputArr[8]);
+            modeler.defineDevice(splitInputArr[2], splitInputArr[4], splitInputArr[6], splitInputArr[8], auth_token);
             System.out.println();
         }
         
         else if ((splitInputArr.length == 3) && splitInputArr[0].equalsIgnoreCase("show") && splitInputArr[1].equalsIgnoreCase("device"))
         {
             System.out.println("-: " + trimmedInput);
-            modeler.showDevice(splitInputArr[2]);
+            modeler.showDevice(splitInputArr[2], auth_token);
             System.out.println();
         }    
     
@@ -797,7 +800,7 @@ public class CommandProcessor
                 && splitInputArr[3].equalsIgnoreCase("event"))
         {
             System.out.println("-: " + trimmedInput);
-            modeler.createEvent(splitInputArr[2], splitInputArr[4]);
+            modeler.createEvent(splitInputArr[2], splitInputArr[4], auth_token);
             System.out.println();
         }    
     
@@ -805,7 +808,7 @@ public class CommandProcessor
                 && splitInputArr[3].equalsIgnoreCase("message"))
         {
             System.out.println("-: " + trimmedInput);
-            modeler.createCommand(splitInputArr[2], splitInputArr[4]);
+            modeler.createCommand(splitInputArr[2], splitInputArr[4], auth_token);
             System.out.println();
         }        
     	

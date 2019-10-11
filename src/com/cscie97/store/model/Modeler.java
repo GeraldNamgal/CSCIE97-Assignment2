@@ -46,7 +46,7 @@ public class Modeler
      * @param address The postal address of the store
      * @return A Store object
      */
-    public Store defineStore(String id, String name, String address)
+    public Store defineStore(String id, String name, String address, String auth_token)
     {
         // Check that store id is unique
         if (stores.containsKey(id))
@@ -77,7 +77,7 @@ public class Modeler
      * Prints a store's information to stdout
      * @param storeId The unique id of the store
      */
-    public void showStore(String storeId)
+    public void showStore(String storeId, String auth_token)
     {
         // Get store
         Store store = stores.get(storeId);
@@ -227,7 +227,7 @@ public class Modeler
                 + "\n - sensors=" + sensorsString + "\n - appliances=" + appliancesString + "\n";           
 
         // Print string to stdout
-        System.out.println("\nOutput:>>");
+        System.out.print("\nOutput:>>");
         System.out.print(string);                    
     }
     
@@ -237,7 +237,7 @@ public class Modeler
      * @param location The location within the store the aisle should be (floor | storeroom)
      * @return An Aisle object
      */
-    public Aisle defineAisle(String storeAisleLoc, String name, String description, String location)
+    public Aisle defineAisle(String storeAisleLoc, String name, String description, String location, String auth_token)
     {
         // Split storeAisleLoc on colon
         String[] splitLoc = storeAisleLoc.split(":");
@@ -308,7 +308,7 @@ public class Modeler
      * Print an aisle's information to stdout
      * @param storeAisleLoc
      */
-    public void showAisle(String storeAisleLoc)
+    public void showAisle(String storeAisleLoc, String auth_token)
     {        
         // Split storeAisleLoc on colon
         String[] splitLoc = storeAisleLoc.split(":");
@@ -382,7 +382,7 @@ public class Modeler
                 + aisle.getLocation() + "\n - shelves =" + shelvesString + "\n";           
 
         // Print string to stdout
-        System.out.println("\nOutput:>>");
+        System.out.print("\nOutput:>>");
         System.out.print(string);
     }
     
@@ -392,7 +392,7 @@ public class Modeler
      * @param level The height of the shelf (high | medium | low)
      * @return A Shelf object
      */
-    public Shelf defineShelf(String storeAisleShelfLoc, String name, String level, String description, String temperature)
+    public Shelf defineShelf(String storeAisleShelfLoc, String name, String level, String description, String temperature, String auth_token)
     { 
         // Split storeAisleShelfLoc on colon
         String[] splitLoc = storeAisleShelfLoc.split(":");
@@ -501,7 +501,7 @@ public class Modeler
      * @param level The height of the shelf (high | medium | low)
      * @return A Shelf object
      */
-    public Shelf defineShelf(String storeAisleShelfLoc, String name, String level, String description)
+    public Shelf defineShelf(String storeAisleShelfLoc, String name, String level, String description, String auth_token)
     {
         // Split storeAisleShelfLoc on colon
         String[] splitLoc = storeAisleShelfLoc.split(":");
@@ -592,7 +592,7 @@ public class Modeler
      * Prints a shelf's information to stdout
      * @param storeAisleShelfLoc The unique id of the shelf
      */
-    public void showShelf(String storeAisleShelfLoc)
+    public void showShelf(String storeAisleShelfLoc, String auth_token)
     {      
         // Split storeAisleShelfLoc on colon
         String[] splitLoc = storeAisleShelfLoc.split(":");
@@ -695,7 +695,7 @@ public class Modeler
                 + "\n - inventories =" + inventoriesString + "\n";           
 
         // Print string to stdout
-        System.out.println("\nOutput:>>");
+        System.out.print("\nOutput:>>");
         System.out.print(string);
     }
     
@@ -707,7 +707,7 @@ public class Modeler
      * @param count The number of a product item on the shelf
      * @return An Inventory object
      */
-    public Inventory defineInventory(String id, String storeAisleShelfLoc, Integer capacity, Integer count, String productId)
+    public Inventory defineInventory(String id, String storeAisleShelfLoc, Integer capacity, Integer count, String productId, String auth_token)
     {        
         // Check that count is within valid range
         if ((count < 0) || (count > capacity))
@@ -735,7 +735,8 @@ public class Modeler
             {
                 try
                 {
-                    throw new ModelerException("define inventory", "inventory already defined for that product and shelf combination; inventory not created");
+                    throw new ModelerException("define inventory", "inventory already defined for that product and shelf combination;"
+                            + " inventory not created");
                 }
                 
                 catch (ModelerException exception)
@@ -868,7 +869,7 @@ public class Modeler
      * Prints an inventory to stdout
      * @param id The inventory's unique id
      */
-    public void showInventory(String id)
+    public void showInventory(String id, String auth_token)
     {         
         // Retrieve inventory
         Inventory inventory = inventories.get(id);              
@@ -891,10 +892,10 @@ public class Modeler
             
         // Concatenate inventory's information     
         String inventoryString = "\nInventory \"" + id + "\" information --\n" + " - location = " + inventory.getLocation() + "\n - capacity = " 
-                + inventory.getCapacity() + "\n - count = " + inventory.getCount() + "\n - productId = "+ inventory.getProductId() + "\n";
+                + inventory.getCapacity() + "\n - count = " + inventory.getCount() + "\n - product id = "+ inventory.getProductId() + "\n";
         
         // Print string to stdout
-        System.out.println("\nOutput:>>");
+        System.out.print("\nOutput:>>");
         System.out.print(inventoryString);
     }
     
@@ -903,7 +904,7 @@ public class Modeler
      * @param id The unique id of the inventory
      * @param amount The amount to increment or decrement by, a positive or negative value, respectively 
      */
-    public void updateInventory(String id, Integer amount)
+    public void updateInventory(String id, Integer amount, String auth_token)
     {       
         Inventory inventory = inventories.get(id);
         
@@ -946,7 +947,8 @@ public class Modeler
      * Defines a store product with temperature input give
      * @return A Product object 
      */
-    public Product defineProduct(String productId, String name, String description, String size, String category, Integer unitPrice, String temperature)
+    public Product defineProduct(String productId, String name, String description, String size, String category, Integer unitPrice
+            , String temperature, String auth_token)
     {
         // Check that productId is unique
         if (products.containsKey(productId))
@@ -996,7 +998,8 @@ public class Modeler
      * Defines a store product with a default temperature
      * @return A Product object
      */
-    public Product defineProduct(String productId, String name, String description, String size, String category, Integer unitPrice)
+    public Product defineProduct(String productId, String name, String description, String size, String category, Integer unitPrice
+            , String auth_token)
     {
         // Check that productId is unique
         if (products.containsKey(productId))
@@ -1030,7 +1033,7 @@ public class Modeler
      * Prints a product's information to stdout
      * @param id The product's unique id
      */
-    public void showProduct(String id)
+    public void showProduct(String id, String auth_token)
     {
         // Get product
         Product product = products.get(id);            
@@ -1054,10 +1057,10 @@ public class Modeler
         // Concatenate product's information     
         String productString = "\nProduct \"" + id + "\" information --\n" + " - name = " + product.getName() + "\n - description = " 
                 + product.getDescription() + "\n - size = " + product.getSize() + "\n - category = "+ product.getCategory()
-                + "\n - unit_price = " + product.getUnitPrice() + "\n - temperature = " + product.getTemperature() + "\n";
+                + "\n - unit price = " + product.getUnitPrice() + "\n - temperature = " + product.getTemperature() + "\n";
         
         // Print string to stdout
-        System.out.println("\nOutput:>>");
+        System.out.print("\nOutput:>>");
         System.out.print(productString);       
     }
     
@@ -1066,7 +1069,8 @@ public class Modeler
      * @param account The blockchain address of the customer used for billing
      * @return A Customer object
      */
-    public Customer defineCustomer(String id, String firstName, String lastName, String type, String emailAddress, String account)
+    public Customer defineCustomer(String id, String firstName, String lastName, String ageGroup, String type, String emailAddress
+            , String account, String auth_token)
     {
         // Check if customer id is unique
         if (customers.containsKey(id))
@@ -1074,6 +1078,22 @@ public class Modeler
             try
             {
                 throw new ModelerException("define customer", "id already exists; customer not created");
+            }
+            
+            catch (ModelerException exception)
+            {
+                System.out.println();
+                System.out.print(exception.getMessage());      
+                return null;
+            }
+        }
+        
+        // Check if ageGroup is a valid enum
+        if (!Customer.containsAgeGroupEnum(ageGroup))
+        {
+            try
+            {
+                throw new ModelerException("define customer", "age group (case-sensitive) not found; customer not created");
             }
             
             catch (ModelerException exception)
@@ -1100,10 +1120,13 @@ public class Modeler
             }
         }
         
+        // Convert ageGroup to enum
+        Customer.AgeGroup ageGroupEnum = Customer.AgeGroup.valueOf(ageGroup);
+        
         // Convert type to enum
         Customer.Type typeEnum = Customer.Type.valueOf(type);
         
-        Customer customer = new Customer(id, firstName, lastName, typeEnum, emailAddress, account);
+        Customer customer = new Customer(id, firstName, lastName, ageGroupEnum, typeEnum, emailAddress, account);
         
         // Add to list of customers
         if (customer != null)
@@ -1116,7 +1139,7 @@ public class Modeler
      * Prints a customer's information to stdout
      * @param id The customer's unique id
      */
-    public void showCustomer(String id)
+    public void showCustomer(String id, String auth_token)
     {
         Customer customer = customers.get(id);
         
@@ -1138,11 +1161,12 @@ public class Modeler
         
         // Create customer's information string    
         String customerString = "\nCustomer \"" + customer.getId() + "\" information --\n" + " - first name = " + customer.getFirstName()
-                + "\n - last name = " + customer.getLastName() + "\n - type = " + customer.getType() + "\n - emailAddress = "
-                + customer.getEmailAddress() + "\n - account = " + customer.getAccount() + "\n - location = " + customer.getLocation() + "\n";
+                + "\n - last name = " + customer.getLastName() + "\n - age group = " + customer.getAgeGroup() + "\n - type = "
+                + customer.getType() + "\n - email address = " + customer.getEmailAddress() + "\n - account = " + customer.getAccount()
+                + "\n - location = " + customer.getLocation() + "\n";
         
         // Print string to stdout
-        System.out.println("\nOutput:>>");
+        System.out.print("\nOutput:>>");
         System.out.print(customerString); 
     }
     
@@ -1151,7 +1175,7 @@ public class Modeler
      * @param id The customer's unique id
      * @param storeAisleLoc The location to update the customer at
      */
-    public void updateCustomer(String id, String storeAisleLoc)
+    public void updateCustomer(String id, String storeAisleLoc, String auth_token)
     {
         // Check that customer exists
         Customer customer = customers.get(id);
@@ -1220,7 +1244,7 @@ public class Modeler
      * @param customerId The unique id of the customer
      * @return A Basket object
      */
-    public Basket getCustomerBasket(String customerId)
+    public Basket getCustomerBasket(String customerId, String auth_token)
     {
         Customer customer = customers.get(customerId);
         
@@ -1293,7 +1317,7 @@ public class Modeler
      * @param customerId The basket's unique id (same as customer's id)
      * @param itemCount The amount of the product to add
      */
-    public void addBasketItem(String customerId, String productId, Integer itemCount)
+    public void addBasketItem(String customerId, String productId, Integer itemCount, String auth_token)
     {
         // Check that itemCount is greater than 0
         if (itemCount < 1)
@@ -1414,7 +1438,7 @@ public class Modeler
      * @param customerId The basket's unique id (same as customer's id)
      * @param itemCount The amount of the product to remove
      */
-    public void removeBasketItem(String customerId, String productId, Integer itemCount)
+    public void removeBasketItem(String customerId, String productId, Integer itemCount, String auth_token)
     {
         // Check that itemCount is greater than 0
         if (itemCount < 1)
@@ -1517,7 +1541,7 @@ public class Modeler
      * Clears a customer's basket and removes its association to them
      * @param customerId The basket's unique id (same as customer's id)
      */
-    public void clearBasket(String customerId)
+    public void clearBasket(String customerId, String auth_token)
     {
         // Check if basket exists
         if (!activeBaskets.containsKey(customerId))
@@ -1543,7 +1567,7 @@ public class Modeler
      * Print a customer's basket items to stdout
      * @param customerId The basket's unique id (same as customer's id)
      */
-    public void showBasketItems(String customerId)
+    public void showBasketItems(String customerId, String auth_token)
     {
         Basket basket = activeBaskets.get(customerId);
         
@@ -1575,7 +1599,7 @@ public class Modeler
             {
                 productId = integerEntry.getKey();
                 count = integerEntry.getValue();                
-                itemsString += "\n " + counter + ".)" + " productId = " + productId + " : count = " + count;                
+                itemsString += "\n " + counter + ".)" + " product id = " + productId + " : count = " + count;                
                 counter++;            
             }
         }
@@ -1589,7 +1613,7 @@ public class Modeler
         string = "\nBasket \"" + basket.getId() + "\" items --" + itemsString + "\n";           
 
         // Print string to stdout
-        System.out.println("\nOutput:>>");
+        System.out.print("\nOutput:>>");
         System.out.print(string); 
     }
     
@@ -1598,7 +1622,7 @@ public class Modeler
      * @param storeAisleLoc The aisle location of the sensor
      * @return A Sensor object (Appliance class extends Sensor)
      */
-    public Sensor defineDevice(String id, String name, String type, String storeAisleLoc)
+    public Sensor defineDevice(String id, String name, String type, String storeAisleLoc, String auth_token)
     {
         // Check that id is unique
         if (devices.containsKey(id))
@@ -1704,7 +1728,7 @@ public class Modeler
      * Prints a device's information to stdout
      * @param id The device's unique id
      */
-    public void showDevice(String id)
+    public void showDevice(String id, String auth_token)
     {
         Sensor device = devices.get(id);
         
@@ -1729,7 +1753,7 @@ public class Modeler
                 + device.getType() + "\n - location = " + device.getLocation() + "\n";
         
         // Print string to stdout
-        System.out.println("\nOutput:>>");
+        System.out.print("\nOutput:>>");
         System.out.print(deviceString);
     }
     
@@ -1738,7 +1762,7 @@ public class Modeler
      * @ id The unique id of the device
      * @ event The event to be sent
      */
-    public void createEvent(String id, String event)
+    public void createEvent(String id, String event, String auth_token)
     {
         Sensor device = devices.get(id);
         
@@ -1762,7 +1786,7 @@ public class Modeler
         device.getEvents().add(event);
         
         // Send event to device's method
-        System.out.println("\nOutput:>>");
+        System.out.print("\nOutput:>>");
         device.event(event);
     }
     
@@ -1771,7 +1795,7 @@ public class Modeler
      * @param id The unique id of the appliance
      * @param command The command to be sent
      */
-    public void createCommand(String id, String command)
+    public void createCommand(String id, String command, String auth_token)
     {
         Sensor device = devices.get(id);
         
@@ -1814,7 +1838,7 @@ public class Modeler
         appliance.getCommands().add(command);
         
         // Send command to appliance's method
-        System.out.println("\nOutput:>>");
+        System.out.print("\nOutput:>>");
         appliance.command(command);        
     }
 }
