@@ -7,6 +7,9 @@
 
 package com.cscie97.store.model;
 
+/* *
+ * Product class that represents a product that stores sell
+ */
 public class Product
 {
     /* API Variables */
@@ -21,6 +24,9 @@ public class Product
     
     /* Constructor */
     
+    /* *
+     * Creates a new Product
+     */
     public Product(String productId, String name, String description, String size, String category, Integer unitPrice, Shelf.Temperature temperature)
     {
         this.productId = productId;

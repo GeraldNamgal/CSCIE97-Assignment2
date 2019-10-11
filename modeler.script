@@ -4,7 +4,7 @@ define store store1_id name "Harvard Square Store" address "1400 Mass Avenue, Ca
 # Exception: Try to create another store store1_id (already exists)
 define store store1_id name "Yale Square Store" address "Yale's address"
 
-# Show store store1_id
+# TODO: Exception: Show store store1_id (store1_id has no aisle and shelf yet)
 show store store1_id
 
 # Exception: Try to show a store that doesn't exist
@@ -151,7 +151,7 @@ define product prod3_id name "Cheesy-O's" description "cheese" size "1 oz" categ
 # Show product prod3_id
 show product prod3_id
 
-# Define shelf shelf3_id without a temperature input (defaut temp is "ambient")
+# Define shelf shelf3_id without a temperature input (default temp is "ambient")
 define shelf store1_id:aisle2_id:shelf3_id name "Cereals" level high description "cereal and oatmeal"
 
 # Show shelf shelf3_id

@@ -12,12 +12,13 @@ import java.util.Scanner;
 import com.cscie97.store.model.*;
 
 /* *
- * Contains main method that calls the CommandProcessor class to exercise the Modeler
+ * Test driver class that contains main method that calls the CommandProcessor class to exercise the Modeler
  */
 public class TestDriver
 {
     /* *
-     * Without a script file name argument, will run manual commands (otherwise will parse script file given)
+     * Without a script file name argument, main method will run manual commands (otherwise will parse a script
+     * file if it is given)
      */
     public static void main(String[] args)
     {

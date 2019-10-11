@@ -25,6 +25,10 @@ public class CommandProcessor
     
     /* API Methods */
 
+    /* *
+     * Parses a string for valid CLI/DSL command syntax and calls corresponding Modeler method
+     * @command The input string to be parsed
+     */
     public void processCommand(String command)
     {       
         // Create Modeler if it doesn't exist
@@ -34,7 +38,13 @@ public class CommandProcessor
         parseAndProcess(command);
     }
     
-    // Referenced https://www.journaldev.com/709/java-read-file-line-by-line
+    
+    /* *
+     * Parses a file of strings for valid CLI/DSL command syntax and calls corresponding Modeler methods
+     *  for each string found    
+     * @param commandFile the name of the file to be pased
+     * Referenced https://www.journaldev.com/709/java-read-file-line-by-line
+     */
     public void processCommandFile(String commandFile)
     {       
         // Create Modeler if it doesn't exist
@@ -89,6 +99,11 @@ public class CommandProcessor
     
     /* Utility Methods */
 
+    /* *
+     * Utility method that parses a string for valid DSL/CLI command syntax and calls Modeler methods
+     *  based on parsing result
+     * @param input The line of string to be parsed
+     */
     public void parseAndProcess(String input)
     {
         // Trim leading and trailing whitespace

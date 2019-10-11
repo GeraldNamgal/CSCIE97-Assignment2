@@ -11,7 +11,8 @@ import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 
 /* *
- * Contains methods and attributes for creating, maintaining, and updating stores and their assets
+ * The Store Model Service API implementation class that contains methods and attributes for creating,
+ * maintaining, and updating stores and their assets
  */
 public class Modeler
 {
@@ -72,6 +73,10 @@ public class Modeler
         return store;
     } 
     
+    /* *
+     * Prints a store's information to stdout
+     * @param storeId The unique id of the store
+     */
     public void showStore(String storeId)
     {
         // Get store
@@ -226,6 +231,12 @@ public class Modeler
         System.out.print(string);                    
     }
     
+    /* *
+     * Defines an aisle
+     * @param storeAisleLoc The unique id of the aisle 
+     * @param location The location within the store the aisle should be (floor | storeroom)
+     * @return An Aisle object
+     */
     public Aisle defineAisle(String storeAisleLoc, String name, String description, String location)
     {
         // Split storeAisleLoc on colon
@@ -293,6 +304,10 @@ public class Modeler
         return aisle;
     }
     
+    /* *
+     * Print an aisle's information to stdout
+     * @param storeAisleLoc
+     */
     public void showAisle(String storeAisleLoc)
     {        
         // Split storeAisleLoc on colon
@@ -371,6 +386,12 @@ public class Modeler
         System.out.print(string);
     }
     
+    /* *
+     * Defines a shelf with the temperature input given by the user
+     * @param storeAisleShelfLoc The unique id of the shelf
+     * @param level The height of the shelf (high | medium | low)
+     * @return A Shelf object
+     */
     public Shelf defineShelf(String storeAisleShelfLoc, String name, String level, String description, String temperature)
     { 
         // Split storeAisleShelfLoc on colon
@@ -474,7 +495,12 @@ public class Modeler
         return shelf;       
     }
     
-    // Define shelf with default temp
+    /* *
+     * Defines a shelf with a default temperature
+     * @param storeAisleShelLoc The unique id of the shelf
+     * @param level The height of the shelf (high | medium | low)
+     * @return A Shelf object
+     */
     public Shelf defineShelf(String storeAisleShelfLoc, String name, String level, String description)
     {
         // Split storeAisleShelfLoc on colon
@@ -562,6 +588,10 @@ public class Modeler
         return shelf;
     }
     
+    /* *
+     * Prints a shelf's information to stdout
+     * @param storeAisleShelfLoc The unique id of the shelf
+     */
     public void showShelf(String storeAisleShelfLoc)
     {      
         // Split storeAisleShelfLoc on colon
@@ -669,6 +699,14 @@ public class Modeler
         System.out.print(string);
     }
     
+    /* *
+     * Defines an inventory (product placement on shelf)
+     * @param id The unique id of the inventory
+     * @param storeAisleShelfLoc The location of the inventory
+     * @param capacity The maximum number of a product item that can fit on the shelf
+     * @param count The number of a product item on the shelf
+     * @return An Inventory object
+     */
     public Inventory defineInventory(String id, String storeAisleShelfLoc, Integer capacity, Integer count, String productId)
     {        
         // Check that count is within valid range
@@ -804,6 +842,10 @@ public class Modeler
         return inventory;
     }
     
+    /* *
+     * Prints an inventory to stdout
+     * @param id The inventory's unique id
+     */
     public void showInventory(String id)
     {         
         // Retrieve inventory
@@ -834,6 +876,11 @@ public class Modeler
         System.out.print(inventoryString);
     }
     
+    /* *
+     * Updates (increments or decrements) the product count on the shelf
+     * @param id The unique id of the inventory
+     * @param amount The amount to increment or decrement by, a positive or negative value, respectively 
+     */
     public void updateInventory(String id, Integer amount)
     {       
         Inventory inventory = inventories.get(id);
@@ -873,6 +920,10 @@ public class Modeler
         inventory.updateCount(amount);
     }
     
+    /* *
+     * Defines a store product with temperature input give
+     * @return A Product object 
+     */
     public Product defineProduct(String productId, String name, String description, String size, String category, Integer unitPrice, String temperature)
     {
         // Check that productId is unique
@@ -918,7 +969,11 @@ public class Modeler
         
         return product;
     }    
-   
+    
+    /* *
+     * Defines a store product with a default temperature
+     * @return A Product object
+     */
     public Product defineProduct(String productId, String name, String description, String size, String category, Integer unitPrice)
     {
         // Check that productId is unique
@@ -949,6 +1004,10 @@ public class Modeler
         return product;
     }
     
+    /* *
+     * Prints a product's information to stdout
+     * @param id The product's unique id
+     */
     public void showProduct(String id)
     {
         // Get product
@@ -980,6 +1039,11 @@ public class Modeler
         System.out.print(productString);       
     }
     
+    /* *
+     * Defines a customer
+     * @param account The blockchain address of the customer used for billing
+     * @return A Customer object
+     */
     public Customer defineCustomer(String id, String firstName, String lastName, String type, String emailAddress, String account)
     {
         // Check if customer id is unique
@@ -1025,7 +1089,11 @@ public class Modeler
             
         return customer;
     }
-        
+    
+    /* *
+     * Prints a customer's information to stdout
+     * @param id The customer's unique id
+     */
     public void showCustomer(String id)
     {
         Customer customer = customers.get(id);
@@ -1056,6 +1124,11 @@ public class Modeler
         System.out.print(customerString); 
     }
     
+    /* *
+     * Updates a customer's location
+     * @param id The customer's unique id
+     * @param storeAisleLoc The location to update the customer at
+     */
     public void updateCustomer(String id, String storeAisleLoc)
     {
         // Check that customer exists
@@ -1120,6 +1193,11 @@ public class Modeler
         stores.get(storeId).getCustomers().put(customer.getId(), customer);
     }
     
+    /* *
+     * Gets a customer's basket
+     * @param customerId The unique id of the customer
+     * @return A Basket object
+     */
     public Basket getCustomerBasket(String customerId)
     {
         Customer customer = customers.get(customerId);
@@ -1172,6 +1250,11 @@ public class Modeler
         return basket;
     }
     
+    /* *
+     * Add a product to a customer's basket
+     * @param customerId The basket's unique id (same as customer's id)
+     * @param itemCount The amount of the product to add
+     */
     public void addBasketItem(String customerId, String productId, Integer itemCount)
     {
         // Check that itemCount is greater than 0
@@ -1288,6 +1371,11 @@ public class Modeler
         }     
     }
     
+    /* *
+     * Remove a product from a customer's basket
+     * @param customerId The basket's unique id (same as customer's id)
+     * @param itemCount The amount of the product to remove
+     */
     public void removeBasketItem(String customerId, String productId, Integer itemCount)
     {
         // Check that itemCount is greater than 0
@@ -1387,6 +1475,10 @@ public class Modeler
         }          
     }
     
+    /* *
+     * Clears a customer's basket and removes its association to them
+     * @param customerId The basket's unique id (same as customer's id)
+     */
     public void clearBasket(String customerId)
     {
         // Check if basket exists
@@ -1409,6 +1501,10 @@ public class Modeler
             activeBaskets.remove(customerId);
     }
     
+    /* *
+     * Print a customer's basket items to stdout
+     * @param customerId The basket's unique id (same as customer's id)
+     */
     public void showBasketItems(String customerId)
     {
         Basket basket = activeBaskets.get(customerId);
@@ -1459,6 +1555,11 @@ public class Modeler
         System.out.print(string); 
     }
     
+    /* *
+     * Defines a device, i.e., a Sensor of Appliance object (Appliance class extends Sensor)
+     * @param storeAisleLoc The aisle location of the sensor
+     * @return A Sensor object (Appliance class extends Sensor)
+     */
     public Sensor defineDevice(String id, String name, String type, String storeAisleLoc)
     {
         // Check that id is unique
@@ -1561,6 +1662,10 @@ public class Modeler
         }
     }
     
+    /* *
+     * Prints a device's information to stdout
+     * @param id The device's unique id
+     */
     public void showDevice(String id)
     {
         Sensor device = devices.get(id);
@@ -1590,6 +1695,11 @@ public class Modeler
         System.out.print(deviceString);
     }
     
+    /* *
+     * Sends an event to a device
+     * @ id The unique id of the device
+     * @ event The event to be sent
+     */
     public void createEvent(String id, String event)
     {
         Sensor device = devices.get(id);
@@ -1617,6 +1727,11 @@ public class Modeler
         device.event(event);
     }
     
+    /* *
+     * Sends a command to an appliance
+     * @param id The unique id of the appliance
+     * @param command The command to be sent
+     */
     public void createCommand(String id, String command)
     {
         Sensor device = devices.get(id);

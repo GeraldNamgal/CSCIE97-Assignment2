@@ -9,6 +9,9 @@ package com.cscie97.store.model;
 
 import java.util.LinkedHashMap;
 
+/* *
+ * Store class that represents a store serviced by the Model Service
+ */
 public class Store
 {
     /* API Variables */
@@ -23,6 +26,12 @@ public class Store
     
     /* Constructor */
     
+    /* *
+     * Creates a new store
+     * @param id Globally unique store id
+     * @param name Name of the store
+     * @param address Postal address of the store
+     */
     public Store(String id, String name, String address)
     {
         this.id = id;

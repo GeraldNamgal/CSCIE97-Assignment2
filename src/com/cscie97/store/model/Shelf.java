@@ -7,15 +7,24 @@
 
 package com.cscie97.store.model;
 
+/* *
+ * Shelf class that represents a shelf in an aisle in a store
+ */
 public class Shelf
 {
     /* API Variables */
     
+    /* *
+     * Valid levels
+     */
     enum Level 
     { 
         high, medium, low; 
     }
     
+    /* *
+     * Valid temperature settings
+     */
     enum Temperature
     {
         frozen, refrigerated, ambient, warm, hot;
@@ -29,6 +38,9 @@ public class Shelf
     
     /* Constructor */
     
+    /* *
+     * Creates a new shelf
+     */
     public Shelf(String id, String name, Level level, String description, Temperature temperature)
     {
         this.id = id;
@@ -40,7 +52,9 @@ public class Shelf
     
     /* Utility Methods */
     
-    // Checks a string if it's a Level enum
+    /* *
+     *  Checks a string if it's a Level enum
+     */
     public static boolean containsLevelEnum(String testString)
     {
         for (Level level : Level.values())
@@ -54,7 +68,9 @@ public class Shelf
         return false;
     }
     
-    // Checks a string if it's a Temperature enum
+    /* *
+     * Checks a string if it's a Temperature enum
+     */
     public static boolean containsTempEnum(String testString)
     {
         for (Temperature temperature : Temperature.values())

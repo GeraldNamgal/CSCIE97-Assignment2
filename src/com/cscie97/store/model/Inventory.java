@@ -7,6 +7,9 @@
 
 package com.cscie97.store.model;
 
+/* *
+ * Inventory class that represents inventory information for a product-shelf relationship
+ */
 public class Inventory
 {
     /* API Variables */
@@ -19,6 +22,12 @@ public class Inventory
     
     /* Constructor */
     
+    /* *
+     * Creates a new Inventory
+     * @param location Location of shelf (e.g., store1:aisle1:shelf1)
+     * @param capacity The maximum number of product allowed on shelf
+     * @param count The number of the product on the shelf currently
+     */
     public Inventory(String id, String location, Integer capacity, Integer count, String productId)
     {
         inventoryId = id;
@@ -30,6 +39,11 @@ public class Inventory
     
     /* API Methods */
     
+    /* *
+     * Updates the count of the product on the shelf 
+     * @param updateAmount The amount to increment or decrement the product by (negative number for
+     *                     decrementing)
+     */
     public void updateCount(Integer updateAmount)
     {
         count += updateAmount;
@@ -47,7 +61,6 @@ public class Inventory
         return location;
     }   
    
-
     public Integer getCapacity() 
     {
         return capacity;

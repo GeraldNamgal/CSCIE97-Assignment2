@@ -9,6 +9,9 @@ package com.cscie97.store.model;
 
 import java.util.LinkedHashMap;
 
+/* *
+ * Aisle class that represents an aisle in a store 
+ */
 public class Aisle
 {       
     /* API Variables */
@@ -26,6 +29,11 @@ public class Aisle
     
     /* Constructor */
     
+    /* *
+     * Creates a new Aisle
+     * @param number The unique id of the aisle
+     * @param location The location of the aisle (floor | storeroom) 
+     */
     public Aisle(String number, String name, String description, Location location)
     {
         this.number = number;
@@ -37,7 +45,9 @@ public class Aisle
     
     /* Utility Methods */
  
-    // Checks a string if it's a Location enum
+    /* *
+     * Checks a string if it's a Location enum
+     */
     public static boolean containsLocEnum(String testString)
     {
         for (Location location : Location.values())

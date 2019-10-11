@@ -7,6 +7,9 @@
 
 package com.cscie97.store.model;
 
+/* *
+ * Customer class that represents a customer that shops at stores
+ */
 public class Customer
 {
     /* API Variables */
@@ -26,6 +29,11 @@ public class Customer
     
     /* Constructor */
     
+    /* *
+     * Creates a new Customer
+     * @param type The type of customer (registered | guest)
+     * @param account The blockchain address of the customer for billing
+     */
     public Customer(String id, String firstName, String lastName, Type type, String emailAddress, String account)
     {
         this.id = id;
@@ -38,7 +46,9 @@ public class Customer
     
     /* Utility Methods */
     
-    // Checks a string if it's a Type enum
+    /* *
+     *  Checks a string if it's a Type enum
+     */
     public static boolean containsTypeEnum(String testString)
     {
         for (Type type : Type.values())
