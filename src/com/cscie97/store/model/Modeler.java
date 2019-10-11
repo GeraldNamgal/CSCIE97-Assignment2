@@ -1724,6 +1724,7 @@ public class Modeler
         device.getEvents().add(event);
         
         // Send event to device's method
+        System.out.println("\nOutput:>>");
         device.event(event);
     }
     
@@ -1775,6 +1776,7 @@ public class Modeler
         appliance.getCommands().add(command);
         
         // Send command to appliance's method
+        System.out.println("\nOutput:>>");
         appliance.command(command);        
     }
 }

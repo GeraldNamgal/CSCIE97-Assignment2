@@ -111,17 +111,9 @@ public class CommandProcessor
 
         // Check if input is a comment
         if (trimmedInput.charAt(0) == '#')
-        {
-            if (trimmedInput.length() % 2 == 0)
-            {                
-                System.out.println(trimmedInput); 
-            }
-            
-            else
-            {               
-                System.out.println(trimmedInput); 
-            }
-            
+        {                         
+            System.out.println(trimmedInput + " [line " + lineNum + " in file]"); 
+          
             return;
         }
 
