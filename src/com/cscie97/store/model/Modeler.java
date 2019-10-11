@@ -725,6 +725,28 @@ public class Modeler
             }
         }
         
+        // Check that location and productId combination is unique
+        Inventory inventory;
+        for (Entry<String, Inventory> inventoryEntry : inventories.entrySet())
+        {
+            inventory = inventoryEntry.getValue();
+            
+            if (inventory.getLocation().equals(storeAisleShelfLoc) && inventory.getProductId().equals(productId))
+            {
+                try
+                {
+                    throw new ModelerException("define inventory", "inventory already defined for that product and shelf combination; inventory not created");
+                }
+                
+                catch (ModelerException exception)
+                {
+                    System.out.println();
+                    System.out.print(exception.getMessage());      
+                    return null;
+                }
+            }
+        }
+        
         // Split storeAisleShelfLoc on colon
         String[] splitLoc = storeAisleShelfLoc.split(":");
         String storeId = splitLoc[0];
@@ -828,7 +850,7 @@ public class Modeler
             }
         }
         
-        Inventory inventory = new Inventory(id, storeAisleShelfLoc, capacity, count, productId);        
+        inventory = new Inventory(id, storeAisleShelfLoc, capacity, count, productId);        
                 
         if (inventory != null)
         {
@@ -1224,6 +1246,22 @@ public class Modeler
             try
             {
                 throw new ModelerException("get customer basket", "unregistered customer; request denied");
+            }
+            
+            catch (ModelerException exception)
+            {
+                System.out.println();
+                System.out.print(exception.getMessage());      
+                return null;
+            }
+        }
+        
+        // Check that customer is in a store
+        if (customers.get(customerId).getLocation() == null)
+        {
+            try
+            {
+                throw new ModelerException("get customer basket", "customer is not in a store; request denied");
             }
             
             catch (ModelerException exception)

@@ -40,11 +40,17 @@ define product prod1_id name "soya drink" description "soy milk brand" size "2 L
 # Show product prod1_id
 show product prod1_id
 
+# Exception: Try to define inventory with a product count greater than capacity
+define inventory inv1_id location store1_id:aisle2_id:shelf1_id capacity 30 count 31 product prod1_id
+
 # Define inventory inv1_id
 define inventory inv1_id location store1_id:aisle2_id:shelf1_id capacity 30 count 30 product prod1_id
 
 # Show inventory inv1_id
 show inventory inv1_id
+
+# Exception: Try to define inventory with the same location and productId combination
+define inventory inv1_id location store1_id:aisle2_id:shelf1_id capacity 15 count 15 product prod1_id
 
 # Define product prod2_id
 define product prod2_id name "almond drank" description "almond milk brand" size "2 L" category "milk" unit_price 350 temperature refrigerated
@@ -73,6 +79,12 @@ show aisle store1_id:aisle2_id
 # Show shelf shelf1_id
 show shelf store1_id:aisle2_id:shelf1_id
 
+# Exception: Try to update inv2_id's count past max capacity
+update inventory inv2_id update_count 5
+
+# Exception: Try to update inv2_id's count past its lower limit of 0
+update inventory inv2_id update_count -41
+
 # Update inventory inv2_id
 update inventory inv2_id update_count -5
 
@@ -88,6 +100,9 @@ define customer customer1_id first_name John last_name Smith type registered ema
 # Show customer1_id
 show customer customer1_id
 
+# Exception: Try to get customer1_id a basket (not in a store)
+get_customer_basket customer1_id
+
 # Update customer1_id
 update customer customer1_id location store1_id:aisle3_id
 
@@ -100,6 +115,9 @@ define customer customer2_id first_name Stephanie last_name Jones type guest ema
 # Update customer2_id
 update customer customer2_id location store1_id:aisle2_id
 
+# Exception: Try to get customer2_id a basket (only registered customers can have baskets)
+get_customer_basket customer2_id
+
 # Exception: Try to add items to customer1_id's basket (basket doesn't exist yet)
 add_basket_item customer1_id product prod1_id item_count 5
 
@@ -111,9 +129,6 @@ get_customer_basket customer1_id
 
 # Show basket items for customer1_id (customer 1 should now have an empty basket)
 show basket_items customer1_id
-
-# Exception: Try to get customer2_id (a guest) a basket (only registered customers can have baskets)
-get_customer_basket customer2_id
 
 # Add basket item prod1_id
 add_basket_item customer1_id product prod1_id item_count 5
@@ -157,6 +172,9 @@ show device sensor1_id
 # Show device appliance1_id
 show device appliance1_id
 
+# Show store
+show store store1_id
+
 # Create event event1_id for sensor 1
 create event sensor1_id event event1_id
 
@@ -168,6 +186,3 @@ create command sensor1_id message command1_id
 
 # Create command command1_id for an appliance
 create command appliance1_id message command1_id
-
-# Show store
-show store store1_id
