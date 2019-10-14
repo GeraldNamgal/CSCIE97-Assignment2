@@ -172,8 +172,22 @@ show device sensor1_id
 # Show device appliance1_id
 show device appliance1_id
 
-# Show store
+# Show store store1_id
 show store store1_id
+
+# Define a different store, store2_id, with the same asset names as store1_id
+define store store2_id name "CSCI E-97 Store" address "1400 Mass Avenue, Cambridge, MA 02138"
+define aisle store2_id:aisle1_id name Produce description "vegetables, and fruits" location floor
+define shelf store2_id:aisle1_id:shelf1_id name Fruits level high description "bananas and oranges" temperature ambient
+
+# Show store store2_id (should be different than store store1_id)
+show store store2_id
+
+# Show shelf shelf1_id from store store2_id (should be different than store store1_id's)
+show shelf store2_id:aisle1_id:shelf1_id
+
+# Exception: Try to define a device in store2_id with the same name as one in store1_id (device id's are global in scope)
+define device sensor1_id name "wall cam" type camera location store2_id:aisle1_id
 
 # Create event event1_id for sensor 1
 create event sensor1_id event event1_id
