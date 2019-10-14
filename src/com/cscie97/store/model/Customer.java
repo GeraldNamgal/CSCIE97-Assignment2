@@ -32,6 +32,7 @@ public class Customer
     private String emailAddress;
     private String account;
     private String location;
+    private String timeLastSeen;
     
     /* Constructor */
     
@@ -130,5 +131,15 @@ public class Customer
     public AgeGroup getAgeGroup()
     {
         return ageGroup;
-    }   
+    }
+
+    public String getTimeLastSeen()
+    {
+        return timeLastSeen;
+    }
+
+    public void setTimeLastSeen(String timeLastSeen)
+    {
+        this.timeLastSeen = timeLastSeen;
+    }    
 }

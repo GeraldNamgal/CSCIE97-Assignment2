@@ -9,6 +9,8 @@ package com.cscie97.store.model;
 
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime; 
 
 /* *
  * The Store Model Service API implementation class that contains methods and attributes for creating,
@@ -1163,7 +1165,7 @@ public class Modeler
         String customerString = "\nCustomer \"" + customer.getId() + "\" information --\n" + " - first name = " + customer.getFirstName()
                 + "\n - last name = " + customer.getLastName() + "\n - age group = " + customer.getAgeGroup() + "\n - type = "
                 + customer.getType() + "\n - email address = " + customer.getEmailAddress() + "\n - account = " + customer.getAccount()
-                + "\n - location = " + customer.getLocation() + "\n";
+                + "\n - location = " + customer.getLocation() + "\n - time last seen = "+ customer.getTimeLastSeen() + "\n";
         
         // Print string to stdout
         System.out.print("\nOutput:>>");
@@ -1174,6 +1176,7 @@ public class Modeler
      * Updates a customer's location
      * @param id The customer's unique id
      * @param storeAisleLoc The location to update the customer at
+     * Referenced https://compiler.javatpoint.com/opr/test.jsp?filename=CurrentDateTimeExample1
      */
     public void updateCustomer(String id, String storeAisleLoc, String auth_token)
     {
@@ -1234,6 +1237,11 @@ public class Modeler
         
         // Change customer's location
         customer.setLocation(storeAisleLoc);
+        
+        // TODO: Update customer's "time last seen"
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MMMM dd, yyyy HH:mm:ss");
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        customer.setTimeLastSeen(dtf.format(currentDateTime));
         
         // Add customer to store's list of customers
         stores.get(storeId).getCustomers().put(customer.getId(), customer);
