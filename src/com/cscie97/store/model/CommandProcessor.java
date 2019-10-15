@@ -20,7 +20,7 @@ public class CommandProcessor
 {
     /* Variables */
 
-    private Modeler modeler;
+    private StoreModelService modeler;
     private int lineNum = 0;
     
     /* API Methods */
