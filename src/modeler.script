@@ -1,0 +1,211 @@
+# Exception: Try passing in an invalid CLI syntax command
+define store store1_id name "Harvard Square Store address "1400 Mass Avenue, Cambridge, MA 02138"
+
+# Exception: Try passing in an invalid CLI syntax command
+define store store1_id name Harvard Square Store" address "1400 Mass Avenue, Cambridge, MA 02138"
+
+# Exception: Try passing in an invalid CLI syntax command
+define store1_id name "Harvard Square Store" address "1400 Mass Avenue, Cambridge, MA 02138"
+
+# Define store store1_id
+define store store1_id name "Harvard Square Store" address "1400 Mass Avenue, Cambridge, MA 02138"
+
+# Show store store1_id
+show store store1_id
+
+# Exception: Try to create another store store1_id (already exists)
+define store store1_id name "Yale Square Store" address "Yale's address"
+
+# Define aisle aisle1_id
+define aisle store1_id:aisle1_id name Dairy description "milk, yogurt, and other dairy products" location storeroom
+
+# Define aisle aisle2_id
+define aisle store1_id:aisle2_id name "Breads" description bakery location floor
+
+# Exception: Try to create an aisle for a nonexistent store
+define aisle store2_id:aisle3_id name Juices description "canned and room temperature" location floor
+
+# Exception: Try to create an aisle with an invalid location enum
+define aisle store1_id:aisle3_id name Juices description "canned and room temperature" location Floor
+
+# Define aisle aisle3_id
+define aisle store1_id:aisle3_id name Juices description "canned and room temperature" location floor
+
+# Show store store1_id (store should now have 3 aisles)
+show store store1_id
+
+# Show aisle aisle2_id
+show aisle store1_id:aisle2_id
+
+# Define shelf shelf1_id
+define shelf store1_id:aisle2_id:shelf1_id name Dairy level high description "soy and almond milks" temperature refrigerated
+
+# Show aisle aisle2_id (aisle 2 should now have a shelf)
+show aisle "store1_id:aisle2_id"
+
+# Define product prod1_id
+define product prod1_id name "soya drink" description "soy milk brand" size "2 L" category "milk" unit_price 345 temperature refrigerated
+
+# Show product prod1_id
+show product prod1_id
+
+# Exception: Try to define inventory with a product count greater than capacity
+define inventory inv1_id location store1_id:aisle2_id:shelf1_id capacity 30 count 31 product prod1_id
+
+# Define inventory inv1_id
+define inventory inv1_id location store1_id:aisle2_id:shelf1_id capacity 30 count 30 product prod1_id
+
+# Show inventory inv1_id
+show inventory inv1_id
+
+# Exception: Try to define inventory with the same location and productId combination
+define inventory inv1_id location store1_id:aisle2_id:shelf1_id capacity 15 count 15 product prod1_id
+
+# Define product prod2_id
+define product prod2_id name "almond drank" description "almond milk brand" size "2 L" category "milk" unit_price 350 temperature refrigerated
+
+# Define inventory inv2_id
+define inventory inv2_id location store1_id:aisle2_id:shelf1_id capacity 40 count 40 product prod2_id
+
+# Define product prod3_id without a temperature input (default temp is "ambient")
+define product prod3_id name "Cheesy-O's" description "cheese" size "1 oz" category "dairy" unit_price 275
+
+# Show product prod3_id
+show product prod3_id
+
+# Exception: Try to create inventory with prod3_id on shelf1_id (temperatures are incompatible)
+define inventory inv3_id location store1_id:aisle2_id:shelf1_id capacity 50 count 50 product prod3_id
+
+# Define shelf shelf2_id without a temperature input (default temp is "ambient")
+define shelf store1_id:aisle2_id:shelf2_id name "Cereals" level high description "cereal and oatmeal"
+
+# Show store store1_id (store should now have 2 inventories)
+show store store1_id
+
+# Show aisle aisle2_id (should have 2 shelves)
+show aisle store1_id:aisle2_id
+
+# Show shelf shelf1_id (should have 2 inventories)
+show shelf store1_id:aisle2_id:shelf1_id
+
+# Exception: Try to update inv2_id's count past max capacity
+update inventory inv2_id update_count 1
+
+# Exception: Try to update inv2_id's count past its lower limit of 0
+update inventory inv2_id update_count -41
+
+# Update inventory inv2_id
+update inventory inv2_id update_count -5
+
+# Show shelf shelf1_id (inv2_id's count should now be 35)
+show shelf store1_id:aisle2_id:shelf1_id
+
+# Show inventory inv2_id (count should be 35)
+show inventory inv2_id
+
+# Define customer1_id (a registered customer)
+define customer customer1_id first_name John last_name Smith age_group adult type registered email_address john@jmail.com account john
+
+# Show customer1_id
+show customer customer1_id
+
+# Exception: Try to get customer1_id a basket (not in a store)
+get_customer_basket customer1_id
+
+# Update customer1_id
+update customer customer1_id location store1_id:aisle3_id
+
+# Show customer1_id (customer 1 should be in a store, i.e., changed location)
+show customer customer1_id
+
+# Define customer2_id (a guest)
+define customer customer2_id first_name Stephanie last_name Jones age_group child type guest email_address steph.j@jmail.com account steph
+
+# Update customer2_id
+update customer customer2_id location store1_id:aisle2_id
+
+# Exception: Try to get customer2_id a basket (only registered customers can have baskets)
+get_customer_basket customer2_id
+
+# Exception: Try to add items to customer1_id's basket (basket doesn't exist yet)
+add_basket_item customer1_id product prod1_id item_count 5
+
+# Exception: Show basket items for customer1_id (basket doesn't exist yet)
+show basket_items customer1_id
+
+# Get customer basket customer1_id
+get_customer_basket customer1_id
+
+# Show basket items for customer1_id (customer 1 should now have an empty basket)
+show basket_items customer1_id
+
+# Add basket item prod1_id
+add_basket_item customer1_id product prod1_id item_count 5
+
+# Show basket items for customer1_id (customer 1 should now have basket items)
+show basket_items customer1_id
+
+# Add basket item prod1_id
+add_basket_item customer1_id product prod1_id item_count 2
+
+# Add basket item prod2_id
+add_basket_item customer1_id product prod2_id item_count 6
+
+# Remove basket item prod2_id
+remove_basket_item customer1_id product prod2_id item_count 3
+
+# Show basket items for customer1_id (item count for product 1 should be 7 and item count for product 2 should be 3)
+show basket_items customer1_id
+
+# Exception: Try to remove more items than is in basket
+ remove_basket_item customer1_id product prod2_id item_count 4
+
+# Exception: Try to remove item that's not in basket
+remove_basket_item customer1_id product prod3_id item_count 1
+
+# Clear basket customer1_id
+clear_basket customer1_id
+
+# Exception: Show basket items for customer1_id (cleared basket already)
+show basket_items customer1_id
+
+# Define device sensor1_id
+define device sensor1_id name "ceiling cam" type camera location store1_id:aisle1_id
+
+# Define device appliance1_id
+define device appliance1_id name "human robo" type robot location store1_id:aisle1_id
+
+# Show device sensor1_id
+show device sensor1_id
+
+# Show device appliance1_id
+show device appliance1_id
+
+# Show store store1_id
+show store store1_id
+
+# Define a different store, store2_id, with the same asset names as store1_id
+define store store2_id name "CSCI E-97 Store" address "1400 Mass Avenue, Cambridge, MA 02138"
+define aisle store2_id:aisle1_id name Produce description "vegetables, and fruits" location floor
+define shelf store2_id:aisle1_id:shelf1_id name Fruits level high description "bananas and oranges" temperature ambient
+
+# Show store store2_id (should be different than store store1_id)
+show store store2_id
+
+# Show shelf shelf1_id from store store2_id (should be different than store store1_id's)
+show shelf store2_id:aisle1_id:shelf1_id
+
+# Exception: Try to define a device in store2_id with the same name as one in store1_id (device id's are global in scope)
+define device sensor1_id name "wall cam" type camera location store2_id:aisle1_id
+
+# Create event event1_id for sensor 1
+create event sensor1_id event event1_id
+
+# Create event event1_id for appliance 1
+create event appliance1_id event event1_id
+
+# Exception: Create command command1_id for sensor 1 (only appliances accept commands)
+create command sensor1_id message command1_id
+
+# Create command command1_id for an appliance
+create command appliance1_id message command1_id
