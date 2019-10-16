@@ -1,0 +1,507 @@
+Gerald Arocena
+CSCI E-97, Fall 2019
+Assignment 2 "modeler.script" Results
+
+# Exception: Try passing in an invalid CLI syntax command [line 1 in file]
+-: define store store1_id name "Harvard Square Store address "1400 Mass Avenue, Cambridge, MA 02138"
+
+CommandProcessorException thrown --
+ Action: in processCommandFile method
+ Reason: missing closing quote in user input
+ Line number: 2
+
+# Exception: Try passing in an invalid CLI syntax command [line 4 in file]
+-: define store store1_id name Harvard Square Store" address "1400 Mass Avenue, Cambridge, MA 02138"
+
+CommandProcessorException thrown --
+ Action: in processCommandFile method
+ Reason: missing opening quote in user input
+ Line number: 5
+
+# Exception: Try passing in an invalid CLI syntax command [line 7 in file]
+-: define store1_id name "Harvard Square Store" address "1400 Mass Avenue, Cambridge, MA 02138"
+
+CommandProcessorException thrown --
+ Action: in processCommandFile method
+ Reason: invalid DSL command input
+ Line number: 8
+
+# Define store store1_id [line 10 in file]
+-: define store store1_id name "Harvard Square Store" address "1400 Mass Avenue, Cambridge, MA 02138"
+
+# Show store store1_id [line 13 in file]
+-: show store store1_id
+
+Output:>>
+Store "store1_id" information --
+ - name = Harvard Square Store
+ - address = 1400 Mass Avenue, Cambridge, MA 02138
+ - active customers = None
+ - aisles = None
+ - inventories = None
+ - sensors= None
+ - appliances= None
+
+# Exception: Try to create another store store1_id (already exists) [line 16 in file]
+-: define store store1_id name "Yale Square Store" address "Yale's address"
+
+ModelerException thrown --
+ - Action: define store
+ - Reason: store id already exists; store not created
+
+# Define aisle aisle1_id [line 19 in file]
+-: define aisle store1_id:aisle1_id name Dairy description "milk, yogurt, and other dairy products" location storeroom
+
+# Define aisle aisle2_id [line 22 in file]
+-: define aisle store1_id:aisle2_id name "Breads" description bakery location floor
+
+# Exception: Try to create an aisle for a nonexistent store [line 25 in file]
+-: define aisle store2_id:aisle3_id name Juices description "canned and room temperature" location floor
+
+ModelerException thrown --
+ - Action: define aisle
+ - Reason: store not found; aisle not created
+
+# Exception: Try to create an aisle with an invalid location enum [line 28 in file]
+-: define aisle store1_id:aisle3_id name Juices description "canned and room temperature" location Floor
+
+ModelerException thrown --
+ - Action: define aisle
+ - Reason: location (case-sensitive) not found; aisle not created
+
+# Define aisle aisle3_id [line 31 in file]
+-: define aisle store1_id:aisle3_id name Juices description "canned and room temperature" location floor
+
+# Show store store1_id (store should now have 3 aisles) [line 34 in file]
+-: show store store1_id
+
+Output:>>
+Store "store1_id" information --
+ - name = Harvard Square Store
+ - address = 1400 Mass Avenue, Cambridge, MA 02138
+ - active customers = None
+ - aisles =
+    1.) number = aisle1_id; name = Dairy; description = milk, yogurt, and other dairy products; location = storeroom
+    2.) number = aisle2_id; name = Breads; description = bakery; location = floor
+    3.) number = aisle3_id; name = Juices; description = canned and room temperature; location = floor
+ - inventories = None
+ - sensors= None
+ - appliances= None
+
+# Show aisle aisle2_id [line 37 in file]
+-: show aisle store1_id:aisle2_id
+
+Output:>>
+Aisle "store1_id:aisle2_id" information --
+ - name = Breads
+ - description = bakery
+ - location = floor
+ - shelves = None
+
+# Define shelf shelf1_id [line 40 in file]
+-: define shelf store1_id:aisle2_id:shelf1_id name Dairy level high description "soy and almond milks" temperature refrigerated
+
+# Show aisle aisle2_id (aisle 2 should now have a shelf) [line 43 in file]
+-: show aisle "store1_id:aisle2_id"
+
+Output:>>
+Aisle "store1_id:aisle2_id" information --
+ - name = Breads
+ - description = bakery
+ - location = floor
+ - shelves =
+    1.) id = shelf1_id; name = Dairy; level = high; description = soy and almond milks; temperature = refrigerated
+
+# Define product prod1_id [line 46 in file]
+-: define product prod1_id name "soya drink" description "soy milk brand" size "2 L" category "milk" unit_price 345 temperature refrigerated
+
+# Show product prod1_id [line 49 in file]
+-: show product prod1_id
+
+Output:>>
+Product "prod1_id" information --
+ - name = soya drink
+ - description = soy milk brand
+ - size = 2 L
+ - category = milk
+ - unit price = 345
+ - temperature = refrigerated
+
+# Exception: Try to define inventory with a product count greater than capacity [line 52 in file]
+-: define inventory inv1_id location store1_id:aisle2_id:shelf1_id capacity 30 count 31 product prod1_id
+
+ModelerException thrown --
+ - Action: define inventory
+ - Reason: count is not valid (between 0 and capacity); inventory not created
+
+# Define inventory inv1_id [line 55 in file]
+-: define inventory inv1_id location store1_id:aisle2_id:shelf1_id capacity 30 count 30 product prod1_id
+
+# Show inventory inv1_id [line 58 in file]
+-: show inventory inv1_id
+
+Output:>>
+Inventory "inv1_id" information --
+ - location = store1_id:aisle2_id:shelf1_id
+ - capacity = 30
+ - count = 30
+ - product id = prod1_id
+
+# Exception: Try to define inventory with the same location and productId combination [line 61 in file]
+-: define inventory inv1_id location store1_id:aisle2_id:shelf1_id capacity 15 count 15 product prod1_id
+
+ModelerException thrown --
+ - Action: define inventory
+ - Reason: inventory already defined for that product and shelf combination; inventory not created
+
+# Define product prod2_id [line 64 in file]
+-: define product prod2_id name "almond drank" description "almond milk brand" size "2 L" category "milk" unit_price 350 temperature refrigerated
+
+# Define inventory inv2_id [line 67 in file]
+-: define inventory inv2_id location store1_id:aisle2_id:shelf1_id capacity 40 count 40 product prod2_id
+
+# Define product prod3_id without a temperature input (default temp is "ambient") [line 70 in file]
+-: define product prod3_id name "Cheesy-O's" description "cheese" size "1 oz" category "dairy" unit_price 275
+
+# Show product prod3_id [line 73 in file]
+-: show product prod3_id
+
+Output:>>
+Product "prod3_id" information --
+ - name = Cheesy-O's
+ - description = cheese
+ - size = 1 oz
+ - category = dairy
+ - unit price = 275
+ - temperature = ambient
+
+# Exception: Try to create inventory with prod3_id on shelf1_id (temperatures are incompatible) [line 76 in file]
+-: define inventory inv3_id location store1_id:aisle2_id:shelf1_id capacity 50 count 50 product prod3_id
+
+ModelerException thrown --
+ - Action: define inventory
+ - Reason: shelf and product temperatures don't match; inventory not created
+
+# Define shelf shelf2_id without a temperature input (default temp is "ambient") [line 79 in file]
+-: define shelf store1_id:aisle2_id:shelf2_id name "Cereals" level high description "cereal and oatmeal"
+
+# Show store store1_id (store should now have 2 inventories) [line 82 in file]
+-: show store store1_id
+
+Output:>>
+Store "store1_id" information --
+ - name = Harvard Square Store
+ - address = 1400 Mass Avenue, Cambridge, MA 02138
+ - active customers = None
+ - aisles =
+    1.) number = aisle1_id; name = Dairy; description = milk, yogurt, and other dairy products; location = storeroom
+    2.) number = aisle2_id; name = Breads; description = bakery; location = floor
+    3.) number = aisle3_id; name = Juices; description = canned and room temperature; location = floor
+ - inventories =
+    1.) inventoryId = inv1_id; location = store1_id:aisle2_id:shelf1_id; capacity = 30; count = 30; productId = prod1_id
+    2.) inventoryId = inv2_id; location = store1_id:aisle2_id:shelf1_id; capacity = 40; count = 40; productId = prod2_id
+ - sensors= None
+ - appliances= None
+
+# Show aisle aisle2_id (should have 2 shelves) [line 85 in file]
+-: show aisle store1_id:aisle2_id
+
+Output:>>
+Aisle "store1_id:aisle2_id" information --
+ - name = Breads
+ - description = bakery
+ - location = floor
+ - shelves =
+    1.) id = shelf1_id; name = Dairy; level = high; description = soy and almond milks; temperature = refrigerated
+    2.) id = shelf2_id; name = Cereals; level = high; description = cereal and oatmeal; temperature = ambient
+
+# Show shelf shelf1_id (should have 2 inventories) [line 88 in file]
+-: show shelf store1_id:aisle2_id:shelf1_id
+
+Output:>>
+Shelf "store1_id:aisle2_id:shelf1_id" information --
+ - name = Dairy
+ - level = high
+ - description = soy and almond milks
+ - temperature = refrigerated
+ - inventories =
+    1.) inventoryId = inv1_id; location = store1_id:aisle2_id:shelf1_id; capacity = 30; count = 30; productId = prod1_id
+    2.) inventoryId = inv2_id; location = store1_id:aisle2_id:shelf1_id; capacity = 40; count = 40; productId = prod2_id
+
+# Exception: Try to update inv2_id's count past max capacity [line 91 in file]
+-: update inventory inv2_id update_count 1
+
+ModelerException thrown --
+ - Action: update inventory
+ - Reason: update would put count outside of valid range; update rejected
+
+# Exception: Try to update inv2_id's count past its lower limit of 0 [line 94 in file]
+-: update inventory inv2_id update_count -41
+
+ModelerException thrown --
+ - Action: update inventory
+ - Reason: update would put count outside of valid range; update rejected
+
+# Update inventory inv2_id [line 97 in file]
+-: update inventory inv2_id update_count -5
+
+# Show shelf shelf1_id (inv2_id's count should now be 35) [line 100 in file]
+-: show shelf store1_id:aisle2_id:shelf1_id
+
+Output:>>
+Shelf "store1_id:aisle2_id:shelf1_id" information --
+ - name = Dairy
+ - level = high
+ - description = soy and almond milks
+ - temperature = refrigerated
+ - inventories =
+    1.) inventoryId = inv1_id; location = store1_id:aisle2_id:shelf1_id; capacity = 30; count = 30; productId = prod1_id
+    2.) inventoryId = inv2_id; location = store1_id:aisle2_id:shelf1_id; capacity = 40; count = 35; productId = prod2_id
+
+# Show inventory inv2_id (count should be 35) [line 103 in file]
+-: show inventory inv2_id
+
+Output:>>
+Inventory "inv2_id" information --
+ - location = store1_id:aisle2_id:shelf1_id
+ - capacity = 40
+ - count = 35
+ - product id = prod2_id
+
+# Define customer1_id (a registered customer) [line 106 in file]
+-: define customer customer1_id first_name John last_name Smith age_group adult type registered email_address john@jmail.com account john
+
+# Show customer1_id [line 109 in file]
+-: show customer customer1_id
+
+Output:>>
+Customer "customer1_id" information --
+ - first name = John
+ - last name = Smith
+ - age group = adult
+ - type = registered
+ - email address = john@jmail.com
+ - account = john
+ - location = null
+ - time last seen = null
+
+# Exception: Try to get customer1_id a basket (not in a store) [line 112 in file]
+-: get_customer_basket customer1_id
+
+ModelerException thrown --
+ - Action: get customer basket
+ - Reason: customer is not in a store; request denied
+
+# Update customer1_id [line 115 in file]
+-: update customer customer1_id location store1_id:aisle3_id
+
+# Show customer1_id (customer 1 should be in a store, i.e., changed location) [line 118 in file]
+-: show customer customer1_id
+
+Output:>>
+Customer "customer1_id" information --
+ - first name = John
+ - last name = Smith
+ - age group = adult
+ - type = registered
+ - email address = john@jmail.com
+ - account = john
+ - location = store1_id:aisle3_id
+ - time last seen = October 14, 2019 22:13:25
+
+# Define customer2_id (a guest) [line 121 in file]
+-: define customer customer2_id first_name Stephanie last_name Jones age_group child type guest email_address steph.j@jmail.com account steph
+
+# Update customer2_id [line 124 in file]
+-: update customer customer2_id location store1_id:aisle2_id
+
+# Exception: Try to get customer2_id a basket (only registered customers can have baskets) [line 127 in file]
+-: get_customer_basket customer2_id
+
+ModelerException thrown --
+ - Action: get customer basket
+ - Reason: unregistered customer; request denied
+
+# Exception: Try to add items to customer1_id's basket (basket doesn't exist yet) [line 130 in file]
+-: add_basket_item customer1_id product prod1_id item_count 5
+
+ModelerException thrown --
+ - Action: add basket item
+ - Reason: basket not found; item not added
+
+# Exception: Show basket items for customer1_id (basket doesn't exist yet) [line 133 in file]
+-: show basket_items customer1_id
+
+ModelerException thrown --
+ - Action: show basket items
+ - Reason: basket not found
+
+# Get customer basket customer1_id [line 136 in file]
+-: get_customer_basket customer1_id
+
+# Show basket items for customer1_id (customer 1 should now have an empty basket) [line 139 in file]
+-: show basket_items customer1_id
+
+Output:>>
+Basket "customer1_id" items -- Basket empty
+
+# Add basket item prod1_id [line 142 in file]
+-: add_basket_item customer1_id product prod1_id item_count 5
+
+# Show basket items for customer1_id (customer 1 should now have basket items) [line 145 in file]
+-: show basket_items customer1_id
+
+Output:>>
+Basket "customer1_id" items --
+ 1.) product id = prod1_id : count = 5
+
+# Add basket item prod1_id [line 148 in file]
+-: add_basket_item customer1_id product prod1_id item_count 2
+
+# Add basket item prod2_id [line 151 in file]
+-: add_basket_item customer1_id product prod2_id item_count 6
+
+# Remove basket item prod2_id [line 154 in file]
+-: remove_basket_item customer1_id product prod2_id item_count 3
+
+# Show basket items for customer1_id (item count for product 1 should be 7 and item count for product 2 should be 3) [line 157 in file]
+-: show basket_items customer1_id
+
+Output:>>
+Basket "customer1_id" items --
+ 1.) product id = prod1_id : count = 7
+ 2.) product id = prod2_id : count = 3
+
+# Exception: Try to remove more items than is in basket [line 160 in file]
+-: remove_basket_item customer1_id product prod2_id item_count 4
+
+ModelerException thrown --
+ - Action: remove basket item
+ - Reason: attempting to remove more than is in basket; item(s) not removed
+
+# Exception: Try to remove item that's not in basket [line 163 in file]
+-: remove_basket_item customer1_id product prod3_id item_count 1
+
+ModelerException thrown --
+ - Action: remove basket item
+ - Reason: item not found in basket
+
+# Clear basket customer1_id [line 166 in file]
+-: clear_basket customer1_id
+
+# Exception: Show basket items for customer1_id (cleared basket already) [line 169 in file]
+-: show basket_items customer1_id
+
+ModelerException thrown --
+ - Action: show basket items
+ - Reason: basket not found
+
+# Define device sensor1_id [line 172 in file]
+-: define device sensor1_id name "ceiling cam" type camera location store1_id:aisle1_id
+
+# Define device appliance1_id [line 175 in file]
+-: define device appliance1_id name "human robo" type robot location store1_id:aisle1_id
+
+# Show device sensor1_id [line 178 in file]
+-: show device sensor1_id
+
+Output:>>
+Device "sensor1_id" information --
+ - name = ceiling cam
+ - type = camera
+ - location = store1_id:aisle1_id
+
+# Show device appliance1_id [line 181 in file]
+-: show device appliance1_id
+
+Output:>>
+Device "appliance1_id" information --
+ - name = human robo
+ - type = robot
+ - location = store1_id:aisle1_id
+
+# Show store store1_id [line 184 in file]
+-: show store store1_id
+
+Output:>>
+Store "store1_id" information --
+ - name = Harvard Square Store
+ - address = 1400 Mass Avenue, Cambridge, MA 02138
+ - active customers =
+    1.) id = customer1_id; first name = John; last name = Smith; type = registered; emailAddress = john@jmail.com; account = john; location = store1_id:aisle3_id
+    2.) id = customer2_id; first name = Stephanie; last name = Jones; type = guest; emailAddress = steph.j@jmail.com; account = steph; location = store1_id:aisle2_id
+ - aisles =
+    1.) number = aisle1_id; name = Dairy; description = milk, yogurt, and other dairy products; location = storeroom
+    2.) number = aisle2_id; name = Breads; description = bakery; location = floor
+    3.) number = aisle3_id; name = Juices; description = canned and room temperature; location = floor
+ - inventories =
+    1.) inventoryId = inv1_id; location = store1_id:aisle2_id:shelf1_id; capacity = 30; count = 30; productId = prod1_id
+    2.) inventoryId = inv2_id; location = store1_id:aisle2_id:shelf1_id; capacity = 40; count = 35; productId = prod2_id
+ - sensors=
+    1.) id = sensor1_id; name = ceiling cam; type = camera; location = store1_id:aisle1_id
+ - appliances=
+    1.) id = appliance1_id; name = human robo; type = robot; location = store1_id:aisle1_id
+
+# Define a different store, store2_id, with the same asset names as store1_id [line 187 in file]
+-: define store store2_id name "CSCI E-97 Store" address "1400 Mass Avenue, Cambridge, MA 02138"
+
+-: define aisle store2_id:aisle1_id name Produce description "vegetables, and fruits" location floor
+
+-: define shelf store2_id:aisle1_id:shelf1_id name Fruits level high description "bananas and oranges" temperature ambient
+
+# Show store store2_id (should be different than store store1_id) [line 192 in file]
+-: show store store2_id
+
+Output:>>
+Store "store2_id" information --
+ - name = CSCI E-97 Store
+ - address = 1400 Mass Avenue, Cambridge, MA 02138
+ - active customers = None
+ - aisles =
+    1.) number = aisle1_id; name = Produce; description = vegetables, and fruits; location = floor
+ - inventories = None
+ - sensors= None
+ - appliances= None
+
+# Show shelf shelf1_id from store store2_id (should be different than store store1_id's) [line 195 in file]
+-: show shelf store2_id:aisle1_id:shelf1_id
+
+Output:>>
+Shelf "store2_id:aisle1_id:shelf1_id" information --
+ - name = Fruits
+ - level = high
+ - description = bananas and oranges
+ - temperature = ambient
+ - inventories = None
+
+# Exception: Try to define a device in store2_id with the same name as one in store1_id (device id's are global in scope) [line 198 in file]
+-: define device sensor1_id name "wall cam" type camera location store2_id:aisle1_id
+
+ModelerException thrown --
+ - Action: define device
+ - Reason: device id already exists; device not created
+
+# Create event event1_id for sensor 1 [line 201 in file]
+-: create event sensor1_id event event1_id
+
+Output:>>
+Event "event1_id" was received by device sensor1_id!
+
+# Create event event1_id for appliance 1 [line 204 in file]
+-: create event appliance1_id event event1_id
+
+Output:>>
+Event "event1_id" was received by device appliance1_id!
+
+# Exception: Create command command1_id for sensor 1 (only appliances accept commands) [line 207 in file]
+-: create command sensor1_id message command1_id
+
+ModelerException thrown --
+ - Action: create command
+ - Reason: device is not an appliance; command not sent
+
+# Create command command1_id for an appliance [line 210 in file]
+-: create command appliance1_id message command1_id
+
+Output:>>
+Command "command1_id" was received by device appliance1_id!
