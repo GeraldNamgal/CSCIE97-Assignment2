@@ -130,8 +130,8 @@ define customer customer2_id first_name Stephanie last_name Jones age_group chil
 # Update customer2_id (have customer2_id enter store)
 update customer customer2_id location store1_id:aisle2_id
 
-# Show customer2_id (location should be in a store)
-show customer customer2_id
+# Show store1_id (store should have 2 customers)
+show store store1_id
 
 # Exception: Try to get customer2_id a basket (only registered customers can have baskets)
 get_customer_basket customer2_id
@@ -139,8 +139,8 @@ get_customer_basket customer2_id
 # Update customer2_id to leave store1_id
 update customer customer2_id location null
 
-# Show customer2_id (location should be null)
-show customer customer2_id
+# Show store1_id (store should have only 1 customer)
+show store store1_id
 
 # Exception: Try to add items to customer1_id's basket (basket doesn't exist yet)
 add_basket_item customer1_id product prod1_id item_count 5
