@@ -112,20 +112,35 @@ show customer customer1_id
 # Exception: Try to get customer1_id a basket (not in a store)
 get_customer_basket customer1_id
 
-# Update customer1_id
+# Update customer customer1_id's location
 update customer customer1_id location store1_id:aisle3_id
 
-# Show customer1_id (customer 1 should be in a store, i.e., changed location)
+# Show customer1_id (customer 1 should be in store1_id in aisle3_id, i.e., in a store)
+show customer customer1_id
+
+# Update customer1_id to new aisle aisle1_id
+update customer customer1_id location store1_id:aisle1_id
+
+# Show customer1_id (customer1_id should now be in aisle1_id)
 show customer customer1_id
 
 # Define customer2_id (a guest)
 define customer customer2_id first_name Stephanie last_name Jones age_group child type guest email_address steph.j@jmail.com account steph
 
-# Update customer2_id
+# Update customer2_id (have customer2_id enter store)
 update customer customer2_id location store1_id:aisle2_id
+
+# Show customer2_id (location should be in a store)
+show customer customer2_id
 
 # Exception: Try to get customer2_id a basket (only registered customers can have baskets)
 get_customer_basket customer2_id
+
+# Update customer2_id to leave store1_id
+update customer customer2_id location null
+
+# Show customer2_id (location should be null)
+show customer customer2_id
 
 # Exception: Try to add items to customer1_id's basket (basket doesn't exist yet)
 add_basket_item customer1_id product prod1_id item_count 5

@@ -1234,53 +1234,77 @@ public class Modeler implements StoreModelService
             }
         }
         
-        // Split storeAisleLoc on colon
-        String[] splitLoc = storeAisleLoc.split(":");
-        String storeId = splitLoc[0];
-        String aisleNumber = splitLoc[1];
+        // If customer's current location is null and update location is null
+        if ((customer.getLocation() == null) && storeAisleLoc.equals("null"))
+            return;               
         
-        // Check that store exists
-        if (!stores.containsKey(storeId))
+        // If update location is not null, e.g., a store location or invalid syntax
+        if (!storeAisleLoc.equals("null"))
         {
-            try
+            // Split storeAisleLoc on colon
+            String[] splitLoc = storeAisleLoc.split(":");
+            String storeId = splitLoc[0];
+            String aisleNumber = splitLoc[1];
+            
+            // Check that store exists
+            if (!stores.containsKey(storeId))
             {
-                throw new ModelerException("update customer", "store not found");
+                try
+                {
+                    throw new ModelerException("update customer", "store not found");
+                }
+                
+                catch (ModelerException exception)
+                {
+                    System.out.println();
+                    System.out.print(exception.getMessage());      
+                    return;
+                }
             }
             
-            catch (ModelerException exception)
+            // Check that aisle exists
+            if (!stores.get(storeId).getAisles().containsKey(aisleNumber))
             {
-                System.out.println();
-                System.out.print(exception.getMessage());      
-                return;
-            }
-        }
-        
-        // Check that aisle exists
-        if (!stores.get(storeId).getAisles().containsKey(aisleNumber))
-        {
-            try
-            {
-                throw new ModelerException("update customer", "aisle not found");
+                try
+                {
+                    throw new ModelerException("update customer", "aisle not found");
+                }
+                
+                catch (ModelerException exception)
+                {
+                    System.out.println();
+                    System.out.print(exception.getMessage());      
+                    return;
+                }
             }
             
-            catch (ModelerException exception)
-            {
-                System.out.println();
-                System.out.print(exception.getMessage());      
-                return;
-            }
+            // Add/update customer in store's list of active customers
+            stores.get(storeId).getCustomers().put(customer.getId(), customer);
         }
         
-        // Change customer's location
-        customer.setLocation(storeAisleLoc);
-        
-        // TODO: Update customer's "time last seen"
+        // Else customer left a store
+        else
+        {
+            // Get customer's current location
+            String currentLoc = customer.getLocation();
+            
+            // Split location to get store
+            String storeId = currentLoc.split(":")[0];
+            
+            // TODO: Remove customer from store's list of active customers
+            stores.get(storeId).getCustomers().remove(id);
+        }
+            
+        // Update customer's "time last seen"
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MMMM dd, yyyy HH:mm:ss");
         LocalDateTime currentDateTime = LocalDateTime.now();
         customer.setTimeLastSeen(dtf.format(currentDateTime));
         
-        // Add customer to store's list of customers
-        stores.get(storeId).getCustomers().put(customer.getId(), customer);
+        // Change customer's location
+        if (storeAisleLoc.equals("null"))
+            customer.setLocation(null);
+        else
+            customer.setLocation(storeAisleLoc);
     }
     
     /* *

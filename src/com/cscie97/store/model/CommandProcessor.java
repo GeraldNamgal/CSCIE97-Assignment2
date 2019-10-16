@@ -633,8 +633,8 @@ public class CommandProcessor
     
         else if ((splitInputArr.length == 15) && splitInputArr[0].equalsIgnoreCase("define") && splitInputArr[1].equalsIgnoreCase("customer")
                 && splitInputArr[3].equalsIgnoreCase("first_name") && splitInputArr[5].equalsIgnoreCase("last_name")
-                && splitInputArr[7].equalsIgnoreCase("age_group") && splitInputArr[9].equalsIgnoreCase("type") && splitInputArr[11].equalsIgnoreCase("email_address")
-                && splitInputArr[13].equalsIgnoreCase("account"))
+                && splitInputArr[7].equalsIgnoreCase("age_group") && splitInputArr[9].equalsIgnoreCase("type")
+                && splitInputArr[11].equalsIgnoreCase("email_address") && splitInputArr[13].equalsIgnoreCase("account"))
         {
             System.out.println("-: " + trimmedInput);
             modeler.defineCustomer(splitInputArr[2], splitInputArr[4], splitInputArr[6], splitInputArr[8], splitInputArr[10], splitInputArr[12]
@@ -643,7 +643,8 @@ public class CommandProcessor
         }
         
         else if ((splitInputArr.length == 5) && splitInputArr[0].equalsIgnoreCase("update") && splitInputArr[1].equalsIgnoreCase("customer")
-                && splitInputArr[3].equalsIgnoreCase("location") && (splitInputArr[4].split(":").length == 2))
+                && splitInputArr[3].equalsIgnoreCase("location") && ((splitInputArr[4].split(":").length == 2)
+                || (splitInputArr[4].equals("null"))))
         {
             System.out.println("-: " + trimmedInput);
             modeler.updateCustomer(splitInputArr[2], splitInputArr[4], auth_token);
