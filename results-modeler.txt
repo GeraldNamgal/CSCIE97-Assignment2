@@ -292,10 +292,10 @@ ModelerException thrown --
  - Action: get customer basket
  - Reason: customer is not in a store; request denied
 
-# Update customer1_id [line 115 in file]
+# Update customer customer1_id's location [line 115 in file]
 -: update customer customer1_id location store1_id:aisle3_id
 
-# Show customer1_id (customer 1 should be in a store, i.e., changed location) [line 118 in file]
+# Show customer1_id (customer 1 should be in store1_id in aisle3_id, i.e., in a store) [line 118 in file]
 -: show customer customer1_id
 
 Output:>>
@@ -307,64 +307,123 @@ Customer "customer1_id" information --
  - email address = john@jmail.com
  - account = john
  - location = store1_id:aisle3_id
- - time last seen = October 14, 2019 22:13:25
+ - time last seen = October 16, 2019 07:41:20
 
-# Define customer2_id (a guest) [line 121 in file]
+# Update customer1_id to new aisle aisle1_id [line 121 in file]
+-: update customer customer1_id location store1_id:aisle1_id
+
+# Show customer1_id (customer1_id should now be in aisle1_id) [line 124 in file]
+-: show customer customer1_id
+
+Output:>>
+Customer "customer1_id" information --
+ - first name = John
+ - last name = Smith
+ - age group = adult
+ - type = registered
+ - email address = john@jmail.com
+ - account = john
+ - location = store1_id:aisle1_id
+ - time last seen = October 16, 2019 07:41:20
+
+# Define customer2_id (a guest) [line 127 in file]
 -: define customer customer2_id first_name Stephanie last_name Jones age_group child type guest email_address steph.j@jmail.com account steph
 
-# Update customer2_id [line 124 in file]
+# Update customer2_id (have customer2_id enter store) [line 130 in file]
 -: update customer customer2_id location store1_id:aisle2_id
 
-# Exception: Try to get customer2_id a basket (only registered customers can have baskets) [line 127 in file]
+# Show store1_id (store should have 2 customers) [line 133 in file]
+-: show store store1_id
+
+Output:>>
+Store "store1_id" information --
+ - name = Harvard Square Store
+ - address = 1400 Mass Avenue, Cambridge, MA 02138
+ - active customers =
+    1.) id = customer1_id; first name = John; last name = Smith; type = registered; emailAddress = john@jmail.com; account = john; location = store1_id:aisle1_id
+    2.) id = customer2_id; first name = Stephanie; last name = Jones; type = guest; emailAddress = steph.j@jmail.com; account = steph; location = store1_id:aisle2_id
+ - aisles =
+    1.) number = aisle1_id; name = Dairy; description = milk, yogurt, and other dairy products; location = storeroom
+    2.) number = aisle2_id; name = Breads; description = bakery; location = floor
+    3.) number = aisle3_id; name = Juices; description = canned and room temperature; location = floor
+ - inventories =
+    1.) inventoryId = inv1_id; location = store1_id:aisle2_id:shelf1_id; capacity = 30; count = 30; productId = prod1_id
+    2.) inventoryId = inv2_id; location = store1_id:aisle2_id:shelf1_id; capacity = 40; count = 35; productId = prod2_id
+ - sensors= None
+ - appliances= None
+
+# Exception: Try to get customer2_id a basket (only registered customers can have baskets) [line 136 in file]
 -: get_customer_basket customer2_id
 
 ModelerException thrown --
  - Action: get customer basket
  - Reason: unregistered customer; request denied
 
-# Exception: Try to add items to customer1_id's basket (basket doesn't exist yet) [line 130 in file]
+# Update customer2_id to leave store1_id [line 139 in file]
+-: update customer customer2_id location null
+
+# Show store1_id (store should have only 1 customer) [line 142 in file]
+-: show store store1_id
+
+Output:>>
+Store "store1_id" information --
+ - name = Harvard Square Store
+ - address = 1400 Mass Avenue, Cambridge, MA 02138
+ - active customers =
+    1.) id = customer1_id; first name = John; last name = Smith; type = registered; emailAddress = john@jmail.com; account = john; location = store1_id:aisle1_id
+ - aisles =
+    1.) number = aisle1_id; name = Dairy; description = milk, yogurt, and other dairy products; location = storeroom
+    2.) number = aisle2_id; name = Breads; description = bakery; location = floor
+    3.) number = aisle3_id; name = Juices; description = canned and room temperature; location = floor
+ - inventories =
+    1.) inventoryId = inv1_id; location = store1_id:aisle2_id:shelf1_id; capacity = 30; count = 30; productId = prod1_id
+    2.) inventoryId = inv2_id; location = store1_id:aisle2_id:shelf1_id; capacity = 40; count = 35; productId = prod2_id
+ - sensors= None
+ - appliances= None
+
+# Exception: Try to add items to customer1_id's basket (basket doesn't exist yet) [line 145 in file]
 -: add_basket_item customer1_id product prod1_id item_count 5
 
 ModelerException thrown --
  - Action: add basket item
  - Reason: basket not found; item not added
 
-# Exception: Show basket items for customer1_id (basket doesn't exist yet) [line 133 in file]
+# Exception: Show basket items for customer1_id (basket doesn't exist yet) [line 148 in file]
 -: show basket_items customer1_id
 
 ModelerException thrown --
  - Action: show basket items
  - Reason: basket not found
 
-# Get customer basket customer1_id [line 136 in file]
+# Get customer basket customer1_id [line 151 in file]
 -: get_customer_basket customer1_id
 
-# Show basket items for customer1_id (customer 1 should now have an empty basket) [line 139 in file]
+# Show basket items for customer1_id (customer 1 should now have an empty basket) [line 154 in file]
 -: show basket_items customer1_id
 
 Output:>>
 Basket "customer1_id" items -- Basket empty
 
-# Add basket item prod1_id [line 142 in file]
+# Add basket item prod1_id [line 157 in file]
 -: add_basket_item customer1_id product prod1_id item_count 5
 
-# Show basket items for customer1_id (customer 1 should now have basket items) [line 145 in file]
+# Show basket items for customer1_id (customer 1 should now have basket items) [line 160 in file]
 -: show basket_items customer1_id
 
 Output:>>
 Basket "customer1_id" items --
  1.) product id = prod1_id : count = 5
 
-# Add basket item prod1_id [line 148 in file]
+# Add basket item prod1_id [line 163 in file]
 -: add_basket_item customer1_id product prod1_id item_count 2
 
-# Add basket item prod2_id [line 151 in file]
+# Add basket item prod2_id [line 166 in file]
 -: add_basket_item customer1_id product prod2_id item_count 6
 
-# Remove basket item prod2_id [line 154 in file]
+# Remove basket item prod2_id [line 169 in file]
 -: remove_basket_item customer1_id product prod2_id item_count 3
 
-# Show basket items for customer1_id (item count for product 1 should be 7 and item count for product 2 should be 3) [line 157 in file]
+# Show basket items for customer1_id (item count for product 1 should be 7 and item count for product 2 should be 3) [line 172 in file]
 -: show basket_items customer1_id
 
 Output:>>
@@ -372,37 +431,37 @@ Basket "customer1_id" items --
  1.) product id = prod1_id : count = 7
  2.) product id = prod2_id : count = 3
 
-# Exception: Try to remove more items than is in basket [line 160 in file]
+# Exception: Try to remove more items than is in basket [line 175 in file]
 -: remove_basket_item customer1_id product prod2_id item_count 4
 
 ModelerException thrown --
  - Action: remove basket item
  - Reason: attempting to remove more than is in basket; item(s) not removed
 
-# Exception: Try to remove item that's not in basket [line 163 in file]
+# Exception: Try to remove item that's not in basket [line 178 in file]
 -: remove_basket_item customer1_id product prod3_id item_count 1
 
 ModelerException thrown --
  - Action: remove basket item
  - Reason: item not found in basket
 
-# Clear basket customer1_id [line 166 in file]
+# Clear basket customer1_id [line 181 in file]
 -: clear_basket customer1_id
 
-# Exception: Show basket items for customer1_id (cleared basket already) [line 169 in file]
+# Exception: Show basket items for customer1_id (cleared basket already) [line 184 in file]
 -: show basket_items customer1_id
 
 ModelerException thrown --
  - Action: show basket items
  - Reason: basket not found
 
-# Define device sensor1_id [line 172 in file]
+# Define device sensor1_id [line 187 in file]
 -: define device sensor1_id name "ceiling cam" type camera location store1_id:aisle1_id
 
-# Define device appliance1_id [line 175 in file]
+# Define device appliance1_id [line 190 in file]
 -: define device appliance1_id name "human robo" type robot location store1_id:aisle1_id
 
-# Show device sensor1_id [line 178 in file]
+# Show device sensor1_id [line 193 in file]
 -: show device sensor1_id
 
 Output:>>
@@ -411,7 +470,7 @@ Device "sensor1_id" information --
  - type = camera
  - location = store1_id:aisle1_id
 
-# Show device appliance1_id [line 181 in file]
+# Show device appliance1_id [line 196 in file]
 -: show device appliance1_id
 
 Output:>>
@@ -420,7 +479,7 @@ Device "appliance1_id" information --
  - type = robot
  - location = store1_id:aisle1_id
 
-# Show store store1_id [line 184 in file]
+# Show store store1_id [line 199 in file]
 -: show store store1_id
 
 Output:>>
@@ -428,8 +487,7 @@ Store "store1_id" information --
  - name = Harvard Square Store
  - address = 1400 Mass Avenue, Cambridge, MA 02138
  - active customers =
-    1.) id = customer1_id; first name = John; last name = Smith; type = registered; emailAddress = john@jmail.com; account = john; location = store1_id:aisle3_id
-    2.) id = customer2_id; first name = Stephanie; last name = Jones; type = guest; emailAddress = steph.j@jmail.com; account = steph; location = store1_id:aisle2_id
+    1.) id = customer1_id; first name = John; last name = Smith; type = registered; emailAddress = john@jmail.com; account = john; location = store1_id:aisle1_id
  - aisles =
     1.) number = aisle1_id; name = Dairy; description = milk, yogurt, and other dairy products; location = storeroom
     2.) number = aisle2_id; name = Breads; description = bakery; location = floor
@@ -442,14 +500,14 @@ Store "store1_id" information --
  - appliances=
     1.) id = appliance1_id; name = human robo; type = robot; location = store1_id:aisle1_id
 
-# Define a different store, store2_id, with the same asset names as store1_id [line 187 in file]
+# Define a different store, store2_id, with the same asset names as store1_id [line 202 in file]
 -: define store store2_id name "CSCI E-97 Store" address "1400 Mass Avenue, Cambridge, MA 02138"
 
 -: define aisle store2_id:aisle1_id name Produce description "vegetables, and fruits" location floor
 
 -: define shelf store2_id:aisle1_id:shelf1_id name Fruits level high description "bananas and oranges" temperature ambient
 
-# Show store store2_id (should be different than store store1_id) [line 192 in file]
+# Show store store2_id (should be different than store store1_id) [line 207 in file]
 -: show store store2_id
 
 Output:>>
@@ -463,7 +521,7 @@ Store "store2_id" information --
  - sensors= None
  - appliances= None
 
-# Show shelf shelf1_id from store store2_id (should be different than store store1_id's) [line 195 in file]
+# Show shelf shelf1_id from store store2_id (should be different than store store1_id's) [line 210 in file]
 -: show shelf store2_id:aisle1_id:shelf1_id
 
 Output:>>
@@ -474,34 +532,35 @@ Shelf "store2_id:aisle1_id:shelf1_id" information --
  - temperature = ambient
  - inventories = None
 
-# Exception: Try to define a device in store2_id with the same name as one in store1_id (device id's are global in scope) [line 198 in file]
+# Exception: Try to define a device in store2_id with the same name as one in store1_id (device id's are global in scope) [line 213 in file]
 -: define device sensor1_id name "wall cam" type camera location store2_id:aisle1_id
 
 ModelerException thrown --
  - Action: define device
  - Reason: device id already exists; device not created
 
-# Create event event1_id for sensor 1 [line 201 in file]
+# Create event event1_id for sensor 1 [line 216 in file]
 -: create event sensor1_id event event1_id
 
 Output:>>
 Event "event1_id" was received by device sensor1_id!
 
-# Create event event1_id for appliance 1 [line 204 in file]
+# Create event event1_id for appliance 1 [line 219 in file]
 -: create event appliance1_id event event1_id
 
 Output:>>
 Event "event1_id" was received by device appliance1_id!
 
-# Exception: Create command command1_id for sensor 1 (only appliances accept commands) [line 207 in file]
+# Exception: Create command command1_id for sensor 1 (only appliances accept commands) [line 222 in file]
 -: create command sensor1_id message command1_id
 
 ModelerException thrown --
  - Action: create command
  - Reason: device is not an appliance; command not sent
 
-# Create command command1_id for an appliance [line 210 in file]
+# Create command command1_id for an appliance [line 225 in file]
 -: create command appliance1_id message command1_id
 
 Output:>>
 Command "command1_id" was received by device appliance1_id!
+
